@@ -1,4 +1,4 @@
-package org.escoladeltreball.universerescue;
+package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -8,6 +8,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.escoladeltreball.universerescue.GameActivity;
 
 public class ResourcesManager {
 	
@@ -21,6 +22,7 @@ public class ResourcesManager {
 	public BitmapTextureAtlas splashTextureAtlas;
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion splash_region;
+	public ITextureRegion loading_region;
 	public ITextureRegion menu_background_region;
 	
 	
@@ -56,6 +58,7 @@ public class ResourcesManager {
 		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "logoUR.png",0,0);
 		splashTextureAtlas.load();
 	}
+	
 	
 	public void unloadSplashScreen(){
 		splashTextureAtlas.unload();

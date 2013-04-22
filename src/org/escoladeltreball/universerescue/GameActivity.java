@@ -13,6 +13,8 @@ import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class GameActivity extends BaseGameActivity {
 

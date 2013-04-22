@@ -1,10 +1,12 @@
-package org.escoladeltreball.universerescue;
+package org.escoladeltreball.universerescue.scenes;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.escoladeltreball.universerescue.SceneManager.SceneType;
+import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public abstract class BaseScene extends Scene {
 

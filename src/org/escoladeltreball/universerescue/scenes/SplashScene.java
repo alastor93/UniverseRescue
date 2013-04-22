@@ -1,9 +1,9 @@
-package org.escoladeltreball.universerescue;
+package org.escoladeltreball.universerescue.scenes;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
-import org.escoladeltreball.universerescue.SceneManager.SceneType;
+import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
 

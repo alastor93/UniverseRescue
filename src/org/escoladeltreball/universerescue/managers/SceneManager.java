@@ -1,7 +1,9 @@
-package org.escoladeltreball.universerescue;
+package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+import org.escoladeltreball.universerescue.scenes.BaseScene;
+import org.escoladeltreball.universerescue.scenes.SplashScene;
 
 
 
@@ -27,7 +29,7 @@ public class SceneManager {
 	
 	//Methods
 	public enum SceneType{
-		SCENE_SPLASH;
+		SCENE_SPLASH,SCENE_LOADING;
 	}
 	
 	public void createMenuScene(){
