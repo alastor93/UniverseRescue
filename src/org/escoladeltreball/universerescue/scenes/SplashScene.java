@@ -3,6 +3,7 @@ package org.escoladeltreball.universerescue.scenes;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
+import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
@@ -19,7 +20,7 @@ public class SplashScene extends BaseScene {
 			}
 		};
 		splash.setScale(1.5f);
-		splash.setPosition(activity.getWidth()/2, activity.getHeight()/2);
+		splash.setPosition(GameActivity.getWidth()/2, GameActivity.getHeight()/2);
 		attachChild(splash);
 	}
 
