@@ -10,13 +10,9 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
-import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -30,10 +26,9 @@ public class GameActivity extends BaseGameActivity {
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		this.camera = new Camera(0, 0, 800, 400);
+		this.camera = new Camera(0, 0, 800, 480);
 		EngineOptions engineOptions = new EngineOptions(true,
-				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
-						800, 500), camera);
+				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		return engineOptions;
