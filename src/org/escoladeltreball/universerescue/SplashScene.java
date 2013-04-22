@@ -19,7 +19,7 @@ public class SplashScene extends BaseScene {
 			}
 		};
 		splash.setScale(1.5f);
-		splash.setPosition(400, 220);
+		splash.setPosition(activity.getWidth()/2, activity.getHeight()/2);
 		attachChild(splash);
 	}
 
