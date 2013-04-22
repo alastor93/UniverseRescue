@@ -18,6 +18,8 @@ public class GameActivity extends BaseGameActivity {
 
 	private Camera camera;
 	private ResourcesManager manager;
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 480;
 
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
@@ -26,7 +28,7 @@ public class GameActivity extends BaseGameActivity {
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		this.camera = new Camera(0, 0, 800, 480);
+		this.camera = new Camera(0, 0, WIDTH, HEIGHT);
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
@@ -73,6 +75,14 @@ public class GameActivity extends BaseGameActivity {
 		if (this.isGameLoaded()) {
 			System.exit(0);
 		}
+	}
+
+	public static int getWidth() {
+		return WIDTH;
+	}
+
+	public static int getHeight() {
+		return HEIGHT;
 	}
 
 }
