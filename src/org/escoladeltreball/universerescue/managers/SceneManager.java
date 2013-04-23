@@ -10,6 +10,7 @@ import org.escoladeltreball.universerescue.scenes.SplashScene;
 public class SceneManager {
 	//Attributes
 	private BaseScene splashScene;
+	private BaseScene loadingScene;
 	private static SceneManager obj = null;
 	private Engine engine = ResourcesManager.getInstance().engine;
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
@@ -59,6 +60,9 @@ public class SceneManager {
 		switch(sceneType){
 		case SCENE_SPLASH:
 			setScene(splashScene);
+			break;
+		case SCENE_LOADING:
+			setScene(loadingScene);
 			break;
 		default:
 			break;
