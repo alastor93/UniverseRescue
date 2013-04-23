@@ -20,6 +20,7 @@ public class ResourcesManager {
 	public Engine engine;
 	public VertexBufferObjectManager vbom;
 	public BitmapTextureAtlas splashTextureAtlas;
+	public BitmapTextureAtlas loadingTextureAtlas;
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
@@ -59,6 +60,17 @@ public class ResourcesManager {
 		splashTextureAtlas.load();
 	}
 	
+	public void loadLoadingScreen(){
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		loadingTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 200, 100,TextureOptions.BILINEAR);
+		loading_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(loadingTextureAtlas, activity, "loading.png",0,0);
+		loadingTextureAtlas.load();
+	}
+	
+	public void unloadLoadingScreen(){
+		loadingTextureAtlas.unload();
+		loading_region = null;
+	}
 	
 	public void unloadSplashScreen(){
 		splashTextureAtlas.unload();
