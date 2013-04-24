@@ -26,8 +26,7 @@ public class SplashScene extends BaseScene {
 
 	@Override
 	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub
-
+		System.exit(0);
 	}
 
 	@Override

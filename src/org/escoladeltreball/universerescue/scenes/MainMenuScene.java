@@ -126,6 +126,8 @@ public class MainMenuScene extends BaseScene implements
 			return true;
 		case MENU_OPTIONS:
 			return true;
+		case MENU_EXIT:
+			System.exit(0);
 		default:
 			return false;
 		}
