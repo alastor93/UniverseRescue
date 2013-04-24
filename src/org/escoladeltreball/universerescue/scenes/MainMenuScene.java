@@ -75,9 +75,10 @@ public class MainMenuScene extends BaseScene implements
 	 * Create the menu options. play game, options, exit.
 	 * 
 	 */
-	
+
 	private void createMenuChildScene() {
-		menuChildScene = new MenuScene(this.camera); // Use the constructor of andEngine for set a
+		menuChildScene = new MenuScene(this.camera); // Use the constructor of
+														// andEngine for set a
 														// camera
 		menuChildScene.setPosition(0, -50);
 		// Build a menu item's
@@ -120,7 +121,7 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
-			//Load Game Scene!
+			// Load Game Scene!
 			return true;
 		case MENU_OPTIONS:
 			return true;
