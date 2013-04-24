@@ -6,8 +6,12 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.debug.Debug;
 import org.escoladeltreball.universerescue.GameActivity;
 
 public class ResourcesManager {
@@ -24,7 +28,15 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
+	
+	/** ITextureRegion for load background on MainMenuScene */
 	public ITextureRegion menu_background_region;
+	/** ITextureRegion for load play option on MainMenuScene */
+	public ITextureRegion play_region;
+	/** ITextureRegion for load options option on MainMenuScene */
+	public ITextureRegion options_region;
+	/** ITextureRegion for load exit option on MainMenuScene */
+	public ITextureRegion exit_region;
 	
 	
 	//Singleton
@@ -77,6 +89,23 @@ public class ResourcesManager {
 		splash_region = null;
 	}
 	
+	/**
+	 * Load the Menu's graphics
+	 */
 	
+	public void loadMenuGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 800, 500,TextureOptions.BILINEAR);
+		menu_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity,"fondomenuPrin.jpg");
+		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity,"newgame.png");
+		options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity,"opciones.png");
+		exit_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity,"salir.png");
+		try {
+		    this.menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
+		    this.menuTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e){
+		        Debug.e(e);
+		}
+	}
 	
 }
