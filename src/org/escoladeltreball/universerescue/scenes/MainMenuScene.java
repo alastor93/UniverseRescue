@@ -63,7 +63,7 @@ public class MainMenuScene extends BaseScene implements
 	 */
 
 	private void createBackground() {
-		attachChild(new Sprite(0, 0, manager.menu_background_region, vbom) {
+		attachChild(new Sprite(camera.getWidth()/2, camera.getHeight()/2, manager.menu_background_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
@@ -105,10 +105,10 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.setBackgroundEnabled(false);
 
 		// Put the menu items on specific position
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 60);
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 30);
 		optionMenuItem.setPosition(optionMenuItem.getX(),
-				optionMenuItem.getY() + 40);
-		exitMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 20);
+				optionMenuItem.getY() + 50);
+		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY() + 70);
 
 		// Sets the MainMenuScene as a listener on menu's item click
 		menuChildScene.setOnMenuItemClickListener(this);
