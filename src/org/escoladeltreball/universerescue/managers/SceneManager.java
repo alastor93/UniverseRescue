@@ -33,8 +33,7 @@ public class SceneManager {
 
 	// Methods
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_LOADING, SCENE_MAINMENU;
-		;
+		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING;
 	}
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -58,7 +57,7 @@ public class SceneManager {
 	public void createMenuScene() {
 		ResourcesManager.getInstance().loadMenuGraphics();
 		mainMenu = new MainMenuScene();
-		loadingScene = new LoadingScene();
+		//loadingScene = new LoadingScene();
 		setScene(mainMenu);
 		disposeSplashScene();
 	}
@@ -74,11 +73,11 @@ public class SceneManager {
 		case SCENE_SPLASH:
 			setScene(splashScene);
 			break;
-		case SCENE_LOADING:
-			setScene(loadingScene);
-			break;
 		case SCENE_MAINMENU:
 			setScene(mainMenu);
+			break;
+		case SCENE_LOADING:
+			setScene(loadingScene);
 			break;
 		default:
 			break;

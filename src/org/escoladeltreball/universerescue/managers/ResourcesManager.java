@@ -100,7 +100,7 @@ public class ResourcesManager {
 	public void loadMenuGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		menuTextureAtlas = new BuildableBitmapTextureAtlas(
-				activity.getTextureManager(), 800, 500, TextureOptions.BILINEAR);
+				activity.getTextureManager(), 1200, 1200, TextureOptions.BILINEAR);
 		menu_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
 						"fondomenuPrin.jpg");

@@ -33,6 +33,7 @@ public class MainMenuScene extends BaseScene implements
 	@Override
 	public void createScene() {
 		createBackground();
+		createMenuChildScene();
 
 	}
 
@@ -45,7 +46,7 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public SceneType getSceneType() {
-		return SceneType.SCENE_SPLASH;
+		return SceneType.SCENE_MAINMENU;
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class MainMenuScene extends BaseScene implements
 	 */
 
 	private void createBackground() {
-		attachChild(new Sprite(400, 240, manager.menu_background_region, vbom) {
+		attachChild(new Sprite(0, 0, manager.menu_background_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
