@@ -45,6 +45,10 @@ public class ResourcesManager {
 		}
 		return obj;
 	}
+	
+	public static GameActivity getActivity() {
+		return getInstance().activity;
+	}
 
 	// Methods
 

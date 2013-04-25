@@ -8,9 +8,17 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
+import org.escoladeltreball.universerescue.layers.OptionsLayer;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.widget.TextView;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
@@ -63,7 +71,8 @@ public class MainMenuScene extends BaseScene implements
 	 */
 
 	private void createBackground() {
-		attachChild(new Sprite(camera.getWidth()/2, camera.getHeight()/2, manager.menu_background_region, vbom) {
+		attachChild(new Sprite(camera.getWidth() / 2, camera.getHeight() / 2,
+				manager.menu_background_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
@@ -127,7 +136,27 @@ public class MainMenuScene extends BaseScene implements
 		case MENU_OPTIONS:
 			return true;
 		case MENU_EXIT:
-			System.exit(0);
+			ResourcesManager.getActivity().runOnUiThread(new Runnable() {
+				
+				
+				@Override
+				public void run() {
+					final AlertDialog.Builder builder = new AlertDialog.Builder(ResourcesManager.getActivity()).setTitle("Universe Rescue").setMessage(Html.fromHtml("Estas seguro que desea salir?")).setPositiveButton("Si", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(final DialogInterface dialog, final int id) {
+										System.exit(0);
+
+									}
+								}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(final DialogInterface dialog, final int id) {
+									}
+								});
+					
+					final AlertDialog alert = builder.create();
+					alert.show();
+				}
+			});
 		default:
 			return false;
 		}
