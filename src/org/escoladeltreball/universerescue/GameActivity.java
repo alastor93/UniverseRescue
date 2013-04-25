@@ -1,5 +1,7 @@
 package org.escoladeltreball.universerescue;
 
+
+
 import java.io.IOException;
 
 import org.andengine.engine.Engine;
@@ -15,6 +17,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -22,6 +25,8 @@ public class GameActivity extends BaseGameActivity {
 	private ResourcesManager manager;
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 480;
+	public static final String SHARED_PREFS_MUSIC_MUTED = "mute.music";
+	public static final String SHARED_PREFS_MAIN = "UniverseRunnerSettings";
 
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
@@ -32,7 +37,8 @@ public class GameActivity extends BaseGameActivity {
 	public EngineOptions onCreateEngineOptions() {
 		this.camera = new Camera(0, 0, WIDTH, HEIGHT);
 		EngineOptions engineOptions = new EngineOptions(true,
-				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
+				camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		return engineOptions;
@@ -42,7 +48,8 @@ public class GameActivity extends BaseGameActivity {
 	public void onCreateResources(
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws IOException {
-		ResourcesManager.setup(mEngine,camera,this,getVertexBufferObjectManager());
+		ResourcesManager.setup(mEngine, camera, this,
+				getVertexBufferObjectManager());
 		manager = ResourcesManager.getInstance();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 
@@ -52,7 +59,12 @@ public class GameActivity extends BaseGameActivity {
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws IOException {
 		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
-		
+		// Start the background music.
+		SFXManager.playMusic();
+		// If the music is muted in the settings, mute it in the game.
+		if (getIntFromSharedPreferences(SHARED_PREFS_MUSIC_MUTED) > 0)
+			SFXManager.setMusicMuted(true);
+
 	}
 
 	@Override
@@ -70,7 +82,19 @@ public class GameActivity extends BaseGameActivity {
 				}));
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
+
+	public static int writeIntToSharedPreferences(final String pStr,
+			final int pValue) {
+		ResourcesManager.getInstance().activity
+				.getSharedPreferences(SHARED_PREFS_MAIN, 0).edit()
+				.putInt(pStr, pValue).apply();
+		return pValue;
+	}
 	
+	public static int getIntFromSharedPreferences(final String pStr) {
+		return ResourcesManager.getInstance().activity.getSharedPreferences(SHARED_PREFS_MAIN, 0).getInt(pStr, 0);
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
