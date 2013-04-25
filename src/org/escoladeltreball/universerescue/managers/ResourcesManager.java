@@ -2,6 +2,7 @@ package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -29,13 +30,13 @@ public class ResourcesManager {
 	public ITextureRegion loading_region;
 
 	/** ITextureRegion for load background on MainMenuScene */
-	public ITextureRegion menu_background_region;
+	public ITextureRegion menu_background_region = null;
 	/** ITextureRegion for load play option on MainMenuScene */
-	public ITextureRegion play_region;
+	public ITextureRegion play_region = null;
 	/** ITextureRegion for load options option on MainMenuScene */
-	public ITextureRegion options_region;
+	public ITextureRegion options_region = null;
 	/** ITextureRegion for load exit option on MainMenuScene */
-	public ITextureRegion exit_region;
+	public ITextureRegion exit_region = null;
 
 	// Singleton
 
@@ -99,17 +100,28 @@ public class ResourcesManager {
 
 	public void loadMenuGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		menuTextureAtlas = new BuildableBitmapTextureAtlas(
-				activity.getTextureManager(), 1200, 1200, TextureOptions.BILINEAR);
-		menu_background_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity,
-						"fondomenuPrin.jpg");
-		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				menuTextureAtlas, activity, "newgame.png");
-		options_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity, "opciones.png");
-		exit_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				menuTextureAtlas, activity, "salir.png");
+		if (menuTextureAtlas == null) {
+			menuTextureAtlas = new BuildableBitmapTextureAtlas(
+					activity.getTextureManager(), 1200, 1200,
+					TextureOptions.BILINEAR);
+		}
+		if (menu_background_region == null) {
+			menu_background_region = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity,
+							"fondomenuPrin.jpg");
+		}
+		if (play_region == null) {
+			play_region = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity, "newgame.png");
+		}
+		if (options_region == null) {
+			options_region = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity, "opciones.png");
+		}
+		if (exit_region == null) {
+			exit_region = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity, "salir.png");
+		}
 		try {
 			this.menuTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
