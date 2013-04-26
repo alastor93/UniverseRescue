@@ -1,6 +1,7 @@
 package org.escoladeltreball.universerescue.layers;
 
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
@@ -44,19 +45,32 @@ public class OptionsLayer extends Layer{
 
 	@Override
 	public void onLoadLayer() {
-		// TODO Auto-generated method stub
+		if(this.mHasLoaded) {
+			return;
+		}
+		this.mHasLoaded = true;
 		
+		this.setTouchAreaBindingOnActionDownEnabled(true);
+		this.setTouchAreaBindingOnActionMoveEnabled(true);
+		
+		final Rectangle fadableBGRect = new Rectangle(0f, 0f, GameActivity.getHeight(), GameActivity.getWidth(), ResourcesManager.getActivity().getVertexBufferObjectManager());
+		fadableBGRect.setColor(0f, 0f, 0f, 0.8f);
+		this.attachChild(fadableBGRect);
+		
+		this.attachChild(this.layer = new Sprite(0f, (GameActivity.getWidth() / 2f) + (ResourcesManager.getInstance().options_region.getHeight() / 2f), ResourcesManager.getInstance().options_region, ResourcesManager.getActivity().getVertexBufferObjectManager()));
+		this.layer.setScale(1.5f / 1);
+
+		this.setPosition(GameActivity.getWidth() / 2f, GameActivity.getHeight() / 2f);
 	}
 
 	@Override
 	public void onShowLayer() {
-		// TODO Auto-generated method stub
-		
+		ResourcesManager.getInstance().engine.registerUpdateHandler(this.mSlideInUpdateHandler);
 	}
 
 	@Override
 	public void onHideLayer() {
-		
+		ResourcesManager.getInstance().engine.registerUpdateHandler(this.mSlideOutUpdateHandler);
 	}
 
 	@Override
