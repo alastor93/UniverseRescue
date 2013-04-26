@@ -24,7 +24,7 @@ public class SFXManager {
 	public SFXManager() {
 		MusicFactory.setAssetBasePath("sounds/");
 		try {
-			music  = MusicFactory.createMusicFromAsset(ResourcesManager.getInstance().activity.getMusicManager() ,ResourcesManager.getInstance().activity, "music.ogg");
+			music  = MusicFactory.createMusicFromAsset(ResourcesManager.getInstance().activity.getMusicManager() ,ResourcesManager.getInstance().activity, "Metroid_To_Brinstar_OC_ReMix.ogg");
 			music.setLooping(true);
 		} catch (IOException e) {
 			Debug.e(e);
