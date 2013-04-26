@@ -7,10 +7,12 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.AssetBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 import org.escoladeltreball.universerescue.GameActivity;
@@ -25,6 +27,7 @@ public class ResourcesManager {
 	public VertexBufferObjectManager vbom;
 	public BitmapTextureAtlas splashTextureAtlas;
 	public BitmapTextureAtlas loadingTextureAtlas;
+	public BitmapTextureAtlas optionsTextureAtlas;
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
@@ -46,7 +49,7 @@ public class ResourcesManager {
 		}
 		return obj;
 	}
-	
+
 	public static GameActivity getActivity() {
 		return getInstance().activity;
 	}
@@ -96,6 +99,13 @@ public class ResourcesManager {
 	public void unloadSplashScreen() {
 		splashTextureAtlas.unload();
 		splash_region = null;
+	}
+
+	public void loadOptionsLayer(){
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		optionsTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(),512 , 256, TextureOptions.BILINEAR);
+		options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "LevelLayerBG.png",0,0);
+		optionsTextureAtlas.load();
 	}
 
 	/**
