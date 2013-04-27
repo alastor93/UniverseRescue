@@ -2,7 +2,9 @@ package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -14,8 +16,11 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.debug.Debug;
 import org.escoladeltreball.universerescue.GameActivity;
+
+import android.graphics.Typeface;
 
 public class ResourcesManager {
 
@@ -31,6 +36,7 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
+	public Font defaultFont;
 
 	/** ITextureRegion for load background on MainMenuScene */
 	public ITextureRegion menu_background_region = null;
@@ -71,6 +77,13 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().vbom = vbom;
 	}
+	
+	public void loadFonts(){
+		if(defaultFont==null) {
+			defaultFont = FontFactory.create(engine.getFontManager(), engine.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD),  50f, true, Color.WHITE_ARGB_PACKED_INT);
+			defaultFont.load();
+		}
+	}
 
 	public void loadSplashScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -99,13 +112,6 @@ public class ResourcesManager {
 	public void unloadSplashScreen() {
 		splashTextureAtlas.unload();
 		splash_region = null;
-	}
-
-	public void loadOptionsLayer(){
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		optionsTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(),512 , 256, TextureOptions.BILINEAR);
-		options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "LevelLayerBG.png",0,0);
-		optionsTextureAtlas.load();
 	}
 
 	/**
