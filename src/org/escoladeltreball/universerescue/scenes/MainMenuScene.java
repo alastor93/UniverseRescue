@@ -134,7 +134,7 @@ public class MainMenuScene extends BaseScene implements
 			// Load Game Scene!
 			return true;
 		case MENU_OPTIONS:
-			engine.getCamera().getHUD().setChildScene(OptionsLayer.getInstance());
+			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
 		case MENU_EXIT:
 			ResourcesManager.getActivity().runOnUiThread(new Runnable() {
