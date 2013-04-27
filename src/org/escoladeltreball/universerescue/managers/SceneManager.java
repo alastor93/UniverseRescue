@@ -1,7 +1,11 @@
 package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.scene.Scene;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+import org.escoladeltreball.universerescue.layers.Layer;
+import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 import org.escoladeltreball.universerescue.scenes.LoadingScene;
 import org.escoladeltreball.universerescue.scenes.MainMenuScene;
@@ -18,6 +22,10 @@ public class SceneManager {
 
 	/** BaseScene of MainMenu */
 	private BaseScene mainMenu;
+	public boolean isLayerShown;
+	private Scene placeholderModalScene;
+	private boolean cameraHadHud;
+	public Layer currentLayer;
 
 	// Constructor
 	public SceneManager() {
@@ -91,5 +99,63 @@ public class SceneManager {
 	public BaseScene getCurrentScene() {
 		return currentScene;
 	}
+	
+	public void showOptionsLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(OptionsLayer.getInstance(),false,pSuspendCurrentSceneUpdates,true);
+	}
 
+	/**
+	 * Shows a layer by placing it as a child to the Camera's HUD.
+	 * 
+	 * @param pLayer 
+	 * @param pSuspendSceneDrawing
+	 * @param pSuspendSceneUpdates
+	 * @param pSuspendSceneTouchEvents
+	 */
+	public void showLayer(Layer pLayer, boolean pModalDraw, boolean pModalUpdate, boolean pModalTouch) {
+		// If the camera has a HUD, use it.
+		if(engine.getCamera().hasHUD()){
+			cameraHadHud = true;
+		} else {
+			// Otherwise, create one to use.
+			cameraHadHud = false;
+			HUD placeholderHud = new HUD();
+			engine.getCamera().setHUD(placeholderHud);
+		}
+		// If the managed layer needs modal properties, set them.
+		if(pModalDraw || pModalUpdate || pModalTouch) {
+			// Apply the layer directly to the Camera's HUD
+			engine.getCamera().getHUD().setChildScene(pLayer,pModalDraw,pModalUpdate,pModalTouch);
+		} else {
+			// If the managed layer does not need to be modal, simply set it to the HUD.
+			engine.getCamera().getHUD().setChildScene(pLayer);
+		}
+		// Set the camera for the layer.
+		pLayer.setCamera(engine.getCamera());
+		// Let the layer know that it is being shown.
+		pLayer.onShowManagedLayer();
+		// Reflect that a layer is shown.
+		isLayerShown = true;
+		// Set the current layer to pLayer.
+		currentLayer = pLayer;
+	}
+	
+	public void hideLayer() {
+		if(isLayerShown) {
+			// Clear the HUD.
+			engine.getCamera().getHUD().clearChildScene();
+			// If we had to use a place-holder scene, clear it.
+			if(currentScene.hasChildScene()){
+				if(currentScene.getChildScene()==placeholderModalScene){
+					currentScene.clearChildScene();
+				}
+			}
+			// If the camera did not have a HUD before we showed the layer, remove the place-holder HUD.
+			if(!cameraHadHud){
+				engine.getCamera().setHUD(null);
+			}
+			isLayerShown = false;
+			currentLayer = null;
+		}
+	}
 }
