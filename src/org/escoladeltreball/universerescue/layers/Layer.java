@@ -1,8 +1,8 @@
 package org.escoladeltreball.universerescue.layers;
 
-import org.andengine.entity.scene.CameraScene;
+import org.andengine.engine.camera.hud.HUD;
 
-public abstract class Layer extends CameraScene{
+public abstract class Layer extends HUD{
 	
 	public static final float mSLIDE_PIXELS_PER_SECONDS = 3000f;
 	// Is set TRUE if the layer is loaded.
