@@ -2,7 +2,6 @@ package org.escoladeltreball.universerescue.layers;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
@@ -12,7 +11,6 @@ import org.escoladeltreball.universerescue.managers.SceneManager;
 public class OptionsLayer extends Layer{
 	
 	private static final OptionsLayer INSTANCE = new OptionsLayer();
-	private Sprite layer;
 	
 	public static OptionsLayer getInstance(){
 		return INSTANCE;
