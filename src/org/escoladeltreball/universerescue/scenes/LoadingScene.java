@@ -5,6 +5,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.color.Color;
+import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class LoadingScene extends BaseScene {
@@ -22,7 +23,7 @@ public class LoadingScene extends BaseScene {
             }
     	};
     	loading.setScale(1.5f);
-    	loading.setPosition(activity.getWidth()/2, activity.getHeight()/2);
+    	loading.setPosition(GameActivity.getWidth()/2, GameActivity.getHeight()/2);
     	attachChild(loading);
 		
 	}

@@ -7,7 +7,6 @@ import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
-import org.escoladeltreball.universerescue.scenes.LoadingScene;
 import org.escoladeltreball.universerescue.scenes.MainMenuScene;
 import org.escoladeltreball.universerescue.scenes.SplashScene;
 
