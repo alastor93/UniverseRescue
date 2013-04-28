@@ -1,7 +1,5 @@
 package org.escoladeltreball.universerescue;
 
-
-
 import java.io.IOException;
 
 import org.andengine.engine.Engine;
@@ -16,8 +14,11 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
-import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
+import org.escoladeltreball.universerescue.managers.SceneManager;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -64,7 +65,6 @@ public class GameActivity extends BaseGameActivity {
 		// If the music is muted in the settings, mute it in the game.
 		if (getIntFromSharedPreferences(SHARED_PREFS_MUSIC_MUTED) > 0)
 			SFXManager.setMusicMuted(true);
-
 	}
 
 	@Override
@@ -90,16 +90,74 @@ public class GameActivity extends BaseGameActivity {
 				.putInt(pStr, pValue).apply();
 		return pValue;
 	}
-	
+
 	public static int getIntFromSharedPreferences(final String pStr) {
-		return ResourcesManager.getInstance().activity.getSharedPreferences(SHARED_PREFS_MAIN, 0).getInt(pStr, 0);
+		return ResourcesManager.getInstance().activity.getSharedPreferences(
+				SHARED_PREFS_MAIN, 0).getInt(pStr, 0);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (this.isGameLoaded()) {
+			SFXManager.pauseMusic();
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		System.exit(0);
+	}
+
+	@Override
+	protected synchronized void onResume() {
+		super.onResume();
+		System.gc();
 		if (this.isGameLoaded()) {
-			System.exit(0);
+			SFXManager.resumeMusic();
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (ResourcesManager.getInstance().engine != null) {
+			if (SceneManager.getInstance().isLayerShown) {
+				SceneManager.getInstance().currentLayer.onHideLayer();
+			} else if (SceneManager.getInstance().getCurrentScene()
+					.equals("GameLevel")) {
+			} else {
+				ResourcesManager.getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						final AlertDialog.Builder builder = new AlertDialog.Builder(
+								ResourcesManager.getActivity())
+								.setTitle("Universe Rescue")
+								.setMessage("Estas seguro que desea salir?")
+								.setPositiveButton("Si",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													final DialogInterface dialog,
+													final int id) {
+												System.exit(0);
+
+											}
+										})
+								.setNegativeButton("No",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													final DialogInterface dialog,
+													final int id) {
+											}
+										});
+
+						final AlertDialog alert = builder.create();
+						alert.show();
+					}
+				});
+			}
 		}
 	}
 
