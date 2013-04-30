@@ -12,6 +12,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.debug.Debug;
@@ -43,7 +44,22 @@ public class ResourcesManager {
 	public ITextureRegion options_region = null;
 	/** ITextureRegion for load exit option on MainMenuScene */
 	public ITextureRegion exit_region = null;
+	
+	/** TextureOption BILINEAR */
+	private final TextureOptions BILINEAR = TextureOptions.BILINEAR;
 
+	/** LevelButton's Font */
+	public Font levelsFont = null;
+
+	/** TextureRegion for load image for level icon */
+	public ITextureRegion menuLevelIcon = null;
+	/** TextureRegion for load image for level locked */
+	public ITextureRegion menuLevelLocked = null;
+	/** TiledTextureRegion for load level's star */
+	public ITiledTextureRegion menuLevelStar = null;
+	/** */
+	public BitmapTextureAtlas levelSelectorAtlas = null;
+	
 	// Singleton
 
 	public static ResourcesManager getInstance() {
@@ -147,6 +163,46 @@ public class ResourcesManager {
 		} catch (final TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
+	}
+	
+	public void loadLevelSelectorGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+//		if (levelSelectorAtlas == null) {
+//			this.levelSelectorAtlas = new BitmapTextureAtlas(
+//					activity.getTextureManager(), 64, 64, BILINEAR);
+//		}
+		if (levelsFont == null) {
+			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
+					this.engine.getTextureManager(), 256, 256,
+					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f,
+					true, Color.WHITE_ARGB_PACKED_INT);
+			levelsFont.load();
+		}
+		if (menuLevelIcon == null) {
+			BitmapTextureAtlas levelIcon = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 64, 64, BILINEAR);
+			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(levelIcon, activity, "LevelIcon.png",
+							0, 0);
+			levelIcon.load();
+		}
+		if (this.menuLevelLocked == null) {
+			BitmapTextureAtlas levelLockedT = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 64, 64, BILINEAR);
+			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(levelLockedT, activity, "Lock.png",
+							0, 0);
+			levelLockedT.load();
+		}
+//		if (this.menuLevelStar == null) {
+////			BitmapTextureAtlas levelStars = new BitmapTextureAtlas(
+////					this.engine.getTextureManager(), 64, 64, BILINEAR);
+//			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
+//					.createTiledFromAsset(levelSelectorAtlas, getActivity(),
+//							"Stars.png", 0, 0, 4, 1);
+////			levelStars.load();
+//		}
+//		
 	}
 
 }
