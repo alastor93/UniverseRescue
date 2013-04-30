@@ -8,11 +8,14 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.AssetBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.debug.Debug;
@@ -44,6 +47,8 @@ public class ResourcesManager {
 	public ITextureRegion options_region = null;
 	/** ITextureRegion for load exit option on MainMenuScene */
 	public ITextureRegion exit_region = null;
+	/** ITextureRegion for load music option on MainMenuScene */
+	public static TiledTextureRegion music_region = null;
 	
 	/** TextureOption BILINEAR */
 	private final TextureOptions BILINEAR = TextureOptions.BILINEAR;
@@ -155,6 +160,10 @@ public class ResourcesManager {
 			exit_region = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(menuTextureAtlas, activity, "salir.png");
 		}
+		if (music_region == null) {
+			music_region = getLimitableTTR("tiledsoun.png",2,1,TextureOptions.BILINEAR);
+					
+		}
 		try {
 			this.menuTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -203,6 +212,41 @@ public class ResourcesManager {
 ////			levelStars.load();
 //		}
 //		
+	}
+	
+	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath, int pColumns, int pRows, TextureOptions pTextureOptions) {
+		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = AssetBitmapTextureAtlasSource.create(activity.getAssets(), BitmapTextureAtlasTextureRegionFactory.getAssetBasePath() + pTiledTextureRegionPath);
+		final BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), bitmapTextureAtlasSource.getTextureWidth(), bitmapTextureAtlasSource.getTextureHeight(), pTextureOptions);
+		final ITextureRegion[] textureRegions = new ITextureRegion[pColumns * pRows];
+
+		final int tileWidth = bitmapTextureAtlas.getWidth() / pColumns;
+		final int tileHeight = bitmapTextureAtlas.getHeight() / pRows;
+
+		for(int tileColumn = 0; tileColumn < pColumns; tileColumn++) {
+			for(int tileRow = 0; tileRow < pRows; tileRow++) {
+				final int tileIndex = tileRow * pColumns + tileColumn;
+
+				final int x = tileColumn * tileWidth;
+				final int y = tileRow * tileHeight;
+				textureRegions[tileIndex] = new TextureRegion(bitmapTextureAtlas, x, y, tileWidth, tileHeight, false) {
+					@Override
+					public void updateUV() {
+							this.mU = this.getTextureX() / bitmapTextureAtlas.getWidth();
+							this.mU2 = (this.getTextureX() + tileWidth) / bitmapTextureAtlas.getWidth();
+
+							this.mV = this.getTextureY() / bitmapTextureAtlas.getHeight();
+							this.mV2 = (this.getTextureY() + tileHeight) / bitmapTextureAtlas.getHeight();
+						
+					}
+				};
+					textureRegions[tileIndex].setTextureSize(textureRegions[tileIndex].getWidth()*2f, textureRegions[tileIndex].getHeight()*2f);
+			}
+		}
+
+		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(bitmapTextureAtlas, false, textureRegions);
+		bitmapTextureAtlas.addTextureAtlasSource(bitmapTextureAtlasSource, 0, 0);
+		bitmapTextureAtlas.load();
+		return tiledTextureRegion;
 	}
 
 }

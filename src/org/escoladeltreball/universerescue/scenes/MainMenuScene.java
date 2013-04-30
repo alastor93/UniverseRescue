@@ -9,8 +9,10 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
+import org.escoladeltreball.universerescue.helpers.GrowToggleButton;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
@@ -103,10 +105,26 @@ public class MainMenuScene extends BaseScene implements
 		final IMenuItem exitMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 1.2f,
 				1);
+		
+		// MUSIC
+				final GrowToggleButton MusicToggleButton = new GrowToggleButton(ResourcesManager.music_region.getWidth() / 2f, ResourcesManager.music_region.getHeight() / 2f, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
+					@Override
+					public boolean checkState() {
+						return !SFXManager.isMusicMuted();
+					}
+					
+					@Override
+					public void onClick() {
+						SFXManager.toggleMusicMuted();
+					}
+				};
+				
 		// Add menu items to the MenuScene
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(optionMenuItem);
 		menuChildScene.addMenuItem(exitMenuItem);
+		menuChildScene.attachChild(MusicToggleButton);
+		menuChildScene.registerTouchArea(MusicToggleButton);
 
 		// Gives animation to item when get clicked and block the background
 		menuChildScene.buildAnimations();
@@ -117,6 +135,7 @@ public class MainMenuScene extends BaseScene implements
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				optionMenuItem.getY() + 50);
 		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY() + 70);
+		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY()+50);
 
 		// Sets the MainMenuScene as a listener on menu's item click
 		menuChildScene.setOnMenuItemClickListener(this);
