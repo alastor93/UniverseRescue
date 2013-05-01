@@ -17,9 +17,6 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-
 public class GameActivity extends BaseGameActivity {
 
 	private Camera camera;
@@ -121,47 +118,47 @@ public class GameActivity extends BaseGameActivity {
 		}
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (ResourcesManager.getInstance().engine != null) {
-			if (SceneManager.getInstance().isLayerShown) {
-				SceneManager.getInstance().currentLayer.onHideLayer();
-			} else if (SceneManager.getInstance().getCurrentScene()
-					.equals("GameLevel")) {
-			} else {
-				ResourcesManager.getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						final AlertDialog.Builder builder = new AlertDialog.Builder(
-								ResourcesManager.getActivity())
-								.setTitle("Universe Rescue")
-								.setMessage("Estas seguro que desea salir?")
-								.setPositiveButton("Si",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													final DialogInterface dialog,
-													final int id) {
-												System.exit(0);
-
-											}
-										})
-								.setNegativeButton("No",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													final DialogInterface dialog,
-													final int id) {
-											}
-										});
-
-						final AlertDialog alert = builder.create();
-						alert.show();
-					}
-				});
-			}
-		}
-	}
+//	@Override
+//	public void onBackPressed() {
+//		if (ResourcesManager.getInstance().engine != null) {
+//			if (SceneManager.getInstance().isLayerShown) {
+//				SceneManager.getInstance().currentLayer.onHideLayer();
+//			} else if (SceneManager.getInstance().getCurrentScene()
+//					.equals("GameLevel")) {
+//			} else {
+//				ResourcesManager.getActivity().runOnUiThread(new Runnable() {
+//					@Override
+//					public void run() {
+//						final AlertDialog.Builder builder = new AlertDialog.Builder(
+//								ResourcesManager.getActivity())
+//								.setTitle("Universe Rescue")
+//								.setMessage("Estas seguro que desea salir?")
+//								.setPositiveButton("Si",
+//										new DialogInterface.OnClickListener() {
+//											@Override
+//											public void onClick(
+//													final DialogInterface dialog,
+//													final int id) {
+//												System.exit(0);
+//
+//											}
+//										})
+//								.setNegativeButton("No",
+//										new DialogInterface.OnClickListener() {
+//											@Override
+//											public void onClick(
+//													final DialogInterface dialog,
+//													final int id) {
+//											}
+//										});
+//
+//						final AlertDialog alert = builder.create();
+//						alert.show();
+//					}
+//				});
+//			}
+//		}
+//	}
 
 	public static int getWidth() {
 		return WIDTH;
