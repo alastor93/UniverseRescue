@@ -1,7 +1,6 @@
 package org.escoladeltreball.universerescue.scenes;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -10,7 +9,6 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.helpers.GrowToggleButton;
-import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
@@ -35,7 +33,6 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_OPTIONS = 1;
 	/** An int associated with Menu's option 'exit' */
 	private final int MENU_EXIT = 2;
-	private LevelSelector mLevelSelector;
 
 	// Methods
 
@@ -149,10 +146,7 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
-			ResourcesManager.getInstance().loadLevelSelectorGraphics();
-			this.mLevelSelector = new LevelSelector(100, 100,
-					manager.menuLevelIcon , manager.levelsFont);
-			this.setChildScene(this.mLevelSelector);
+			SceneManager.getInstance().createLevelScene();
 		case MENU_OPTIONS:
 			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
