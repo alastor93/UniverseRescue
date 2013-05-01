@@ -6,6 +6,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
+import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 import org.escoladeltreball.universerescue.scenes.MainMenuScene;
 import org.escoladeltreball.universerescue.scenes.SplashScene;
@@ -14,6 +15,7 @@ public class SceneManager {
 	// Attributes
 	private BaseScene splashScene;
 	private BaseScene loadingScene;
+	private LevelSelector levelScene;
 	private static SceneManager obj = null;
 	private Engine engine = ResourcesManager.getInstance().engine;
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
@@ -67,6 +69,15 @@ public class SceneManager {
 		//loadingScene = new LoadingScene();
 		setScene(mainMenu);
 		disposeSplashScene();
+	}
+	
+	public void createLevelScene(){
+		ResourcesManager.getInstance().loadLevelSelectorGraphics();
+		this.levelScene = new LevelSelector(100, 100,
+				ResourcesManager.getInstance().menuLevelIcon , ResourcesManager.getInstance().levelsFont);
+		engine.setScene(this.levelScene);
+		mainMenu.detachSelf();
+		mainMenu.dispose();
 	}
 
 	public void setScene(BaseScene scene) {
