@@ -147,6 +147,7 @@ public class MainMenuScene extends BaseScene implements
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
 			SceneManager.getInstance().createLevelScene();
+			return true;
 		case MENU_OPTIONS:
 			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
