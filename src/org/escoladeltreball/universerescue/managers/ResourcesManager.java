@@ -21,7 +21,10 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.debug.Debug;
 import org.escoladeltreball.universerescue.GameActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.text.Html;
 
 public class ResourcesManager {
 
@@ -247,6 +250,30 @@ public class ResourcesManager {
 		bitmapTextureAtlas.addTextureAtlasSource(bitmapTextureAtlasSource, 0, 0);
 		bitmapTextureAtlas.load();
 		return tiledTextureRegion;
+	}
+	
+	public void showMessageExit(){
+		this.getActivity().runOnUiThread(new Runnable() {
+			
+			
+			@Override
+			public void run() {
+				final AlertDialog.Builder builder = new AlertDialog.Builder(ResourcesManager.getActivity()).setTitle("Universe Rescue").setMessage(Html.fromHtml("Estas seguro que desea salir?")).setPositiveButton("Si", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(final DialogInterface dialog, final int id) {
+									System.exit(0);
+
+								}
+							}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(final DialogInterface dialog, final int id) {
+								}
+							});
+				
+				final AlertDialog alert = builder.create();
+				alert.show();
+			}
+		});
 	}
 
 }

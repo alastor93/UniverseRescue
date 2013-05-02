@@ -152,27 +152,7 @@ public class MainMenuScene extends BaseScene implements
 			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
 		case MENU_EXIT:
-			ResourcesManager.getActivity().runOnUiThread(new Runnable() {
-				
-				
-				@Override
-				public void run() {
-					final AlertDialog.Builder builder = new AlertDialog.Builder(ResourcesManager.getActivity()).setTitle("Universe Rescue").setMessage(Html.fromHtml("Estas seguro que desea salir?")).setPositiveButton("Si", new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(final DialogInterface dialog, final int id) {
-										System.exit(0);
-
-									}
-								}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(final DialogInterface dialog, final int id) {
-									}
-								});
-					
-					final AlertDialog alert = builder.create();
-					alert.show();
-				}
-			});
+			ResourcesManager.getInstance().showMessageExit();
 		default:
 			return false;
 		}
