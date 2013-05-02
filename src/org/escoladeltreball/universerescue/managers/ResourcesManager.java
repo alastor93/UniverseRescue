@@ -65,8 +65,6 @@ public class ResourcesManager {
 	public ITextureRegion menuLevelLocked = null;
 	/** TiledTextureRegion for load level's star */
 	public ITiledTextureRegion menuLevelStar = null;
-	/** */
-	public BitmapTextureAtlas levelSelectorAtlas = null;
 	
 	// Singleton
 
@@ -179,10 +177,6 @@ public class ResourcesManager {
 	
 	public void loadLevelSelectorGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-//		if (levelSelectorAtlas == null) {
-//			this.levelSelectorAtlas = new BitmapTextureAtlas(
-//					activity.getTextureManager(), 64, 64, BILINEAR);
-//		}
 		if (levelsFont == null) {
 			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
 					this.engine.getTextureManager(), 256, 256,
@@ -206,15 +200,14 @@ public class ResourcesManager {
 							0, 0);
 			levelLockedT.load();
 		}
-//		if (this.menuLevelStar == null) {
-////			BitmapTextureAtlas levelStars = new BitmapTextureAtlas(
-////					this.engine.getTextureManager(), 64, 64, BILINEAR);
-//			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-//					.createTiledFromAsset(levelSelectorAtlas, getActivity(),
-//							"Stars.png", 0, 0, 4, 1);
-////			levelStars.load();
-//		}
-//		
+		if (this.menuLevelStar == null) {
+			BitmapTextureAtlas levelStars = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 64, 64, BILINEAR);
+			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(levelStars, activity,
+							"Stars.png", 0, 0, 4, 1);
+			levelStars.load();
+		}		
 	}
 	
 	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath, int pColumns, int pRows, TextureOptions pTextureOptions) {

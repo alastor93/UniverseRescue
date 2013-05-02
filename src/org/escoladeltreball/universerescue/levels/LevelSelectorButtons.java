@@ -13,10 +13,10 @@ public class LevelSelectorButtons extends Sprite {
 
 	// Variables
 	private final ResourcesManager manager = ResourcesManager.getInstance();
-	private int maxLevelIndex;
+	private int levelIndex;
 	private Text mButtonText;
 	private Sprite mLockedSprite;
-//	private final TiledSprite mStarsEnt;
+	private TiledSprite mStarsEnt;
 	private boolean levelIsLocked = true;
 	private boolean mIsTouched = false;
 	private boolean mIsClicked = false;
@@ -27,24 +27,24 @@ public class LevelSelectorButtons extends Sprite {
 			final VertexBufferObjectManager pVertexBufferObjectManager) {
 		super(pX, pY,dimension,dimension, pTextureRegion, pVertexBufferObjectManager);
 		// Set level's index
-		this.maxLevelIndex = pLevelIndex;
+		this.levelIndex = pLevelIndex;
 		// Set button's text, position and color
 		this.mButtonText = new Text(0f, 0f, manager.levelsFont,
-				String.valueOf(this.maxLevelIndex), manager.vbom);
+				String.valueOf(this.levelIndex), manager.vbom);
 		this.mButtonText.setPosition((this.getWidth() / 3f),
 				(this.getHeight() / 2f));
 		this.mButtonText.setColor(0.7f, 0.7f, 0.7f);
 		// Create Sprite for locked levels
-//		this.mLockedSprite = new Sprite(this.getWidth() / 2f,
-//				this.getHeight() / 2f, manager.menuLevelLocked, manager.vbom);
+		this.mLockedSprite = new Sprite(this.getWidth() / 2f,
+				this.getHeight() / 2f, manager.menuLevelLocked, manager.vbom);
 		// Set level's stars
-//		this.mStarsEnt = new TiledSprite((this.getWidth() / 3f) * 2f,
-//				(this.getHeight() / 2f), manager.menuLevelStar, manager.vbom);
+		this.mStarsEnt = new TiledSprite((this.getWidth() / 3f) * 2f,
+				(this.getHeight() / 2f), manager.menuLevelStar, manager.vbom);
 		// Check if level should be locked
-//		this.levelIsLocked = (this.maxLevelIndex > (GameActivity
-//				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
-		this.attachChild(this.mButtonText);
-		this.setScale(1.5f);
+		this.levelIsLocked = (this.levelIndex > (GameActivity
+				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
+//		this.attachChild(this.mButtonText);
+		this.setScale(2f);
 	}
 
 	@Override
@@ -67,28 +67,28 @@ public class LevelSelectorButtons extends Sprite {
 		return true;
 	}
 
-//	@Override
-//	protected void onManagedUpdate(final float pSecondsElapsed) {
-//		super.onManagedUpdate(pSecondsElapsed);
-//		if(!this.levelIsLocked) {
-//			if(!this.mButtonText.hasParent()) {
-//				this.attachChild(this.mButtonText);
-////				this.attachChild(this.mStarsEnt);
-////				this.mStarsEnt.setCurrentTileIndex(MagneTankActivity.getLevelStars(this.mLevelIndex));
-//			}
-//			if(this.mLockedSprite.hasParent()) {
-//				this.mLockedSprite.detachSelf();
-//			}
-//		} else {
-//			if(!this.mLockedSprite.hasParent()) {
-//				this.attachChild(this.mLockedSprite);
-//			}
-//			if(this.mButtonText.hasParent()) {
-//				this.mButtonText.detachSelf();
-////				this.mStarsEnt.detachSelf();
-//			}
-//		}
-//	}
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		super.onManagedUpdate(pSecondsElapsed);
+		if(!this.levelIsLocked) {
+			if(!this.mButtonText.hasParent()) {
+				this.attachChild(this.mButtonText);
+				this.attachChild(this.mStarsEnt);
+				this.mStarsEnt.setCurrentTileIndex(GameActivity.getLevelStars(this.levelIndex));
+			}
+			if(this.mLockedSprite.hasParent()) {
+				this.mLockedSprite.detachSelf();
+			}
+		} else {
+			if(!this.mLockedSprite.hasParent()) {
+				this.attachChild(this.mLockedSprite);
+			}
+			if(this.mButtonText.hasParent()) {
+				this.mButtonText.detachSelf();
+				this.mStarsEnt.detachSelf();
+			}
+		}
+	}
 	
 //	public void refreshStars() {
 //		this.levelIsLocked = (this.maxLevelIndex > (GameActivity
