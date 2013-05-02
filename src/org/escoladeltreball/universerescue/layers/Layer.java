@@ -18,7 +18,10 @@ public abstract class Layer extends HUD{
 		mUnloadOnHidden = pUnloadOnHidden;
 		this.setBackgroundEnabled(false);
 	}
-	// If the layer is not loaded, load it. Ensure that the layer is not paused.
+	
+	/**
+	 * If the layer is not loaded, load it. Ensure that the layer is not paused.
+	 */
 	public void onShowManagedLayer() {
 		if(!mHasLoaded) {
 			mHasLoaded = true;
@@ -27,7 +30,10 @@ public abstract class Layer extends HUD{
 		this.setIgnoreUpdate(false);
 		onShowLayer();
 	}
-	// Pause the layer, hide it, and unload it if it needs to be unloaded.
+	
+	/**
+	 * Pause the layer, hide it, and unload it if it needs to be unloaded.
+	 */
 	public void onHideManagedLayer() {
 		this.setIgnoreUpdate(true);
 		onHideLayer();
@@ -35,6 +41,8 @@ public abstract class Layer extends HUD{
 			onUnloadLayer();
 		}
 	}
+	
+	
 	// Methods to override in subclasses.
 	public abstract void onLoadLayer();
 	public abstract void onShowLayer();

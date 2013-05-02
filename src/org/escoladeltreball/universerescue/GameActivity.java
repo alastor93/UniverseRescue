@@ -132,15 +132,27 @@ public class GameActivity extends BaseGameActivity {
 			}
 		}
 	}
-
+	/**
+	 * Getter with the width of the camera
+	 * @return the width of the camera
+	 */
 	public static int getWidth() {
 		return WIDTH;
 	}
 
+	/**
+	 * Getter with the HEIGHT of the camera
+	 * @return the HEIGHT of the camera
+	 */
 	public static int getHeight() {
 		return HEIGHT;
 	}
 
+	/**
+	 * Getter with the level stars
+	 * @param maxLevelNumber
+	 * @return the max number of stars
+	 */
 	public static int getLevelStars(int maxLevelNumber) {
 		return getIntFromSharedPreferences(SHARED_PREFS_LEVEL_STARS
 				+ String.valueOf(maxLevelNumber));

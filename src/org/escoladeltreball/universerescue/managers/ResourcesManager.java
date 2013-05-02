@@ -67,7 +67,6 @@ public class ResourcesManager {
 	public ITiledTextureRegion menuLevelStar = null;
 	
 	// Singleton
-
 	public static ResourcesManager getInstance() {
 		if (obj == null) {
 			obj = new ResourcesManager();
@@ -75,9 +74,8 @@ public class ResourcesManager {
 		return obj;
 	}
 
-	public static GameActivity getActivity() {
-		return getInstance().activity;
-	}
+	
+	
 
 	// Methods
 
@@ -268,5 +266,7 @@ public class ResourcesManager {
 			}
 		});
 	}
-
+	public static GameActivity getActivity() {
+		return getInstance().activity;
+	}
 }
