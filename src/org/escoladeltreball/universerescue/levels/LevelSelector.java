@@ -14,8 +14,9 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 public class LevelSelector extends Scene {
 
 	// CONSTANTS
-	private final ResourcesManager manager = ResourcesManager.getInstance();
-	private final VertexBufferObjectManager VBOM = ResourcesManager.getInstance().vbom;
+	private final ResourcesManager MANAGER = ResourcesManager.getInstance();
+	private final VertexBufferObjectManager VBOM = ResourcesManager
+			.getInstance().vbom;
 	private final Camera CAMERA = ResourcesManager.getInstance().camera;
 	// Layout properties
 	/** variable for a number of rows */
@@ -33,8 +34,6 @@ public class LevelSelector extends Scene {
 
 	// VARIABLES
 
-	/** Variable of scene */
-	private Scene scene;
 	// Initial tile positions
 	/** Variable for initial position X */
 	private float mInitialX;
@@ -52,29 +51,28 @@ public class LevelSelector extends Scene {
 		createBackground();
 
 		// Set the initial position in order to properly center the tiles
-		final float halfLevelSelectorWidth = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
-				* (mCOLUMNS - 1)) * 0.5f;
-		this.mInitialX = (ResourcesManager.getInstance().engine.getCamera()
-				.getCameraSceneWidth() * 0.5f) - halfLevelSelectorWidth;
 
+		// FOR X
+		final float halfLevelSelectorWidth = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
+				* (mCOLUMNS));
+		this.mInitialX = (CAMERA.getCameraSceneWidth() * 0.5f)
+				- halfLevelSelectorWidth;
+
+		// FOR Y
 		final float halfLevelSelectorHeight = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
 				* (mROWS - 1)) * 0.5f;
-		this.mInitialY = (ResourcesManager.getInstance().engine.getCamera()
-				.getCameraSceneHeight() * 0.5f) + halfLevelSelectorHeight;
-		if (textureRegion == null) {
-			System.out.println("TEXTURA NULL");
-		}
+		this.mInitialY = (CAMERA.getCameraSceneHeight() * 0.5f)
+				+ halfLevelSelectorHeight;
+
+		// Build the levels icons
 		createTiles(textureRegion, font);
-		// this.setVisible(true);
-		// this.setPosition(pX, pY);
-		// this.setScale(1 / ResourcesManager.getInstance().camera.getWidth());
 	}
 
 	private void createTiles(final ITextureRegion textureRegion, final Font font) {
 
 		// Temporary coordinates
-		float tempX = this.mInitialX + mTILE_DIMENSION * 0.5f;
-		float tempY = this.mInitialY - mTILE_DIMENSION * 0.5f;
+		float tempX = this.mInitialX + mTILE_DIMENSION + mTILE_PADDING;
+		float tempY = this.mInitialY - mTILE_DIMENSION;
 
 		// Temporary level integer
 		int currentTileLevel = 1;
@@ -94,7 +92,7 @@ public class LevelSelector extends Scene {
 			mLevelButtons.add(levelButton);
 
 			// Increment the temporary X position of the level tile
-			tempX = tempX + mTILE_DIMENSION + mTILE_PADDING;
+			tempX = tempX + (mTILE_DIMENSION * 2.f) + mTILE_PADDING;
 
 			// Increment the current tile count/level
 			currentTileLevel++;
@@ -113,14 +111,14 @@ public class LevelSelector extends Scene {
 	 * Method that refresh level's stars
 	 */
 
-	// public void refreshAllButtonStars() {
-	// for(LevelSelectorButtons levels : mLevelButtons)
-	// levels.refreshStars();
-	// }
-	
+	public void refreshAllButtonStars() {
+		for (LevelSelectorButtons levels : mLevelButtons)
+			levels.refreshStars();
+	}
+
 	private void createBackground() {
 		attachChild(new Sprite(CAMERA.getWidth() / 2, CAMERA.getHeight() / 2,
-				manager.menu_background_region, VBOM) {
+				MANAGER.menu_background_region, VBOM) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);

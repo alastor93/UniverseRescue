@@ -186,7 +186,7 @@ public class ResourcesManager {
 		}
 		if (menuLevelIcon == null) {
 			BitmapTextureAtlas levelIcon = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 64, 64, BILINEAR);
+					this.engine.getTextureManager(), 150, 150, BILINEAR);
 			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(levelIcon, activity, "LevelIcon.png",
 							0, 0);

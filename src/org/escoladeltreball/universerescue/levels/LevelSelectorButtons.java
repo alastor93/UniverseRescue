@@ -12,7 +12,7 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 public class LevelSelectorButtons extends Sprite {
 
 	// Variables
-	private final ResourcesManager manager = ResourcesManager.getInstance();
+	private final ResourcesManager MANAGER = ResourcesManager.getInstance();
 	private int levelIndex;
 	private Text mButtonText;
 	private Sprite mLockedSprite;
@@ -25,21 +25,21 @@ public class LevelSelectorButtons extends Sprite {
 	public LevelSelectorButtons(final int pLevelIndex, final float pX,
 			final float pY, final float dimension, final ITextureRegion pTextureRegion,
 			final VertexBufferObjectManager pVertexBufferObjectManager) {
-		super(pX, pY,dimension,dimension, pTextureRegion, pVertexBufferObjectManager);
+		super(pX, pY, dimension, dimension, pTextureRegion, pVertexBufferObjectManager);
 		// Set level's index
 		this.levelIndex = pLevelIndex;
 		// Set button's text, position and color
-		this.mButtonText = new Text(0f, 0f, manager.levelsFont,
-				String.valueOf(this.levelIndex), manager.vbom);
+		this.mButtonText = new Text(0f, 0f, MANAGER.levelsFont,
+				String.valueOf(this.levelIndex), MANAGER.vbom);
 		this.mButtonText.setPosition((this.getWidth() / 3f),
 				(this.getHeight() / 2f));
 		this.mButtonText.setColor(0.7f, 0.7f, 0.7f);
 		// Create Sprite for locked levels
 		this.mLockedSprite = new Sprite(this.getWidth() / 2f,
-				this.getHeight() / 2f, manager.menuLevelLocked, manager.vbom);
+				this.getHeight() / 2f, MANAGER.menuLevelLocked, MANAGER.vbom);
 		// Set level's stars
 		this.mStarsEnt = new TiledSprite((this.getWidth() / 3f) * 2f,
-				(this.getHeight() / 2f), manager.menuLevelStar, manager.vbom);
+				(this.getHeight() / 2f), MANAGER.menuLevelStar, MANAGER.vbom);
 		// Check if level should be locked
 		this.levelIsLocked = (this.levelIndex > (GameActivity
 				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
@@ -90,10 +90,10 @@ public class LevelSelectorButtons extends Sprite {
 		}
 	}
 	
-//	public void refreshStars() {
-//		this.levelIsLocked = (this.maxLevelIndex > (GameActivity
-//				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
-//		this.mStarsEnt.setCurrentTileIndex(GameActivity
-//				.getLevelStars(this.maxLevelIndex));
-//	}
+	public void refreshStars() {
+		this.levelIsLocked = (this.levelIndex > (GameActivity
+				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
+		this.mStarsEnt.setCurrentTileIndex(GameActivity
+				.getLevelStars(this.levelIndex));
+	}
 }
