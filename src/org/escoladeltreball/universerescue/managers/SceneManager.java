@@ -41,19 +41,10 @@ public class SceneManager {
 	}
 
 	// Methods
-	
-	/**
-	 * enumerate the scenes
-	 *
-	 */
 	public enum SceneType {
 		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING;
 	}
 
-	/**
-	 * Create the splash scene (intro Scene)
-	 * @param pOnCreateSceneCallback
-	 */
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 		ResourcesManager.getInstance().loadSplashScreen();
 		splashScene = new SplashScene();
@@ -61,9 +52,6 @@ public class SceneManager {
 		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
 	}
 
-	/**
-	 * Dispose the Splash Scene
-	 */
 	private void disposeSplashScene() {
 		ResourcesManager.getInstance().unloadSplashScreen();
 		splashScene.disposeScene();
@@ -92,20 +80,12 @@ public class SceneManager {
 		mainMenu.dispose();
 	}
 
-	/**
-	 * Set the scene introduced for the parameter
-	 * @param scene
-	 */
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		this.currentScene = scene;
 		this.currentSceneType = scene.getSceneType();
 	}
 
-	/**
-	 * Set the scene  introduced for the parameter
-	 * @param sceneType
-	 */
 	public void setScene(SceneType sceneType) {
 		switch (sceneType) {
 		case SCENE_SPLASH:
@@ -122,18 +102,10 @@ public class SceneManager {
 		}
 	}
 
-	/**
-	 * Getter of the scenetype
-	 * @return the current scene type
-	 */
 	public SceneType getCurrentSceneType() {
 		return currentSceneType;
 	}
 
-	/**
-	 * Getter of the currentScene
-	 * @return the current scene
-	 */
 	public BaseScene getCurrentScene() {
 		return currentScene;
 	}
