@@ -10,6 +10,7 @@ import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
+import org.escoladeltreball.universerescue.scenes.GameScene;
 import org.escoladeltreball.universerescue.scenes.MainMenuScene;
 import org.escoladeltreball.universerescue.scenes.SplashScene;
 
@@ -20,6 +21,7 @@ public class SceneManager {
 	private BaseScene splashScene;
 	private BaseScene loadingScene;
 	private LevelSelector levelScene;
+	private GameScene gameScene;
 	private static SceneManager obj = null;
 	private Engine engine = ResourcesManager.getInstance().engine;
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
@@ -46,7 +48,7 @@ public class SceneManager {
 
 	// Methods
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING;
+		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME;
 	}
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -104,7 +106,16 @@ public class SceneManager {
 		this.levelScene.registerTouchArea(backToMenuButton);
 		// backToMenuButton.setScale(1.5f);
 	}
-
+	
+	public void createTempGameScene() {
+		ResourcesManager.getInstance().loadGameGraphics();
+		this.gameScene = new GameScene();
+		engine.setScene(this.gameScene);
+		this.mainMenu.detachChildren();
+		this.mainMenu.detachSelf();
+		this.mainMenu.dispose();
+	}
+	
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		this.currentScene = scene;

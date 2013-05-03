@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class LevelSelectorButtons extends Sprite {
 
@@ -65,6 +66,7 @@ public class LevelSelectorButtons extends Sprite {
 				this.mIsClicked = true;
 				//Set a light effect when unlocked level is clicked
 				this.registerEntityModifier(new ScaleModifier(0.05f, 1.5f, 2f));
+				SceneManager.getInstance().createTempGameScene();
 			}
 		}
 		return true;
