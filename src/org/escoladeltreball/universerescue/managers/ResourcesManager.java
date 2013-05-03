@@ -65,6 +65,9 @@ public class ResourcesManager {
 	public ITextureRegion menuLevelLocked = null;
 	/** TiledTextureRegion for load level's star */
 	public ITiledTextureRegion menuLevelStar = null;
+	/** TextureRegion for load backArrow image */
+	public ITextureRegion backarrow = null;
+	
 	
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -205,7 +208,14 @@ public class ResourcesManager {
 					.createTiledFromAsset(levelStars, activity,
 							"Stars.png", 0, 0, 4, 1);
 			levelStars.load();
-		}		
+		}
+		if (this.backarrow == null) {
+			BitmapTextureAtlas arrow = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 50, 50, BILINEAR);
+			this.backarrow = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(arrow, activity, "arrowback.png", 0, 0);
+			arrow.load();
+		}
 	}
 	
 	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath, int pColumns, int pRows, TextureOptions pTextureOptions) {
