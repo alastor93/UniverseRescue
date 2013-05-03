@@ -177,7 +177,7 @@ public class ResourcesManager {
 	}
 	
 	public void loadLevelSelectorGraphics() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/levelSelector/");
 		if (levelsFont == null) {
 			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
 					this.engine.getTextureManager(), 256, 256,
