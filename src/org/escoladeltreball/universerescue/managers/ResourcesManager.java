@@ -139,7 +139,7 @@ public class ResourcesManager {
 	 */
 
 	public void loadMenuGraphics() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/mainMenu/");
 		if (menuTextureAtlas == null) {
 			menuTextureAtlas = new BuildableBitmapTextureAtlas(
 					activity.getTextureManager(), 1200, 1200,
