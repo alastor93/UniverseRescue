@@ -176,6 +176,10 @@ public class ResourcesManager {
 		}
 	}
 	
+	public void unloadMenuTextures() {
+		this.menuTextureAtlas.unload();
+	}
+	
 	public void loadLevelSelectorGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/levelSelector/");
 		if (levelsFont == null) {

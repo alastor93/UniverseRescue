@@ -66,7 +66,7 @@ public class LevelSelectorButtons extends Sprite {
 				this.mIsClicked = true;
 				//Set a light effect when unlocked level is clicked
 				this.registerEntityModifier(new ScaleModifier(0.05f, 1.5f, 2f));
-				SceneManager.getInstance().createTempGameScene();
+				SceneManager.getInstance().createTempGameScene(MANAGER.engine);
 			}
 		}
 		return true;
