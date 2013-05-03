@@ -1,5 +1,6 @@
 package org.escoladeltreball.universerescue.levels;
 
+import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.text.Text;
@@ -62,6 +63,8 @@ public class LevelSelectorButtons extends Sprite {
 			} else {
 				// action is the level is unlocked
 				this.mIsClicked = true;
+				//Set a light effect when unlocked level is clicked
+				this.registerEntityModifier(new ScaleModifier(0.05f, 1.5f, 2f));
 			}
 		}
 		return true;
