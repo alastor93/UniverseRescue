@@ -3,6 +3,8 @@ package org.escoladeltreball.universerescue.managers;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
@@ -10,6 +12,8 @@ import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 import org.escoladeltreball.universerescue.scenes.MainMenuScene;
 import org.escoladeltreball.universerescue.scenes.SplashScene;
+
+import android.view.MotionEvent;
 
 public class SceneManager {
 	// Attributes
@@ -77,7 +81,28 @@ public class SceneManager {
 				ResourcesManager.getInstance().menuLevelIcon , ResourcesManager.getInstance().levelsFont);
 		engine.setScene(this.levelScene);
 		mainMenu.detachSelf();
-		mainMenu.dispose();
+//		mainMenu.dispose();
+		// Build a back button
+		final ButtonSprite backToMenuButton = new ButtonSprite(
+				ResourcesManager.getInstance().backarrow.getWidth() / 2f,
+				ResourcesManager.getInstance().backarrow.getHeight() / 2f,
+				ResourcesManager.getInstance().backarrow,
+				engine.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+					float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == MotionEvent.ACTION_UP) {
+					mainMenu.createScene();
+					engine.setScene(mainMenu);
+					levelScene.detachSelf();
+					levelScene.dispose();
+				}
+				return true;
+			}
+		};
+		this.levelScene.attachChild(backToMenuButton);
+		this.levelScene.registerTouchArea(backToMenuButton);
+		// backToMenuButton.setScale(1.5f);
 	}
 
 	public void setScene(BaseScene scene) {
