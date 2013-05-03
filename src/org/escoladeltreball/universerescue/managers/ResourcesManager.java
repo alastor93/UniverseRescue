@@ -68,6 +68,9 @@ public class ResourcesManager {
 	/** TextureRegion for load backArrow image */
 	public ITextureRegion backarrow = null;
 	
+	/** ITextureRegion for load game background */
+	public ITextureRegion game_background = null;
+	
 	
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -76,9 +79,6 @@ public class ResourcesManager {
 		}
 		return obj;
 	}
-
-	
-	
 
 	// Methods
 
@@ -215,6 +215,22 @@ public class ResourcesManager {
 			this.backarrow = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(arrow, activity, "arrowback.png", 0, 0);
 			arrow.load();
+		}
+	}
+	
+	/**
+	 * Load Game's graphics
+	 * 
+	 */
+	public void loadGameGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		if (this.game_background == null) {
+			BitmapTextureAtlas background = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 1000, 500, BILINEAR);
+			this.game_background =  BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(background, activity, "gameBackground.png",
+							0, 0);
+			background.load();
 		}
 	}
 	
