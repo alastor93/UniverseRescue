@@ -1,4 +1,4 @@
-package org.escoladeltreball.universerecue.game;
+package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
