@@ -2,6 +2,7 @@ package org.escoladeltreball.universerescue.scenes;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -13,6 +14,7 @@ import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.math.Vector2;
@@ -33,13 +35,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text enemiesLeftText;
 	/** Game's physics */
 	private PhysicsWorld physics;
-	
-	
-	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	/** The player */
+	Player player;
+	/** Check if scene is touched */
+	private boolean isTouched = false;
 
 	@Override
 	public void createScene() {
@@ -102,7 +101,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	public void createPlayer() {
 		Wall ground = new Wall(0, 0,camera.getCameraSceneWidth() * 2,1, this.vbom, physics);
 		this.attachChild(ground);
-		Player player = new Player(30, 50, manager.playerSprite, this.vbom, camera, physics);
+		player = new Player(30, 50, manager.playerSprite, this.vbom, camera, physics);
 		this.attachChild(player);
 	}
 	/**
@@ -133,6 +132,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	public void createPhysics() {
 		this.physics = new FixedStepPhysicsWorld(50, new Vector2(0, -5), false);
 		registerUpdateHandler(this.physics);
+	}
+	
+	/**
+	 * Do an action depends the kind of touch
+	 */
+	
+	@Override
+	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+		if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_DOWN) {
+			this.isTouched = true;
+		} else if ((pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP)
+					&& this.isTouched) {
+			player.jump();
+			this.isTouched = false;
+		}
+		return false;
 	}
 
 }
