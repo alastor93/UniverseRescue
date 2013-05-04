@@ -2,11 +2,11 @@ package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.vbo.ITiledSpriteVertexBufferObject;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -16,9 +16,9 @@ public class Player extends AnimatedSprite {
 	private boolean isJump;
 
 	public Player(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
-			ITiledSpriteVertexBufferObject pTiledSpriteVertexBufferObject,
+			VertexBufferObjectManager VertexBufferObject,
 			Camera camera, PhysicsWorld physicsWorld) {
-		super(pX, pY, pTiledTextureRegion, pTiledSpriteVertexBufferObject);
+		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
 	}
