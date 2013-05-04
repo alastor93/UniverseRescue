@@ -73,6 +73,8 @@ public class ResourcesManager {
 	
 	/** ITextureRegion for load game background */
 	public ITextureRegion game_background = null;
+	// ITextureRegion for load the character sprite
+	public TiledTextureRegion playerSprite;
 	
 	
 	// Singleton
@@ -246,6 +248,21 @@ public class ResourcesManager {
 					.createFromAsset(background, activity, "gameBackground.png",
 							0, 0);
 			background.load();
+		}
+		if (this.playerSprite == null) {
+			BuildableBitmapTextureAtlas player = new BuildableBitmapTextureAtlas(
+					engine.getTextureManager(), 292, 40,
+					TextureOptions.BILINEAR);
+			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(player, activity, "player.png", 9, 1);
+			try {
+				player
+						.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+								0, 0, 0));
+				player.load();
+			} catch (final TextureAtlasBuilderException e) {
+				Debug.e(e);
+			}
 		}
 	}
 	
