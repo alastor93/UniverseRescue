@@ -10,6 +10,9 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
+import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.game.Player;
+import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.math.Vector2;
@@ -40,9 +43,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	@Override
 	public void createScene() {
+		camera.setBounds(0, 0, GameActivity.getWidth()*2, GameActivity.getHeight());
+		camera.setBoundsEnabled(true);
 		createBackground();
 		createHUD();
 		createPhysics();
+		createPlayer();
 		setOnSceneTouchListener(this);
 	}
 
@@ -91,6 +97,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		//Put the Text to HUD
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		this.camera.getHUD().setVisible(true);
+	}
+	
+	public void createPlayer() {
+		Wall ground = new Wall(0, 0,camera.getCameraSceneWidth() * 2,1, this.vbom, physics);
+		this.attachChild(ground);
+		Player player = new Player(30, 50, manager.playerSprite, this.vbom, camera, physics);
+		this.attachChild(player);
 	}
 	/**
 	 * Add score to player's score
