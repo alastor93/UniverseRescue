@@ -55,14 +55,11 @@ public class LevelSelector extends Scene {
 		// FOR X
 		final float halfLevelSelectorWidth = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
 				* (mCOLUMNS));
-		this.mInitialX = (CAMERA.getCameraSceneWidth() * 0.5f)
+		this.mInitialX = (CAMERA.getWidth() * 0.5f)
 				- halfLevelSelectorWidth;
 
 		// FOR Y
-		final float halfLevelSelectorHeight = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
-				* (mROWS - 1)) * 0.5f;
-		this.mInitialY = (CAMERA.getCameraSceneHeight() * 0.5f)
-				+ halfLevelSelectorHeight;
+		this.mInitialY = (CAMERA.getHeight() * 0.5f);
 
 		// Build the levels icons
 		createTiles(textureRegion, font);
@@ -72,7 +69,7 @@ public class LevelSelector extends Scene {
 
 		// Temporary coordinates
 		float tempX = this.mInitialX + mTILE_DIMENSION + mTILE_PADDING;
-		float tempY = this.mInitialY - mTILE_DIMENSION;
+		float tempY = this.mInitialY; 
 
 		// Temporary level integer
 		int currentTileLevel = 1;
@@ -117,7 +114,7 @@ public class LevelSelector extends Scene {
 	}
 
 	private void createBackground() {
-		attachChild(new Sprite(CAMERA.getWidth() / 2, CAMERA.getHeight() / 2,
+		attachChild(new Sprite(CAMERA.getWidth() / 2f, CAMERA.getHeight() / 2f,
 				MANAGER.menu_background_region, VBOM) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
