@@ -67,6 +67,7 @@ public class GameActivity extends BaseGameActivity {
 		// If the music is muted in the settings, mute it in the game.
 		if (getIntFromSharedPreferences(SHARED_PREFS_MUSIC_MUTED) > 0)
 			SFXManager.setMusicMuted(true);
+		this.manager.loadFonts();
 	}
 
 	@Override

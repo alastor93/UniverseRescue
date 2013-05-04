@@ -58,6 +58,9 @@ public class ResourcesManager {
 
 	/** LevelButton's Font */
 	public Font levelsFont = null;
+	
+	/** GameScene count enemies Font */
+	public Font gameFont = null;
 
 	/** TextureRegion for load image for level icon */
 	public ITextureRegion menuLevelIcon = null;
@@ -99,10 +102,25 @@ public class ResourcesManager {
 	}
 	
 	public void loadFonts(){
-		if(defaultFont==null) {
-			defaultFont = FontFactory.create(engine.getFontManager(), engine.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD),  50f, true, Color.WHITE_ARGB_PACKED_INT);
+		if (defaultFont == null) {
+			defaultFont = FontFactory.create(engine.getFontManager(), engine.getTextureManager()
+					, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50f,
+					true, Color.WHITE_ARGB_PACKED_INT);
 			defaultFont.load();
 		}
+		if (levelsFont == null) {
+			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
+					this.engine.getTextureManager(), 256, 256,
+					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f,
+					true, Color.WHITE_ARGB_PACKED_INT);
+			levelsFont.load();
+		}
+		if (gameFont == null) {
+			this.gameFont = FontFactory.createFromAsset(engine.getFontManager(),
+					engine.getTextureManager(),254, 254, getActivity().getAssets(), "fonts/ecliptic.ttf", 48f, true, Color.WHITE_ARGB_PACKED_INT);
+			this.gameFont.load();
+		}
+		
 	}
 
 	public void loadSplashScreen() {
@@ -182,13 +200,6 @@ public class ResourcesManager {
 	
 	public void loadLevelSelectorGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/levelSelector/");
-		if (levelsFont == null) {
-			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
-					this.engine.getTextureManager(), 256, 256,
-					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f,
-					true, Color.WHITE_ARGB_PACKED_INT);
-			levelsFont.load();
-		}
 		if (menuLevelIcon == null) {
 			BitmapTextureAtlas levelIcon = new BitmapTextureAtlas(
 					this.engine.getTextureManager(), 150, 150, BILINEAR);
