@@ -22,10 +22,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private int score = 0;
 	/** Counter for enemies killed */
 	private int enemiesKilled = 0;
+	/** Counter for goal enemies */
+	private final int enemiesGoal = 30;
 	/** Our game HUD */
 	private HUD gameHUD;
-	/** Displays the player's score */
-	private Text scoreText;
+	/** Displays the enemies remaining */
+	private Text enemiesLeftText;
 	/** Game's physics */
 	private PhysicsWorld physics;
 	
@@ -39,7 +41,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	@Override
 	public void createScene() {
 		createBackground();
-		//createHUD();
+		createHUD();
 		createPhysics();
 		setOnSceneTouchListener(this);
 	}
@@ -66,7 +68,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	 */ 
 	
 	public void createBackground() {
-		attachChild(new Sprite(camera.getWidth() / 2, camera.getHeight() / 2,
+		attachChild(new Sprite(camera.getWidth() / 2f, camera.getHeight() / 2f,
 				manager.game_background, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
@@ -76,12 +78,39 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		});
 	}
 	
+	public void createHUD() {
+		//Build a new HUD for our game
+		this.gameHUD = new HUD();
+		//Set the HUD to the camera
+		this.camera.setHUD(gameHUD);
+		this.camera.getHUD().setVisible(false);
+		//Create a new Text field for allow view how many enemies remaining
+		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
+				(this.camera.getHeight() / 2f) * 1.8f , manager.gameFont,
+				String.valueOf(this.enemiesKilled) + "/" + String.valueOf(this.enemiesGoal), manager.vbom);
+		//Put the Text to HUD
+		this.camera.getHUD().attachChild(this.enemiesLeftText);
+		this.camera.getHUD().setVisible(true);
+	}
 	/**
 	 * Add score to player's score
 	 */ 
 	
 	public void addToScore(int i) {
 		this.score += i;
+	}
+	
+	/**
+	 * Add to enemies killed 
+	 */
+	
+	public void addEnemiesKilled(int i) {
+		if (this.enemiesKilled + i > this.enemiesGoal) {
+			this.enemiesKilled = this.enemiesGoal;
+		} else {
+			this.enemiesKilled += i;
+		}
+		this.enemiesLeftText.setText(String.valueOf(this.enemiesKilled) + "/" + String.valueOf(this.enemiesGoal));
 	}
 	
 	/**
