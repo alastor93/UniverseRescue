@@ -1,7 +1,7 @@
 package org.escoladeltreball.universerescue.managers;
 
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
@@ -31,7 +31,7 @@ public class ResourcesManager {
 	// Attributes
 	private static ResourcesManager obj = null;
 	public GameActivity activity;
-	public Camera camera;
+	public BoundCamera camera;
 	public Engine engine;
 	public VertexBufferObjectManager vbom;
 	public BitmapTextureAtlas splashTextureAtlas;
@@ -95,7 +95,7 @@ public class ResourcesManager {
 	 * @param vbom
 	 * 
 	 */
-	public static void setup(Engine engine, Camera camera,
+	public static void setup(Engine engine, BoundCamera camera,
 			GameActivity activity, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
 		getInstance().camera = camera;

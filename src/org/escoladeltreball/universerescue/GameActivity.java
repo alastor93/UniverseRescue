@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -17,12 +17,9 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-
 public class GameActivity extends BaseGameActivity {
 
-	private Camera camera;
+	private BoundCamera camera;
 	private ResourcesManager manager;
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 480;
@@ -38,7 +35,7 @@ public class GameActivity extends BaseGameActivity {
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		this.camera = new Camera(0, 0, WIDTH, HEIGHT);
+		this.camera = new BoundCamera(0, 0, WIDTH, HEIGHT);
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
 				camera);
