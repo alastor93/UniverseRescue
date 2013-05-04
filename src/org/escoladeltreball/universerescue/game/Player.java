@@ -19,6 +19,7 @@ public class Player extends AnimatedSprite {
 			VertexBufferObjectManager VertexBufferObject,
 			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
+		this.setScale(2);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
 	}
