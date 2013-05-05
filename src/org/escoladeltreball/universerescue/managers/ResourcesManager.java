@@ -52,13 +52,13 @@ public class ResourcesManager {
 	public ITextureRegion exit_region = null;
 	/** ITextureRegion for load music option on MainMenuScene */
 	public static TiledTextureRegion music_region = null;
-	
+
 	/** TextureOption BILINEAR */
 	private final TextureOptions BILINEAR = TextureOptions.BILINEAR;
 
 	/** LevelButton's Font */
 	public Font levelsFont = null;
-	
+
 	/** GameScene count enemies Font */
 	public Font gameFont = null;
 
@@ -70,13 +70,16 @@ public class ResourcesManager {
 	public ITiledTextureRegion menuLevelStar = null;
 	/** TextureRegion for load backArrow image */
 	public ITextureRegion backarrow = null;
-	
+
 	/** ITextureRegion for load game background */
 	public ITextureRegion game_background = null;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
-	
-	
+
+	// ITextureRegion for load game controls
+	public ITextureRegion controlBaseRegion;
+	public ITextureRegion controlKnobRegion;
+
 	// Singleton
 	public static ResourcesManager getInstance() {
 		if (obj == null) {
@@ -102,11 +105,12 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().vbom = vbom;
 	}
-	
-	public void loadFonts(){
+
+	public void loadFonts() {
 		if (defaultFont == null) {
-			defaultFont = FontFactory.create(engine.getFontManager(), engine.getTextureManager()
-					, 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50f,
+			defaultFont = FontFactory.create(engine.getFontManager(),
+					engine.getTextureManager(), 256, 256,
+					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50f,
 					true, Color.WHITE_ARGB_PACKED_INT);
 			defaultFont.load();
 		}
@@ -118,11 +122,13 @@ public class ResourcesManager {
 			levelsFont.load();
 		}
 		if (gameFont == null) {
-			this.gameFont = FontFactory.createFromAsset(engine.getFontManager(),
-					engine.getTextureManager(),254, 254, getActivity().getAssets(), "fonts/ecliptic.ttf", 48f, true, Color.WHITE_ARGB_PACKED_INT);
+			this.gameFont = FontFactory.createFromAsset(
+					engine.getFontManager(), engine.getTextureManager(), 254,
+					254, getActivity().getAssets(), "fonts/ecliptic.ttf", 48f,
+					true, Color.WHITE_ARGB_PACKED_INT);
 			this.gameFont.load();
 		}
-		
+
 	}
 
 	public void loadSplashScreen() {
@@ -159,7 +165,8 @@ public class ResourcesManager {
 	 */
 
 	public void loadMenuGraphics() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/mainMenu/");
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/mainMenu/");
 		if (menuTextureAtlas == null) {
 			menuTextureAtlas = new BuildableBitmapTextureAtlas(
 					activity.getTextureManager(), 1200, 1200,
@@ -183,8 +190,9 @@ public class ResourcesManager {
 					.createFromAsset(menuTextureAtlas, activity, "salir.png");
 		}
 		if (music_region == null) {
-			music_region = getLimitableTTR("tiledsoun.png",2,1,TextureOptions.BILINEAR);
-					
+			music_region = getLimitableTTR("tiledsoun.png", 2, 1,
+					TextureOptions.BILINEAR);
+
 		}
 		try {
 			this.menuTextureAtlas
@@ -195,35 +203,34 @@ public class ResourcesManager {
 			Debug.e(e);
 		}
 	}
-	
+
 	public void unloadMenuTextures() {
 		this.menuTextureAtlas.unload();
 	}
-	
+
 	public void loadLevelSelectorGraphics() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/levelSelector/");
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/levelSelector/");
 		if (menuLevelIcon == null) {
 			BitmapTextureAtlas levelIcon = new BitmapTextureAtlas(
 					this.engine.getTextureManager(), 150, 150, BILINEAR);
 			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelIcon, activity, "LevelIcon.png",
-							0, 0);
+					.createFromAsset(levelIcon, activity, "LevelIcon.png", 0, 0);
 			levelIcon.load();
 		}
 		if (this.menuLevelLocked == null) {
 			BitmapTextureAtlas levelLockedT = new BitmapTextureAtlas(
 					this.engine.getTextureManager(), 64, 64, BILINEAR);
 			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelLockedT, activity, "Lock.png",
-							0, 0);
+					.createFromAsset(levelLockedT, activity, "Lock.png", 0, 0);
 			levelLockedT.load();
 		}
 		if (this.menuLevelStar == null) {
 			BitmapTextureAtlas levelStars = new BitmapTextureAtlas(
 					this.engine.getTextureManager(), 64, 64, BILINEAR);
 			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(levelStars, activity,
-							"Stars.png", 0, 0, 4, 1);
+					.createTiledFromAsset(levelStars, activity, "Stars.png", 0,
+							0, 4, 1);
 			levelStars.load();
 		}
 		if (this.backarrow == null) {
@@ -234,7 +241,7 @@ public class ResourcesManager {
 			arrow.load();
 		}
 	}
-	
+
 	/**
 	 * Load Game's graphics
 	 * 
@@ -244,9 +251,9 @@ public class ResourcesManager {
 		if (this.game_background == null) {
 			BitmapTextureAtlas background = new BitmapTextureAtlas(
 					this.engine.getTextureManager(), 1000, 500, BILINEAR);
-			this.game_background =  BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(background, activity, "gameBackground.png",
-							0, 0);
+			this.game_background = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(background, activity,
+							"gameBackground.png", 0, 0);
 			background.load();
 		}
 		if (this.playerSprite == null) {
@@ -256,74 +263,122 @@ public class ResourcesManager {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(player, activity, "player.png", 9, 1);
 			try {
-				player
-						.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-								0, 0, 0));
+				player.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+						0, 0, 0));
 				player.load();
 			} catch (final TextureAtlasBuilderException e) {
 				Debug.e(e);
 			}
 		}
 	}
-	
-	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath, int pColumns, int pRows, TextureOptions pTextureOptions) {
-		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = AssetBitmapTextureAtlasSource.create(activity.getAssets(), BitmapTextureAtlasTextureRegionFactory.getAssetBasePath() + pTiledTextureRegionPath);
-		final BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), bitmapTextureAtlasSource.getTextureWidth(), bitmapTextureAtlasSource.getTextureHeight(), pTextureOptions);
-		final ITextureRegion[] textureRegions = new ITextureRegion[pColumns * pRows];
+
+	public void loadControls() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		if (this.controlBaseRegion == null) {
+			BitmapTextureAtlas controlBase = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 128, 128, BILINEAR);
+			this.controlBaseRegion = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(controlBase, activity,
+							"onscreen_control_base.png", 0, 0);
+			controlBase.load();
+		}
+		if (this.controlKnobRegion == null) {
+			BitmapTextureAtlas controlKnob = new BitmapTextureAtlas(
+					this.engine.getTextureManager(), 64, 64, BILINEAR);
+			this.controlKnobRegion = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(controlKnob, activity,
+							"onscreen_control_knob.png", 0, 0);
+			controlKnob.load();
+		}
+	}
+
+	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath,
+			int pColumns, int pRows, TextureOptions pTextureOptions) {
+		final IBitmapTextureAtlasSource bitmapTextureAtlasSource = AssetBitmapTextureAtlasSource
+				.create(activity.getAssets(),
+						BitmapTextureAtlasTextureRegionFactory
+								.getAssetBasePath() + pTiledTextureRegionPath);
+		final BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(),
+				bitmapTextureAtlasSource.getTextureWidth(),
+				bitmapTextureAtlasSource.getTextureHeight(), pTextureOptions);
+		final ITextureRegion[] textureRegions = new ITextureRegion[pColumns
+				* pRows];
 
 		final int tileWidth = bitmapTextureAtlas.getWidth() / pColumns;
 		final int tileHeight = bitmapTextureAtlas.getHeight() / pRows;
 
-		for(int tileColumn = 0; tileColumn < pColumns; tileColumn++) {
-			for(int tileRow = 0; tileRow < pRows; tileRow++) {
+		for (int tileColumn = 0; tileColumn < pColumns; tileColumn++) {
+			for (int tileRow = 0; tileRow < pRows; tileRow++) {
 				final int tileIndex = tileRow * pColumns + tileColumn;
 
 				final int x = tileColumn * tileWidth;
 				final int y = tileRow * tileHeight;
-				textureRegions[tileIndex] = new TextureRegion(bitmapTextureAtlas, x, y, tileWidth, tileHeight, false) {
+				textureRegions[tileIndex] = new TextureRegion(
+						bitmapTextureAtlas, x, y, tileWidth, tileHeight, false) {
 					@Override
 					public void updateUV() {
-							this.mU = this.getTextureX() / bitmapTextureAtlas.getWidth();
-							this.mU2 = (this.getTextureX() + tileWidth) / bitmapTextureAtlas.getWidth();
+						this.mU = this.getTextureX()
+								/ bitmapTextureAtlas.getWidth();
+						this.mU2 = (this.getTextureX() + tileWidth)
+								/ bitmapTextureAtlas.getWidth();
 
-							this.mV = this.getTextureY() / bitmapTextureAtlas.getHeight();
-							this.mV2 = (this.getTextureY() + tileHeight) / bitmapTextureAtlas.getHeight();
-						
+						this.mV = this.getTextureY()
+								/ bitmapTextureAtlas.getHeight();
+						this.mV2 = (this.getTextureY() + tileHeight)
+								/ bitmapTextureAtlas.getHeight();
+
 					}
 				};
-					textureRegions[tileIndex].setTextureSize(textureRegions[tileIndex].getWidth()*2f, textureRegions[tileIndex].getHeight()*2f);
+				textureRegions[tileIndex].setTextureSize(
+						textureRegions[tileIndex].getWidth() * 2f,
+						textureRegions[tileIndex].getHeight() * 2f);
 			}
 		}
 
-		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(bitmapTextureAtlas, false, textureRegions);
-		bitmapTextureAtlas.addTextureAtlasSource(bitmapTextureAtlasSource, 0, 0);
+		final TiledTextureRegion tiledTextureRegion = new TiledTextureRegion(
+				bitmapTextureAtlas, false, textureRegions);
+		bitmapTextureAtlas
+				.addTextureAtlasSource(bitmapTextureAtlasSource, 0, 0);
 		bitmapTextureAtlas.load();
 		return tiledTextureRegion;
 	}
-	
-	public void showMessageExit(){
+
+	public void showMessageExit() {
 		this.getActivity().runOnUiThread(new Runnable() {
-			
-			
+
 			@Override
 			public void run() {
-				final AlertDialog.Builder builder = new AlertDialog.Builder(ResourcesManager.getActivity()).setTitle("Universe Rescue").setMessage(Html.fromHtml("Estas seguro que desea salir?")).setPositiveButton("Si", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(final DialogInterface dialog, final int id) {
-									System.exit(0);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						ResourcesManager.getActivity())
+						.setTitle("Universe Rescue")
+						.setMessage(
+								Html.fromHtml("Estas seguro que desea salir?"))
+						.setPositiveButton("Si",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+										System.exit(0);
 
-								}
-							}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(final DialogInterface dialog, final int id) {
-								}
-							});
-				
+									}
+								})
+						.setNegativeButton("No",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+									}
+								});
+
 				final AlertDialog alert = builder.create();
 				alert.show();
 			}
 		});
 	}
+
 	public static GameActivity getActivity() {
 		return getInstance().activity;
 	}
