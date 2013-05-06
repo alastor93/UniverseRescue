@@ -76,14 +76,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	 */
 
 	public void createBackground() {
-		attachChild(new Sprite(camera.getWidth() / 2f, camera.getHeight() / 2f,
+		Sprite sprite = new Sprite(0,0,
 				manager.game_background, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
 				pGLState.enableDither();
 			}
-		});
+		};
+		sprite.setWidth(GameActivity.getWidth() *2);
+		sprite.setOffsetCenter(0, 0);
+		this.attachChild(sprite);
 	}
 
 	public void createHUD() {
@@ -103,10 +106,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	}
 
 	public void createPlayer() {
-		Wall ground = new Wall(0, 0, camera.getCameraSceneWidth() * 2, 1,
+		Wall ground = new Wall(GameActivity.getWidth(), 0, GameActivity.getWidth() * 2, 1,
+				this.vbom, physics);
+		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
+				this.vbom, physics);
+		Wall right = new Wall(GameActivity.getWidth() * 2,GameActivity.getHeight()/2, 1, GameActivity.getHeight(),
 				this.vbom, physics);
 		this.attachChild(ground);
-		this.player = new Player(30, 50, manager.playerSprite, this.vbom,
+		this.attachChild(left);
+		this.attachChild(right);
+		this.player = new Player(10, 51, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
 	}
