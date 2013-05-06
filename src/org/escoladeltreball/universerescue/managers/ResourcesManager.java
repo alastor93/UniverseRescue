@@ -211,35 +211,26 @@ public class ResourcesManager {
 	public void loadLevelSelectorGraphics() {
 		BitmapTextureAtlasTextureRegionFactory
 				.setAssetBasePath("gfx/levelSelector/");
-		if (menuLevelIcon == null) {
-			BitmapTextureAtlas levelIcon = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 150, 150, BILINEAR);
+		BitmapTextureAtlas levelAtlas = new BitmapTextureAtlas(
+				this.engine.getTextureManager(), 270, 160, BILINEAR);
+		if (menuLevelIcon == null) {	
 			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelIcon, activity, "LevelIcon.png", 0, 0);
-			levelIcon.load();
+					.createFromAsset(levelAtlas, activity, "LevelIcon.png", 10, 10);
 		}
 		if (this.menuLevelLocked == null) {
-			BitmapTextureAtlas levelLockedT = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 64, 64, BILINEAR);
 			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelLockedT, activity, "Lock.png", 0, 0);
-			levelLockedT.load();
+					.createFromAsset(levelAtlas, activity, "Lock.png", 160, 10);
 		}
 		if (this.menuLevelStar == null) {
-			BitmapTextureAtlas levelStars = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 64, 64, BILINEAR);
 			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(levelStars, activity, "Stars.png", 0,
-							0, 4, 1);
-			levelStars.load();
+					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 160,70
+							, 4, 1);
 		}
 		if (this.backarrow == null) {
-			BitmapTextureAtlas arrow = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 50, 50, BILINEAR);
 			this.backarrow = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(arrow, activity, "arrowback.png", 0, 0);
-			arrow.load();
+					.createFromAsset(levelAtlas, activity, "arrowback.png", 220, 10);
 		}
+		levelAtlas.load();
 	}
 
 	/**
@@ -248,48 +239,35 @@ public class ResourcesManager {
 	 */
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		BitmapTextureAtlas gameAtlas = new BitmapTextureAtlas(
+				this.engine.getTextureManager(), 1010, 560, BILINEAR);
 		if (this.game_background == null) {
-			BitmapTextureAtlas background = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 1000, 500, BILINEAR);
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(background, activity,
-							"gameBackground.png", 0, 0);
-			background.load();
+					.createFromAsset(gameAtlas, activity,
+							"gameBackground.png", 10, 10);
 		}
 		if (this.playerSprite == null) {
-			BuildableBitmapTextureAtlas player = new BuildableBitmapTextureAtlas(
-					engine.getTextureManager(), 292, 40,
-					TextureOptions.BILINEAR);
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(player, activity, "player.png", 9, 1);
-			try {
-				player.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-						0, 0, 0));
-				player.load();
-			} catch (final TextureAtlasBuilderException e) {
-				Debug.e(e);
-			}
+					.createTiledFromAsset(gameAtlas, activity, "player.png",10,520, 9, 1);
 		}
+		gameAtlas.load();
 	}
 
 	public void loadControls() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		BitmapTextureAtlas controlAtlas = new BitmapTextureAtlas(
+				this.engine.getTextureManager(), 210, 140, BILINEAR);
 		if (this.controlBaseRegion == null) {
-			BitmapTextureAtlas controlBase = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 128, 128, BILINEAR);
 			this.controlBaseRegion = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(controlBase, activity,
-							"onscreen_control_base.png", 0, 0);
-			controlBase.load();
+					.createFromAsset(controlAtlas, activity,
+							"onscreen_control_base.png", 10, 10);
 		}
 		if (this.controlKnobRegion == null) {
-			BitmapTextureAtlas controlKnob = new BitmapTextureAtlas(
-					this.engine.getTextureManager(), 64, 64, BILINEAR);
 			this.controlKnobRegion = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(controlKnob, activity,
-							"onscreen_control_knob.png", 0, 0);
-			controlKnob.load();
+					.createFromAsset(controlAtlas, activity,
+							"onscreen_control_knob.png", 140, 10);
 		}
+		controlAtlas.load();
 	}
 
 	private TiledTextureRegion getLimitableTTR(String pTiledTextureRegionPath,
