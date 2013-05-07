@@ -16,6 +16,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.PlatformMoveX;
 import org.escoladeltreball.universerescue.game.Player;
@@ -46,6 +47,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** Platforms */
 	private PlatformMoveX platform;
 	private Platform platform2;
+	/** Add Item */
+	private boolean addItem;
+	/** Item */
+	private Item item;
 	/** Check if scene is touched */
 	private boolean isTouched = false;
 
@@ -108,9 +113,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
 						+ String.valueOf(this.enemiesGoal), manager.vbom);
-		Sprite heal = new Sprite(manager.camera.getXMin() +50,
+		Sprite heal = new Sprite(manager.camera.getXMin() + 50,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
-		
+
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(heal);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
@@ -132,14 +137,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				camera, physics);
 		this.attachChild(player);
 	}
-	
+
 	public void createPlatform() {
 		this.platform = new PlatformMoveX(400f, 100f, manager.platformSprite,
 				this.vbom, camera, physics);
-			
-			this.platform2 = new Platform(800f, 200f, manager.platformSprite,
-					this.vbom, camera, physics);
-		
+
+		this.platform2 = new Platform(800f, 200f, manager.platformSprite,
+				this.vbom, camera, physics);
+
 		this.attachChild(platform);
 		this.attachChild(platform2);
 	}
@@ -155,7 +160,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
 						player.run(pValueX);
-						player.setDirection(pValueX,pValueY);
+						player.setDirection(pValueX, pValueY);
 					}
 
 					@Override
@@ -207,7 +212,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.physics = new FixedStepPhysicsWorld(50, new Vector2(0, -5), false);
 		registerUpdateHandler(this.physics);
 	}
+	
+	/**
+	 * Create Item 
+	 */
 
+	public void createItem(){
+		item = new Item(800f, camera.getYMax(), manager.buttonA, this.vbom, camera, physics);
+		this.attachChild(item);
+	}
 	/**
 	 * Do an action depends the kind of touch
 	 */
@@ -229,6 +242,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			float pTouchAreaLocalY) {
 		player.fire(this, physics);
 
+	}
+
+	@Override
+	protected void onManagedUpdate(float pSecondsElapsed) {
+
+		if (player.getX() >= 600 && !addItem) {
+			addItem = true;
+			this.createItem();
+		}
+		
+		super.onManagedUpdate(pSecondsElapsed);
 	}
 
 }
