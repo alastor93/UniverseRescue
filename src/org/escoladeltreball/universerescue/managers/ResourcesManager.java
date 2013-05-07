@@ -80,6 +80,7 @@ public class ResourcesManager {
 	public ITextureRegion controlBaseRegion;
 	public ITextureRegion controlKnobRegion;
 	public ITextureRegion buttonA;
+	public ITextureRegion bulletSprite;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -241,7 +242,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BitmapTextureAtlas gameAtlas = new BitmapTextureAtlas(
-				this.engine.getTextureManager(), 1010, 560, BILINEAR);
+				this.engine.getTextureManager(), 1010, 630, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity,
@@ -250,6 +251,10 @@ public class ResourcesManager {
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png",10,520, 9, 1);
+		}
+		if (this.bulletSprite == null) {
+			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "bullet.png",300,560);
 		}
 		gameAtlas.load();
 	}
