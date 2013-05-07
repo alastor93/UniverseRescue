@@ -99,9 +99,8 @@ public class Player extends AnimatedSprite {
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
 			bullet = new Sprite(this.getX(), this.getY() + 60,
-					ResourcesManager.getInstance().bulletSprite,
+					ResourcesManager.getInstance().bulletVSprite,
 					this.getVertexBufferObjectManager());
-			bullet.setFlipped(true, true);
 			velocity = Vector2Pool.obtain(0, 10);
 		}
 		bullet.setRotation(this.getRotation());
