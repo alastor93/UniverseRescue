@@ -79,6 +79,7 @@ public class ResourcesManager {
 	// ITextureRegion for load game controls
 	public ITextureRegion controlBaseRegion;
 	public ITextureRegion controlKnobRegion;
+	public ITextureRegion buttonA;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -256,7 +257,7 @@ public class ResourcesManager {
 	public void loadControls() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BitmapTextureAtlas controlAtlas = new BitmapTextureAtlas(
-				this.engine.getTextureManager(), 210, 140, BILINEAR);
+				this.engine.getTextureManager(), 270, 210, BILINEAR);
 		if (this.controlBaseRegion == null) {
 			this.controlBaseRegion = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(controlAtlas, activity,
@@ -266,6 +267,11 @@ public class ResourcesManager {
 			this.controlKnobRegion = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(controlAtlas, activity,
 							"onscreen_control_knob.png", 140, 10);
+		}
+		if (this.buttonA == null) {
+			this.buttonA = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(controlAtlas, activity,
+							"Button_A.png", 140, 80);
 		}
 		controlAtlas.load();
 	}
