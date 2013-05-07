@@ -16,6 +16,8 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.game.Platform;
+import org.escoladeltreball.universerescue.game.PlatformMoveX;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
@@ -41,6 +43,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private PhysicsWorld physics;
 	/** The player */
 	private Player player;
+	/** Platforms */
+	private PlatformMoveX platform;
+	private Platform platform2;
 	/** Check if scene is touched */
 	private boolean isTouched = false;
 
@@ -54,6 +59,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createPlayer();
 		createControls();
+		createPlatform();
 		setOnSceneTouchListener(this);
 	}
 
@@ -102,7 +108,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
 						+ String.valueOf(this.enemiesGoal), manager.vbom);
+		Sprite heal = new Sprite(manager.camera.getXMin() +50,
+				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
+		
 		// Put the Text to HUD
+		this.camera.getHUD().attachChild(heal);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		this.camera.getHUD().setVisible(true);
 	}
@@ -121,6 +131,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.player = new Player(10, 10, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
+	}
+	
+	public void createPlatform() {
+		this.platform = new PlatformMoveX(400f, 100f, manager.platformSprite,
+				this.vbom, camera, physics);
+			
+			this.platform2 = new Platform(800f, 200f, manager.platformSprite,
+					this.vbom, camera, physics);
+		
+		this.attachChild(platform);
+		this.attachChild(platform2);
 	}
 
 	public void createControls() {
