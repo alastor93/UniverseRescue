@@ -22,7 +22,8 @@ import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener, OnClickListener {
+public class GameScene extends BaseScene implements IOnSceneTouchListener,
+		OnClickListener {
 
 	// VARIABLES //
 
@@ -78,15 +79,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 	 */
 
 	public void createBackground() {
-		Sprite sprite = new Sprite(0,0,
-				manager.game_background, vbom) {
+		Sprite sprite = new Sprite(0, 0, manager.game_background, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
 				pGLState.enableDither();
 			}
 		};
-		sprite.setWidth(GameActivity.getWidth() *2);
+		sprite.setWidth(GameActivity.getWidth() * 2);
 		sprite.setOffsetCenter(0, 0);
 		this.attachChild(sprite);
 	}
@@ -108,11 +108,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 	}
 
 	public void createPlayer() {
-		Wall ground = new Wall(GameActivity.getWidth(), 0, GameActivity.getWidth() * 2, 1,
-				this.vbom, physics);
-		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
-				this.vbom, physics);
-		Wall right = new Wall(GameActivity.getWidth() * 2,GameActivity.getHeight()/2, 1, GameActivity.getHeight(),
+		Wall ground = new Wall(GameActivity.getWidth(), 0,
+				GameActivity.getWidth() * 2, 1, this.vbom, physics);
+		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1,
+				GameActivity.getHeight(), this.vbom, physics);
+		Wall right = new Wall(GameActivity.getWidth() * 2,
+				GameActivity.getHeight() / 2, 1, GameActivity.getHeight(),
 				this.vbom, physics);
 		this.attachChild(ground);
 		this.attachChild(left);
@@ -120,7 +121,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 		this.player = new Player(10, 10, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
-//		player.animate(new long[]{400,400,400,400,400,400,400,400,400},0,8,true);
 	}
 
 	public void createControls() {
@@ -134,6 +134,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
 						player.run(pValueX);
+						player.setDirection(pValueX,pValueY);
 					}
 
 					@Override
@@ -142,7 +143,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 					}
 				});
 		Sprite controlBase = control.getControlBase();
-		ButtonSprite button = new ButtonSprite(GameActivity.getWidth()-60, 60, manager.buttonA, vbom,this);
+		ButtonSprite button = new ButtonSprite(GameActivity.getWidth() - 60,
+				60, manager.buttonA, vbom, this);
 		button.setAlpha(0.5f);
 		gameHUD.attachChild(button);
 		gameHUD.registerTouchArea(button);
@@ -205,7 +207,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, OnCli
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
 		player.fire(this, physics);
-		
+
 	}
 
 }
