@@ -7,6 +7,8 @@ import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnS
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -20,7 +22,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener {
+public class GameScene extends BaseScene implements IOnSceneTouchListener, OnClickListener {
 
 	// VARIABLES //
 
@@ -115,9 +117,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		this.attachChild(ground);
 		this.attachChild(left);
 		this.attachChild(right);
-		this.player = new Player(10, 51, manager.playerSprite, this.vbom,
+		this.player = new Player(10, 10, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
+//		player.animate(new long[]{400,400,400,400,400,400,400,400,400},0,8,true);
 	}
 
 	public void createControls() {
@@ -131,8 +134,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
 						player.run(pValueX);
-						player.animate(new long[] { 200, 200, 200, 200, 200,
-								200, 200, 200, 200 }, 0, 8, false);
 					}
 
 					@Override
@@ -141,6 +142,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 					}
 				});
 		Sprite controlBase = control.getControlBase();
+		ButtonSprite button = new ButtonSprite(GameActivity.getWidth()-60, 60, manager.buttonA, vbom,this);
+		button.setAlpha(0.5f);
+		gameHUD.attachChild(button);
+		gameHUD.registerTouchArea(button);
 		// Transparency
 		controlBase.setAlpha(0.5f);
 		// center
@@ -194,6 +199,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 			this.isTouched = false;
 		}
 		return false;
+	}
+
+	@Override
+	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
+			float pTouchAreaLocalY) {
+		player.fire(this, physics);
+		
 	}
 
 }
