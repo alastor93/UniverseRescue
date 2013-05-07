@@ -75,6 +75,13 @@ public class ResourcesManager {
 	public ITextureRegion game_background = null;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
+	
+	// Texture for load the platform sprite
+	public TiledTextureRegion platformSprite;
+	
+	//Itexture for load the life of the player
+	public ITextureRegion life = null;
+
 
 	// ITextureRegion for load game controls
 	public ITextureRegion controlBaseRegion;
@@ -242,7 +249,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BitmapTextureAtlas gameAtlas = new BitmapTextureAtlas(
-				this.engine.getTextureManager(), 1010, 630, BILINEAR);
+				this.engine.getTextureManager(), 1600, 630, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity,
@@ -255,6 +262,13 @@ public class ResourcesManager {
 		if (this.bulletSprite == null) {
 			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "bullet.png",300,560);
+		}
+		if (this.platformSprite == null){
+			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "platform.png",1020,10, 4, 1);
+		}
+		if (this.life == null){
+			this.life = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "vida.png",1500,10, 1, 1);
 		}
 		gameAtlas.load();
 	}
