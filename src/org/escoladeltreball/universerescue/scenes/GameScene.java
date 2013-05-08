@@ -7,6 +7,7 @@ import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnS
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
@@ -53,6 +54,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private Item item;
 	/** Check if scene is touched */
 	private boolean isTouched = false;
+
+	// Heal parts
+	private AnimatedSprite healstate1;
+	private AnimatedSprite healstate2;
+	private AnimatedSprite healstate3;
+	private AnimatedSprite healstate4;
+	private Sprite heal;
 
 	@Override
 	public void createScene() {
@@ -113,11 +121,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
 						+ String.valueOf(this.enemiesGoal), manager.vbom);
-		Sprite heal = new Sprite(manager.camera.getXMin() + 50,
+		
+		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
+		
+		healstate1 = new AnimatedSprite(this.camera.getXMin() + 60,
+				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
+		
+		healstate2 = new AnimatedSprite(this.camera.getXMin() + 120,
+				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
+		
+		healstate3 = new AnimatedSprite(this.camera.getXMin() + 180,
+				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
+		
+		healstate4 = new AnimatedSprite(this.camera.getXMin() + 240,
+				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
 
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(heal);
+		this.camera.getHUD().attachChild(healstate1);
+		this.camera.getHUD().attachChild(healstate2);
+		this.camera.getHUD().attachChild(healstate3);
+		this.camera.getHUD().attachChild(healstate4);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		this.camera.getHUD().setVisible(true);
 	}
@@ -212,15 +237,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.physics = new FixedStepPhysicsWorld(50, new Vector2(0, -5), false);
 		registerUpdateHandler(this.physics);
 	}
-	
+
 	/**
-	 * Create Item 
+	 * Create Item
 	 */
 
-	public void createItem(){
-		item = new Item(800f, camera.getYMax(), manager.item, this.vbom, camera, physics);
+	public void createItem() {
+		item = new Item(800f, camera.getYMax(), manager.item, this.vbom,
+				camera, physics);
 		this.attachChild(item);
 	}
+
 	/**
 	 * Do an action depends the kind of touch
 	 */
@@ -246,21 +273,32 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		
-		//Cuando el jugador pasa esa recta y no se ha creado aun el item
+
+		// Cuando el jugador pasa esa recta y no se ha creado aun el item
 		if (player.getX() >= 600 && !addItem) {
-			//se añade el item
+			// se añade el item
 			addItem = true;
 			this.createItem();
 		}
-		//Comprueba si el item esta creado
-		if (addItem){
-			//Si toca al item entonces el item desaparece
-			if (player.collidesWith(item)){
+		// Comprueba si el item esta creado
+		if (addItem) {
+			// Si toca al item entonces el item desaparece
+			if (player.collidesWith(item)) {
 				item.detachSelf();
+				if (!healstate4.isDisposed()) {
+					healstate4 = new AnimatedSprite(
+							this.camera.getCameraSceneWidth()-560,
+							(this.camera.getHeight() / 2f) * 1.82f,
+							manager.lifeState, vbom);
+					camera.getHUD().attachChild(healstate4);
+				}
 			}
 		}
-		
+
+		if (player.collidesWith(platform)) {
+			this.healstate4.detachSelf();
+		}
+
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 

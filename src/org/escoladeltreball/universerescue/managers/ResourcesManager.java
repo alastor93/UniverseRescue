@@ -77,6 +77,9 @@ public class ResourcesManager {
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	
+	//Texture for life of the player
+	public TiledTextureRegion lifeState = null;
+	
 	// Texture for load the platform sprite
 	public TiledTextureRegion platformSprite;
 	
@@ -278,6 +281,10 @@ public class ResourcesManager {
 		}
 		if (this.life == null){
 			this.life = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "vida.png", 1, 1);
+		}
+		if (this.lifeState == null){
+			this.lifeState = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "vidasup.png",4, 1);
 		}
 		if (this.item == null){
 			this.item = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "item.png", 1, 1);
