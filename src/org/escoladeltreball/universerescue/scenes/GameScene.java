@@ -5,6 +5,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
@@ -56,10 +57,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private boolean isTouched = false;
 
 	// Heal parts
-	private AnimatedSprite healstate1;
-	private AnimatedSprite healstate2;
-	private AnimatedSprite healstate3;
-	private AnimatedSprite healstate4;
+	private Rectangle healstate;
 	private Sprite heal;
 
 	@Override
@@ -124,25 +122,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		
 		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
-		
-		healstate1 = new AnimatedSprite(this.camera.getXMin() + 60,
-				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
-		
-		healstate2 = new AnimatedSprite(this.camera.getXMin() + 120,
-				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
-		
-		healstate3 = new AnimatedSprite(this.camera.getXMin() + 180,
-				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
-		
-		healstate4 = new AnimatedSprite(this.camera.getXMin() + 240,
-				(this.camera.getHeight() / 2f) * 1.82f, manager.lifeState, vbom);
+		healstate = new Rectangle(this.camera.getXMin() + 151,
+				(this.camera.getHeight() / 2f) * 1.83f, 240, 22, vbom);
+		healstate.setColor(255,255,255);
 
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(heal);
-		this.camera.getHUD().attachChild(healstate1);
-		this.camera.getHUD().attachChild(healstate2);
-		this.camera.getHUD().attachChild(healstate3);
-		this.camera.getHUD().attachChild(healstate4);
+		this.camera.getHUD().attachChild(healstate);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		this.camera.getHUD().setVisible(true);
 	}
@@ -285,18 +271,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			// Si toca al item entonces el item desaparece
 			if (player.collidesWith(item)) {
 				item.detachSelf();
-				if (!healstate4.isDisposed()) {
-					healstate4 = new AnimatedSprite(
-							this.camera.getCameraSceneWidth()-560,
-							(this.camera.getHeight() / 2f) * 1.82f,
-							manager.lifeState, vbom);
-					camera.getHUD().attachChild(healstate4);
-				}
 			}
 		}
 
-		if (player.collidesWith(platform)) {
-			this.healstate4.detachSelf();
+	if (player.collidesWith(platform)) {
+		healstate.setWidth(210);
+		healstate.setX(this.camera.getCameraSceneWidth() - 664);
+
 		}
 
 		super.onManagedUpdate(pSecondsElapsed);
