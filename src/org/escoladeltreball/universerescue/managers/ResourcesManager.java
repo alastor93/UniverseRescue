@@ -82,6 +82,9 @@ public class ResourcesManager {
 	
 	//Itexture for load the life of the player
 	public ITextureRegion life = null;
+	
+	//Itexture for load the item
+	public ITextureRegion item = null;
 
 
 	// ITextureRegion for load game controls
@@ -275,6 +278,9 @@ public class ResourcesManager {
 		}
 		if (this.life == null){
 			this.life = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "vida.png", 1, 1);
+		}
+		if (this.item == null){
+			this.item = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "item.png", 1, 1);
 		}
 		try {
 			this.gameAtlas

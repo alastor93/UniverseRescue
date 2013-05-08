@@ -218,7 +218,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	 */
 
 	public void createItem(){
-		item = new Item(800f, camera.getYMax(), manager.buttonA, this.vbom, camera, physics);
+		item = new Item(800f, camera.getYMax(), manager.item, this.vbom, camera, physics);
 		this.attachChild(item);
 	}
 	/**
@@ -246,10 +246,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-
+		
+		//Cuando el jugador pasa esa recta y no se ha creado aun el item
 		if (player.getX() >= 600 && !addItem) {
+			//se añade el item
 			addItem = true;
 			this.createItem();
+		}
+		//Comprueba si el item esta creado
+		if (addItem){
+			//Si toca al item entonces el item desaparece
+			if (player.collidesWith(item)){
+				item.detachSelf();
+			}
 		}
 		
 		super.onManagedUpdate(pSecondsElapsed);
