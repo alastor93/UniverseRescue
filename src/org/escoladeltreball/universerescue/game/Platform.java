@@ -41,6 +41,7 @@ public class Platform extends AnimatedSprite {
 	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
 		bdBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.KinematicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
+		bdBody.setUserData("platform");
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
 				bdBody, true, false));
 	}
