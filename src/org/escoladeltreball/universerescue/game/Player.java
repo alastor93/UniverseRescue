@@ -10,6 +10,7 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.math.MathUtils;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
@@ -42,6 +43,12 @@ public class Player extends AnimatedSprite {
 		this.setScale(2);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
+	}
+	
+	@Override
+	protected void preDraw(GLState pGLState, Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
+		pGLState.enableDither();
 	}
 
 	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
@@ -87,18 +94,18 @@ public class Player extends AnimatedSprite {
 	}
 
 	public void fire(Scene scene, PhysicsWorld physicsWorld) {
-		Sprite bullet = new Sprite(this.getX() + 60, this.getY(),
+		Sprite bullet = new Sprite(this.getX() + 95, this.getY(),
 				ResourcesManager.getInstance().bulletSprite,
 				this.getVertexBufferObjectManager());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
 		if (directionX < 0) {
-			bullet = new Sprite(this.getX() - 60, this.getY(),
+			bullet = new Sprite(this.getX() - 95, this.getY(),
 					ResourcesManager.getInstance().bulletSprite,
 					this.getVertexBufferObjectManager());
 			bullet.setFlippedHorizontal(true);
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
-			bullet = new Sprite(this.getX(), this.getY() + 60,
+			bullet = new Sprite(this.getX(), this.getY() + 95,
 					ResourcesManager.getInstance().bulletSprite,
 					this.getVertexBufferObjectManager());
 			bullet.setFlipped(true, true);
@@ -114,12 +121,12 @@ public class Player extends AnimatedSprite {
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(bullet,
 				this.bulletBody, true, false));
+		this.animate(new long[]{100,100,200,100},new int[]{0,1,2,0},false);
 		scene.attachChild(bullet);
 	}
 
 	public void run(float pValueX) {
 		dynamicBody.setLinearVelocity(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
-		this.animate(300, true);
 	}
 }
