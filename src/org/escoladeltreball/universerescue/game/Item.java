@@ -11,24 +11,30 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Item extends Sprite{
-	
-	private Body itemBody;
+public class Item extends Sprite {
 
-	public Item(float pX, float pY,
-			ITextureRegion pTiledTextureRegion,
+	private Body itemBody;
+	private PhysicsWorld physicsWorld;
+	private PhysicsConnector physicsConnector;
+
+	public Item(float pX, float pY, ITextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
-		this.createPhysics(camera, physicsWorld);
-		// TODO Auto-generated constructor stub
-	}
-	
-	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
-		itemBody = PhysicsFactory.createBoxBody(physicsWorld, this,
-				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
-		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
-				itemBody, true, false));
+		this.physicsWorld = physicsWorld;
+		this.createPhysics(camera);
 	}
 
+	private void createPhysics(Camera camera) {
+		itemBody = PhysicsFactory.createBoxBody(physicsWorld, this,
+				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
+		itemBody.setUserData("item");
+		physicsConnector = new PhysicsConnector(this, itemBody, true, false);
+		physicsWorld.registerPhysicsConnector(physicsConnector);
+	}
+	
+	public void removeItem(){
+		physicsWorld.unregisterPhysicsConnector(physicsConnector);
+        itemBody.setActive(false);
+	}
 }
