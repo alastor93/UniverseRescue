@@ -1,5 +1,8 @@
 package org.escoladeltreball.universerescue.scenes;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
@@ -18,6 +21,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.PlatformMoveX;
@@ -60,7 +64,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private Item item;
 	/** Check if scene is touched */
 	private boolean isTouched = false;
-
+	/** A bulletPool for manage bullet sprites */
+	private BulletPool BULLET_POOL;
+	/** LinkedList for available bullet sprites */
+	public LinkedList bulletList;
+	
 	// Heal parts
 	private Rectangle healstate;
 	private Sprite heal;
@@ -77,6 +85,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPlayer();
 		createControls();
 		createPlatform();
+		createBulletPool();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -170,6 +179,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.attachChild(platform2);
 	}
 
+	public void createBulletPool() {
+		BULLET_POOL = new BulletPool(manager.bulletSprite, this);
+		bulletList = new LinkedList();
+	}
+	
 	public void createControls() {
 		manager.loadControls();
 		AnalogOnScreenControl control = new AnalogOnScreenControl(0, 0, camera,
@@ -305,12 +319,31 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		player.fire(this, physics);
+		Sprite fire = BULLET_POOL.obtainPoolItem();
+		player.fire(physics,fire);
 	}
 
+	/**
+	 * Clean the bulletList when bullet goes out of the screen
+	 */
+	
+	public void cleaner() {
+	    synchronized (this) {
+	        Iterator it = bulletList.iterator();
+	        while (it.hasNext()) {
+	            Sprite b = (Sprite) it.next();
+	            if (b.getX() <= -b.getWidth()) {
+	                BULLET_POOL.recyclePoolItem(b);
+	                it.remove();
+	                continue;
+	            }
+	        }
+	    }
+	}
+	
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-
+		super.onManagedUpdate(pSecondsElapsed);
 		// Cuando el jugador pasa esa recta y no se ha creado aun el item
 		if (player.getX() >= 600 && !addItem) {
 			// se añade el item
@@ -323,8 +356,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			healstate.setX(this.camera.getCameraSceneWidth() - 664);
 
 		}
-
-		super.onManagedUpdate(pSecondsElapsed);
+		this.cleaner();
 	}
 
 }
