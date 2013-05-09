@@ -8,11 +8,11 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
@@ -68,9 +68,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createBackground();
 		createHUD();
 		createPhysics();
+		this.createWalls();
 		createPlayer();
 		createControls();
 		createPlatform();
+		DebugRenderer debug = new DebugRenderer(physics, vbom);
+		this.attachChild(debug);
 		setOnSceneTouchListener(this);
 	}
 
@@ -119,12 +122,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
 						+ String.valueOf(this.enemiesGoal), manager.vbom);
-		
+
 		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
 		healstate = new Rectangle(this.camera.getXMin() + 151,
 				(this.camera.getHeight() / 2f) * 1.83f, 240, 22, vbom);
-		healstate.setColor(255,255,255);
+		healstate.setColor(255, 255, 255);
 
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(heal);
@@ -133,8 +136,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.camera.getHUD().setVisible(true);
 	}
 
-	public void createPlayer() {
+	public void createWalls() {
 		Wall ground = new Wall(GameActivity.getWidth(), 0,
+				GameActivity.getWidth() * 2, 1, this.vbom, physics);
+		Wall roof = new Wall(0, GameActivity.getHeight(),
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
 		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1,
 				GameActivity.getHeight(), this.vbom, physics);
@@ -142,9 +147,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				GameActivity.getHeight() / 2, 1, GameActivity.getHeight(),
 				this.vbom, physics);
 		this.attachChild(ground);
+		this.attachChild(roof);
 		this.attachChild(left);
 		this.attachChild(right);
-		this.player = new Player(10, 10, manager.playerSprite, this.vbom,
+	}
+
+	public void createPlayer() {
+		this.player = new Player(20, 20, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
 	}
@@ -254,7 +263,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
 		player.fire(this, physics);
-
 	}
 
 	@Override
@@ -274,9 +282,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 		}
 
-	if (player.collidesWith(platform)) {
-		healstate.setWidth(210);
-		healstate.setX(this.camera.getCameraSceneWidth() - 664);
+		if (player.collidesWith(platform)) {
+			healstate.setWidth(210);
+			healstate.setX(this.camera.getCameraSceneWidth() - 664);
 
 		}
 
