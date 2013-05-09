@@ -22,6 +22,7 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
+import org.escoladeltreball.universerescue.game.CoolDown;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.PlatformMoveX;
@@ -68,7 +69,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private BulletPool BULLET_POOL;
 	/** LinkedList for available bullet sprites */
 	public LinkedList bulletList;
-	
+
 	// Heal parts
 	private Rectangle healstate;
 	private Sprite heal;
@@ -183,7 +184,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		BULLET_POOL = new BulletPool(manager.bulletSprite, this);
 		bulletList = new LinkedList();
 	}
-	
+
 	public void createControls() {
 		manager.loadControls();
 		AnalogOnScreenControl control = new AnalogOnScreenControl(0, 0, camera,
@@ -319,28 +320,31 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		Sprite fire = BULLET_POOL.obtainPoolItem();
-		player.fire(physics,fire);
+		if (CoolDown.getInstance().canShoot()) {
+			Sprite fire = BULLET_POOL.obtainPoolItem();
+
+			player.fire(physics, fire);
+		}
 	}
 
 	/**
 	 * Clean the bulletList when bullet goes out of the screen
 	 */
-	
+
 	public void cleaner() {
-	    synchronized (this) {
-	        Iterator it = bulletList.iterator();
-	        while (it.hasNext()) {
-	            Sprite b = (Sprite) it.next();
-	            if (b.getX() <= -b.getWidth()) {
-	                BULLET_POOL.recyclePoolItem(b);
-	                it.remove();
-	                continue;
-	            }
-	        }
-	    }
+		synchronized (this) {
+			Iterator it = bulletList.iterator();
+			while (it.hasNext()) {
+				Sprite b = (Sprite) it.next();
+				if (b.getX() <= -b.getWidth()) {
+					BULLET_POOL.recyclePoolItem(b);
+					it.remove();
+					continue;
+				}
+			}
+		}
 	}
-	
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
