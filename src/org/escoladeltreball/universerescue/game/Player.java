@@ -12,6 +12,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -62,37 +63,30 @@ public class Player extends AnimatedSprite {
 		}
 	}
 
-	public void fire(Scene scene, PhysicsWorld physicsWorld) {
-		Sprite bullet = new Sprite(this.getX() + 95, this.getY(),
-				ResourcesManager.getInstance().bulletSprite,
-				this.getVertexBufferObjectManager());
+	public synchronized void fire(PhysicsWorld physicsWorld, Sprite sprite) {
+		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
 		if (directionX < 0) {
-			bullet = new Sprite(this.getX() - 95, this.getY(),
-					ResourcesManager.getInstance().bulletSprite,
-					this.getVertexBufferObjectManager());
-			bullet.setFlippedHorizontal(true);
+			sprite.setPosition(this.getX() - 95, this.getY());
+			sprite.setFlippedHorizontal(true);
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
-			bullet = new Sprite(this.getX(), this.getY() + 95,
-					ResourcesManager.getInstance().bulletSprite,
-					this.getVertexBufferObjectManager());
-			bullet.setFlipped(true, true);
+			sprite.setPosition(this.getX(), this.getY() + 95);
+			sprite.setFlipped(true, true);
 			velocity = Vector2Pool.obtain(0, 10);
 		}
-		bullet.setRotation(this.getRotation());
+		sprite.setRotation(this.getRotation());
 
 		final FixtureDef bulletFixtureDef1 = PhysicsFactory.createFixtureDef(0,
 				0, 0);
-		this.bulletBody = PhysicsFactory.createBoxBody(physicsWorld, bullet,
+		this.bulletBody = PhysicsFactory.createBoxBody(physicsWorld, sprite,
 				BodyType.KinematicBody, bulletFixtureDef1);
-		this.bulletBody.setUserData("bullet");
+		this.bulletBody.setUserData("fire");
 		this.bulletBody.setLinearVelocity(velocity);
 		Vector2Pool.recycle(velocity);
-		physicsWorld.registerPhysicsConnector(new PhysicsConnector(bullet,
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,
 				this.bulletBody, true, false));
 		this.animate(new long[]{100,100,200,100},new int[]{0,1,2,0},false);
-		scene.attachChild(bullet);
 	}
 
 	public void run(float pValueX) {
