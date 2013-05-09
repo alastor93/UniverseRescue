@@ -26,6 +26,11 @@ import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		OnClickListener {
@@ -137,23 +142,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createWalls() {
-		Wall ground = new Wall(GameActivity.getWidth(), 0,
+		Wall ground = new Wall(GameActivity.getWidth(), 50,
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		Wall roof = new Wall(0, GameActivity.getHeight(),
+		Wall roof = new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
 		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1,
 				GameActivity.getHeight(), this.vbom, physics);
 		Wall right = new Wall(GameActivity.getWidth() * 2,
 				GameActivity.getHeight() / 2, 1, GameActivity.getHeight(),
 				this.vbom, physics);
-		this.attachChild(ground);
-		this.attachChild(roof);
-		this.attachChild(left);
-		this.attachChild(right);
 	}
 
 	public void createPlayer() {
-		this.player = new Player(20, 20, manager.playerSprite, this.vbom,
+		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
 	}
@@ -231,6 +232,48 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void createPhysics() {
 		this.physics = new FixedStepPhysicsWorld(50, new Vector2(0, -5), false);
 		registerUpdateHandler(this.physics);
+		physics.setContactListener(new ContactListener() {
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+				Fixture x1 = contact.getFixtureA();
+				Fixture x2 = contact.getFixtureB();
+				if (x1.getBody().getUserData().equals("player")
+						&& x2.getBody().getUserData().equals("item")) {
+					item.removeItem();
+				}
+			}
+
+			@Override
+			public void beginContact(Contact contact) {
+				Fixture x1 = contact.getFixtureA();
+				Fixture x2 = contact.getFixtureB();
+				if (x1.getBody().getUserData().equals("player")
+						&& x2.getBody().getUserData().equals("item")) {
+					item.detachSelf();
+				}
+				if (x1.getBody().getUserData().equals("wall")
+						&& x2.getBody().getUserData().equals("player")) {
+					player.setJump(false);
+				}
+				if (x1.getBody().getUserData().equals("player")
+						&& x2.getBody().getUserData().equals("platform")) {
+					player.setJump(false);
+				}
+				if (x1.getBody().getUserData().equals("item")
+						&& x2.getBody().getUserData().equals("player")) {
+					item.removeItem();
+				}
+			}
+		});
 	}
 
 	/**
@@ -238,7 +281,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	 */
 
 	public void createItem() {
-		item = new Item(800f, camera.getYMax(), manager.item, this.vbom,
+		item = new Item(800f, camera.getHeight() - 30, manager.item, this.vbom,
 				camera, physics);
 		this.attachChild(item);
 	}
@@ -273,13 +316,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			// se añade el item
 			addItem = true;
 			this.createItem();
-		}
-		// Comprueba si el item esta creado
-		if (addItem) {
-			// Si toca al item entonces el item desaparece
-			if (player.collidesWith(item)) {
-				item.detachSelf();
-			}
 		}
 
 		if (player.collidesWith(platform)) {
