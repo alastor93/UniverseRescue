@@ -6,6 +6,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -49,5 +50,11 @@ public class PlatformMoveX extends AnimatedSprite{
 			this.setPosition(finX, 100f);
 			bdBody.setLinearVelocity(-1.7f, 0);
 		}
+	}
+	 
+	@Override
+	protected void preDraw(GLState pGLState, Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
+		pGLState.setDitherEnabled(true);
 	}
 }
