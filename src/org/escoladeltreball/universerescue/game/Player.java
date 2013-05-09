@@ -1,7 +1,6 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
@@ -12,17 +11,12 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.math.MathUtils;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Player extends AnimatedSprite {
 	private Body dynamicBody;
@@ -58,31 +52,6 @@ public class Player extends AnimatedSprite {
 		dynamicBody.setFixedRotation(true);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
 				dynamicBody, true, false));
-		physicsWorld.setContactListener(new ContactListener() {
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void beginContact(Contact contact) {
-				isJump = false;
-			}
-		});
 	}
 
 	public void jump() {
@@ -117,6 +86,7 @@ public class Player extends AnimatedSprite {
 				0, 0);
 		this.bulletBody = PhysicsFactory.createBoxBody(physicsWorld, bullet,
 				BodyType.KinematicBody, bulletFixtureDef1);
+		this.bulletBody.setUserData("bullet");
 		this.bulletBody.setLinearVelocity(velocity);
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(bullet,
@@ -128,5 +98,9 @@ public class Player extends AnimatedSprite {
 	public void run(float pValueX) {
 		dynamicBody.setLinearVelocity(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
+	}
+	
+	public void setJump(boolean isJump) {
+		this.isJump = isJump;
 	}
 }
