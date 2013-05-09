@@ -19,6 +19,7 @@ public class Wall extends Rectangle {
 	
 	private void createPhysics(PhysicsWorld mPhysicsWorld){
 		staticBody = PhysicsFactory.createBoxBody(mPhysicsWorld,this, BodyType.StaticBody,PhysicsFactory.createFixtureDef(0, 0, 0));
+		staticBody.setUserData("wall");
 	}
 
 }
