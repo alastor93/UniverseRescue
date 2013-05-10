@@ -64,9 +64,11 @@ public class Player extends AnimatedSprite {
 	public synchronized void fire(PhysicsWorld physicsWorld, Sprite sprite) {
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
+		this.setFlippedHorizontal(false);
 		if (directionX < 0) {
 			sprite.setPosition(this.getX() - 95, this.getY());
 			sprite.setFlippedHorizontal(true);
+			this.setFlippedHorizontal(true);
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
 			sprite.setPosition(this.getX(), this.getY() + 95);
