@@ -1,6 +1,9 @@
 package org.escoladeltreball.universerescue.scenes;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -8,6 +11,7 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.modifier.IModifier;
 import org.escoladeltreball.universerescue.helpers.GrowToggleButton;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
@@ -15,7 +19,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
-		IOnMenuItemClickListener {
+		IOnMenuItemClickListener,IEntityModifierListener {
 
 	// Attributes //
 
@@ -123,15 +127,16 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		// Put the menu items on specific position
+		// Put the menu items on specific position 
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 30);
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				optionMenuItem.getY() + 50);
 		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY() + 70);
 		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY()+50);
 
-		// Sets the MainMenuScene as a listener on menu's item click
-		menuChildScene.setOnMenuItemClickListener(this);
+		playMenuItem.registerEntityModifier(new MoveModifier(3, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
+		optionMenuItem.registerEntityModifier(new MoveModifier(4, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
+		exitMenuItem.registerEntityModifier(new MoveModifier(5, camera.getWidth(), exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
 
 		// Finally, put the MenuScene
 		setChildScene(menuChildScene);
@@ -152,5 +157,17 @@ public class MainMenuScene extends BaseScene implements
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+		// Sets the MainMenuScene as a listener on menu's item click
+		menuChildScene.setOnMenuItemClickListener(this);		
 	}
 }
