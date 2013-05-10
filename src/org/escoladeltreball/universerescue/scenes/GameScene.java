@@ -8,6 +8,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -328,28 +329,36 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			float pTouchAreaLocalY) {
 		if (CoolDown.getInstance().canShoot()) {
 			Sprite fire = BULLET_POOL.obtainPoolItem();
-
 			player.fire(physics, fire);
 		}
 	}
 
 	/**
-	 * Clean the bulletList when bullet goes out of the screen
+	 * UpdateHandler for check everymoment if the bullet goes out of screen (X
+	 * and Y), then recycle it.
 	 */
 
-	public void cleaner() {
-		synchronized (this) {
+	IUpdateHandler detect = new IUpdateHandler() {
+		@Override
+		public void reset() {
+		}
+
+		@Override
+		public void onUpdate(float pSecondsElapsed) {
+			// iterating the targets
 			Iterator it = bulletList.iterator();
 			while (it.hasNext()) {
 				Sprite b = (Sprite) it.next();
-				if (b.getX() <= -b.getWidth()) {
+				if (b.getX() >= b.getWidth()
+						|| b.getY() >= b.getHeight() + b.getHeight()
+						|| b.getY() <= -b.getHeight()) {
 					BULLET_POOL.recyclePoolItem(b);
 					it.remove();
 					continue;
 				}
 			}
 		}
-	}
+	};
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
@@ -366,7 +375,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			healstate.setX(this.camera.getCameraSceneWidth() - 664);
 
 		}
-		this.cleaner();
 	}
 
 }
