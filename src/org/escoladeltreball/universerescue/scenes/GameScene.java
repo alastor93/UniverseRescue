@@ -198,6 +198,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							float pValueX, float pValueY) {
 						player.run(pValueX);
 						player.setDirection(pValueX, pValueY);
+						if (pValueX > 0) {
+							player.setFlippedHorizontal(false);
+						}else if(pValueY < 0){
+							player.setFlippedHorizontal(true);
+						}
 					}
 
 					@Override

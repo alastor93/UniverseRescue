@@ -67,16 +67,12 @@ public class Player extends AnimatedSprite {
 		this.setFlippedHorizontal(false);
 		if (directionX < 0) {
 			sprite.setPosition(this.getX() - 95, this.getY());
-			sprite.setFlippedHorizontal(true);
-			this.setFlippedHorizontal(true);
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
 			sprite.setPosition(this.getX(), this.getY() + 95);
-			sprite.setFlipped(true, true);
+			sprite.setRotation(-90);
 			velocity = Vector2Pool.obtain(0, 10);
 		}
-		sprite.setRotation(this.getRotation());
-
 		final FixtureDef bulletFixtureDef1 = PhysicsFactory.createFixtureDef(0,
 				0, 0);
 		this.bulletBody = PhysicsFactory.createBoxBody(physicsWorld, sprite,
