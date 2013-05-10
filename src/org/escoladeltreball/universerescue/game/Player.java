@@ -90,8 +90,10 @@ public class Player extends AnimatedSprite {
 	}
 
 	public void run(float pValueX) {
-		dynamicBody.setLinearVelocity(pValueX * 10,
+		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
+		dynamicBody.setLinearVelocity(velocity);
+		Vector2Pool.recycle(velocity);
 	}
 	
 	public void setJump(boolean isJump) {
