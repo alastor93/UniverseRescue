@@ -269,10 +269,6 @@ public class ResourcesManager {
 			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "bullet.png");
 		}
-		if (this.bulletVSprite == null) {
-			this.bulletVSprite = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(gameAtlas, activity, "bulletV.png");
-		}
 		if (this.platformSprite == null){
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "platform.png",4, 1);
