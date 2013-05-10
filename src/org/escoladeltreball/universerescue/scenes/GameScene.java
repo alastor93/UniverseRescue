@@ -274,6 +274,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				if (x1.getBody().getUserData().equals("player")
 						&& x2.getBody().getUserData().equals("item")) {
 					item.detachSelf();
+					healstate.setWidth(healstate.getWidth() + 30);
+					healstate.setX(camera.getCameraSceneWidth() - 664);
 				}
 				if (x1.getBody().getUserData().equals("wall")
 						&& x2.getBody().getUserData().equals("player")) {
@@ -284,6 +286,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						&& x2.getBody().getUserData().equals("platform")) {
 					player.setJump(false);
 					player.setCurrentTileIndex(0);
+					healstate.setWidth(210);
+					healstate.setX(camera.getCameraSceneWidth() - 664);
 				}
 				if (x1.getBody().getUserData().equals("item")
 						&& x2.getBody().getUserData().equals("player")) {
