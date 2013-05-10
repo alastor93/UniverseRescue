@@ -7,7 +7,6 @@ import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
-import org.escoladeltreball.universerescue.managers.SFXManager;
 
 public abstract class GrowToggleButton extends TiledSprite {
 	

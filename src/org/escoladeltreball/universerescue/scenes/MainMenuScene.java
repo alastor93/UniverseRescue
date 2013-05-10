@@ -14,10 +14,6 @@ import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.text.Html;
-
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
 
