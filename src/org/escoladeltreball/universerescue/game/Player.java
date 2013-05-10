@@ -1,7 +1,6 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -11,8 +10,6 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.escoladeltreball.universerescue.managers.ResourcesManager;
-import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -59,6 +56,7 @@ public class Player extends AnimatedSprite {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(dynamicBody
 					.getLinearVelocity().y, 6));
+			this.animate(new long[]{200,200,200},new int[]{3,4,5},false);
 			isJump = true;
 		}
 	}

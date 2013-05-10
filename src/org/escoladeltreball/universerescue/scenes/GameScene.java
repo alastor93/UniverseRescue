@@ -278,10 +278,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				if (x1.getBody().getUserData().equals("wall")
 						&& x2.getBody().getUserData().equals("player")) {
 					player.setJump(false);
+					player.setCurrentTileIndex(0);
 				}
 				if (x1.getBody().getUserData().equals("player")
 						&& x2.getBody().getUserData().equals("platform")) {
 					player.setJump(false);
+					player.setCurrentTileIndex(0);
 				}
 				if (x1.getBody().getUserData().equals("item")
 						&& x2.getBody().getUserData().equals("player")) {
