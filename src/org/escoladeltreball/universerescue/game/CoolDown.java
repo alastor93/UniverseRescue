@@ -21,7 +21,7 @@ public class CoolDown {
 		valid = true;
 	}
 
-	public boolean canShoot() {
+	public boolean timeHasPassed() {
 		if (valid) {
 			valid = false;
 			timer.schedule(new Task(), delay);
