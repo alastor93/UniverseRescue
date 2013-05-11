@@ -332,7 +332,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		if (CoolDown.getInstance().canShoot()) {
+		if (CoolDown.getInstance().timeHasPassed()) {
 			Sprite fire = BULLET_POOL.obtainPoolItem();
 			player.fire(physics, fire);
 		}
