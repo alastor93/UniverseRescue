@@ -24,6 +24,7 @@ import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
+import org.escoladeltreball.universerescue.game.FlyEnemy;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.PlatformMoveX;
@@ -70,6 +71,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private BulletPool BULLET_POOL;
 	/** LinkedList for available bullet sprites */
 	public LinkedList bulletList;
+	/** FlyEnemy for test */
+	private FlyEnemy fly;
 
 	// Heal parts
 	private Rectangle healstate;
@@ -88,6 +91,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
+		createFlyEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -181,6 +185,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.attachChild(platform2);
 	}
 
+	public void createFlyEnemy() {
+		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3, manager.playerSprite, vbom, camera, physics);
+		this.attachChild(fly);
+	}
+	
 	public void createBulletPool() {
 		BULLET_POOL = new BulletPool(manager.bulletSprite, this);
 		bulletList = new LinkedList();
