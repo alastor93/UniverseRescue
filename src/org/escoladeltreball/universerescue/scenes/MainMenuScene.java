@@ -44,13 +44,6 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	@Override
-	public void onBackKeyPressed() {
-		// WHAT GAME SHOULD DO WHEN BACK KEY PRESS
-		System.exit(0);
-
-	}
-
-	@Override
 	public SceneType getSceneType() {
 		return SceneType.SCENE_MAINMENU;
 	}
@@ -153,7 +146,7 @@ public class MainMenuScene extends BaseScene implements
 			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
 		case MENU_EXIT:
-			ResourcesManager.getInstance().showMessageExit();
+			ResourcesManager.getActivity().showMessageExit();
 		default:
 			return false;
 		}

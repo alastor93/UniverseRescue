@@ -25,11 +25,6 @@ public class SplashScene extends BaseScene {
 	}
 
 	@Override
-	public void onBackKeyPressed() {
-		System.exit(0);
-	}
-
-	@Override
 	public SceneType getSceneType() {
 		return SceneType.SCENE_SPLASH;
 

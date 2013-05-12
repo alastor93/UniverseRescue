@@ -29,12 +29,6 @@ public class LoadingScene extends BaseScene {
 	}
 
 	@Override
-	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public SceneType getSceneType() {
 		return SceneType.SCENE_LOADING;
 	}
