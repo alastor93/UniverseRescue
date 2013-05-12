@@ -91,7 +91,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
-		createFlyEnemy();
+//		createFlyEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -205,13 +205,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					public void onControlChange(
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
-						player.run(pValueX);
-						player.setDirection(pValueX, pValueY);
 						if (pValueX > 0) {
 							player.setFlippedHorizontal(false);
 						}else if(pValueY < 0){
 							player.setFlippedHorizontal(true);
 						}
+						player.run(pValueX);
+						player.setDirection(pValueX, pValueY);
 					}
 
 					@Override
