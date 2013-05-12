@@ -22,6 +22,7 @@ public class Player extends AnimatedSprite {
 	private boolean isJump;
 	private double directionX;
 	private double directionY;
+	private int numSteps;
 
 	public void setDirection(double directionX,double directionY) {
 		this.directionX = directionX;
@@ -35,6 +36,7 @@ public class Player extends AnimatedSprite {
 		this.setScale(2);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
+		this.numSteps = 4;
 	}
 	
 	@Override
@@ -56,7 +58,7 @@ public class Player extends AnimatedSprite {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(dynamicBody
 					.getLinearVelocity().y, 6));
-			this.animate(new long[]{200,200,200},new int[]{3,4,5},false);
+			this.animate(new long[]{200,200,200},new int[]{9,10,11},false);
 			isJump = true;
 		}
 	}
@@ -86,6 +88,17 @@ public class Player extends AnimatedSprite {
 	}
 
 	public void run(float pValueX) {
+		if (pValueX > 0) {
+			numSteps = numSteps > 8 ? 4 : numSteps;
+			this.setCurrentTileIndex(numSteps);
+			numSteps++;
+		}else if(pValueX < 0){
+			numSteps = numSteps > 8 ? 4 : numSteps;
+			this.setCurrentTileIndex(numSteps);
+			numSteps++;
+		}else if(pValueX == 0 && dynamicBody.getPosition().y < 4){
+			this.setCurrentTileIndex(3);
+		}
 		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
 		dynamicBody.setLinearVelocity(velocity);
