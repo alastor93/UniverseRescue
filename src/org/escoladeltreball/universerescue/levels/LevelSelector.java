@@ -10,8 +10,10 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
+import org.escoladeltreball.universerescue.scenes.BaseScene;
 
-public class LevelSelector extends Scene {
+public class LevelSelector extends BaseScene {
 
 	// CONSTANTS
 	private final ResourcesManager MANAGER = ResourcesManager.getInstance();
@@ -55,8 +57,7 @@ public class LevelSelector extends Scene {
 		// FOR X
 		final float halfLevelSelectorWidth = ((mTILE_DIMENSION * mCOLUMNS) + mTILE_PADDING
 				* (mCOLUMNS));
-		this.mInitialX = (CAMERA.getWidth() * 0.5f)
-				- halfLevelSelectorWidth;
+		this.mInitialX = (CAMERA.getWidth() * 0.5f) - halfLevelSelectorWidth;
 
 		// FOR Y
 		this.mInitialY = (CAMERA.getHeight() * 0.5f);
@@ -69,7 +70,7 @@ public class LevelSelector extends Scene {
 
 		// Temporary coordinates
 		float tempX = this.mInitialX + mTILE_DIMENSION + mTILE_PADDING;
-		float tempY = this.mInitialY; 
+		float tempY = this.mInitialY;
 
 		// Temporary level integer
 		int currentTileLevel = 1;
@@ -122,5 +123,23 @@ public class LevelSelector extends Scene {
 				pGLState.enableDither();
 			}
 		});
+	}
+
+	@Override
+	public void createScene() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public SceneType getSceneType() {
+		return SceneType.SCENE_LEVEL;
+	}
+
+	@Override
+	public void disposeScene() {
+		this.detachSelf();
+		this.dispose();
+
 	}
 }
