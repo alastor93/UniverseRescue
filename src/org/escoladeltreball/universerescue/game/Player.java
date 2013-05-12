@@ -20,6 +20,7 @@ public class Player extends AnimatedSprite {
 	private Body dynamicBody;
 	private Body bulletBody;
 	private boolean isJump;
+	private boolean isFire;
 	private double directionX;
 	private double directionY;
 	private int numSteps;
@@ -64,10 +65,12 @@ public class Player extends AnimatedSprite {
 	}
 
 	public synchronized void fire(PhysicsWorld physicsWorld, Sprite sprite) {
+		isFire = true;
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
 		this.setFlippedHorizontal(false);
 		if (directionX < 0) {
+			sprite.setFlippedHorizontal(true);
 			sprite.setPosition(this.getX() - 95, this.getY());
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
@@ -91,12 +94,14 @@ public class Player extends AnimatedSprite {
 		if (pValueX > 0) {
 			numSteps = numSteps > 8 ? 4 : numSteps;
 			this.setCurrentTileIndex(numSteps);
+			isFire = false;
 			numSteps++;
 		}else if(pValueX < 0){
 			numSteps = numSteps > 8 ? 4 : numSteps;
 			this.setCurrentTileIndex(numSteps);
+			isFire = false;
 			numSteps++;
-		}else if(pValueX == 0 && dynamicBody.getPosition().y < 4){
+		}else if(pValueX == 0 && dynamicBody.getPosition().y < 4 && !isFire){
 			this.setCurrentTileIndex(3);
 		}
 		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
