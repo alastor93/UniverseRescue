@@ -51,7 +51,7 @@ public class SceneManager {
 
 	// Methods
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME;
+		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME,SCENE_LEVEL;
 	}
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -75,7 +75,6 @@ public class SceneManager {
 	public void createMenuScene() {
 		ResourcesManager.getInstance().loadMenuGraphics();
 		mainMenu = new MainMenuScene();
-		// loadingScene = new LoadingScene();
 		setScene(mainMenu);
 		disposeSplashScene();
 	}
@@ -85,7 +84,7 @@ public class SceneManager {
 		this.levelScene = new LevelSelector(100, 100,
 				ResourcesManager.getInstance().menuLevelIcon,
 				ResourcesManager.getInstance().levelsFont);
-		engine.setScene(this.levelScene);
+		setScene(this.levelScene);
 		mainMenu.detachSelf();
 		// mainMenu.dispose();
 		// Build a back button
@@ -98,24 +97,37 @@ public class SceneManager {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.getAction() == MotionEvent.ACTION_UP) {
-					mainMenu.createScene();
-					engine.setScene(mainMenu);
-					levelScene.detachSelf();
-					levelScene.dispose();
+					backToMenu();
 				}
 				return true;
 			}
 		};
 		this.levelScene.attachChild(backToMenuButton);
 		this.levelScene.registerTouchArea(backToMenuButton);
-		// backToMenuButton.setScale(1.5f);
+		backToMenuButton.setScale(1.5f);
+		backToMenuButton.setOffsetCenter(0, 0);
+	}
+	
+	public void unloadLevelScene() {
+		levelScene.detachSelf();
+		levelScene.dispose();
+	}
+	
+	public void backToMenu() {
+		mainMenu = new MainMenuScene();
+		setScene(mainMenu);
+		this.unloadLevelScene();
+	}
+	
+	public void backToLevelMenu() {
+		this.createLevelScene();
+		gameScene.disposeScene();
 	}
 
 	public void createTempGameScene(final Engine engine) {
 		ResourcesManager.getInstance().loadLoadingScreen();
 		this.loadingScene = new LoadingScene();
 		this.setScene(loadingScene);
-		ResourcesManager.getInstance().unloadMenuTextures();
 		engine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -125,6 +137,11 @@ public class SceneManager {
 						setScene(gameScene);
 					}
 				}));
+	}
+	
+	public void unloadGameScene() {
+		gameScene.detachSelf();
+		gameScene.disposeScene();
 	}
 
 	public void setScene(BaseScene scene) {
