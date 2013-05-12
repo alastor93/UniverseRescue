@@ -98,20 +98,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	@Override
-	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public SceneType getSceneType() {
 		return SceneType.SCENE_GAME;
 	}
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
-
+		camera.setHUD(null);
+		player.detachSelf();
+		platform.detachSelf();
+		platform2.detachSelf();
+		this.dispose();
+		this.detachSelf();
 	}
 
 	/**
@@ -157,13 +155,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createWalls() {
-		Wall ground = new Wall(GameActivity.getWidth(), 50,
+		new Wall(GameActivity.getWidth(), 50,
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		Wall roof = new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
+		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		Wall left = new Wall(0, GameActivity.getHeight() / 2f, 1,
+		new Wall(0, GameActivity.getHeight() / 2f, 1,
 				GameActivity.getHeight(), this.vbom, physics);
-		Wall right = new Wall(GameActivity.getWidth() * 2,
+		new Wall(GameActivity.getWidth() * 2,
 				GameActivity.getHeight() / 2, 1, GameActivity.getHeight(),
 				this.vbom, physics);
 	}
