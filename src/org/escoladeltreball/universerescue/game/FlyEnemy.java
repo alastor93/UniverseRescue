@@ -33,8 +33,6 @@ public class FlyEnemy extends AnimatedSprite {
 	private boolean alive;
 	private final int miniumDamage = 1;
 	private final int maxiumDamage = 2;
-	private boolean moveX = false;
-	private boolean moveY = false;
 	private float minY;
 
 	private float X;
@@ -43,6 +41,8 @@ public class FlyEnemy extends AnimatedSprite {
 	private Random random;
 	private Path path;
 	private Camera camera;
+	private int impulseX;
+	private int impulseY;
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject,
@@ -56,7 +56,7 @@ public class FlyEnemy extends AnimatedSprite {
 				BodyType.KinematicBody,
 				PhysicsFactory.createFixtureDef(0, 0, 0));
 		body.setUserData("enemy");
-//		this.setCullingEnabled(true);
+		this.setCullingEnabled(true);
 		this.setScale(0.8f);
 		minY = camera.getHeight() / 2f;
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
@@ -85,18 +85,23 @@ public class FlyEnemy extends AnimatedSprite {
 		public void attack() {
 			float tempX;
 			float tempY = Y;
+			impulseX = 1;
+			impulseY = 1;
+			
 			// if true suposed move positive, false move negative
 			if (random.nextBoolean()) {
 				// Check if enemy goes out of screen, if it then move negative
-				if (X + 50 < camera.getWidth()) {
+				if (X + 60 < camera.getWidth()) {
 					tempX = X + 50;
 				} else {
 					tempX = X - 50;
+					impulseX = -1;
 				}
 			} else {
-				// Check if enemy goes out of screen, if it then move postive
-				if (X - 30 > 0) {
+				// Check if enemy goes out of screen, if it then move positive
+				if (X - 60 > 0) {
 					tempX = X - 50;
+					impulseX = -1;
 				} else {
 					tempX = X + 50;
 				}
@@ -107,17 +112,19 @@ public class FlyEnemy extends AnimatedSprite {
 				// randon boolean for move Y positive
 				if (random.nextBoolean()) {
 					// If it goes out of the screen then move Y negative
-					if (Y + 25 >= camera.getHeight()) {
-						tempY = Y - 25;
-					} else {
+					if (Y + 35 < camera.getHeight()) {
 						tempY = Y + 25;
+					} else {
+						tempY = Y - 25;
+						impulseY = -1;
 					}
 				} else {
 					// If it goes more than minY then move Y positive
-					if (Y - 25 < minY) {
+					if (Y - 35 < minY) {
 						tempY = Y + 25;
 					} else {
 						tempY = Y - 25;
+						impulseY = -1;
 					}
 				}
 			}
@@ -144,7 +151,8 @@ public class FlyEnemy extends AnimatedSprite {
 						public void onPathWaypointFinished(
 								final PathModifier pPathModifier,
 								final IEntity pEntity, final int pWaypointIndex) {
-							final Vector2 vector = new Vector2(X/32f, Y/32f);
+							final Vector2 vector = new Vector2(X/32, Y/32);
+							body.applyLinearImpulse(new Vector2(impulseX,impulseY), vector);
 							body.setTransform(vector, 0.0f);
 						}
 
