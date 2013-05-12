@@ -16,6 +16,11 @@ import org.andengine.ui.activity.BaseGameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
+import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.Html;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -125,13 +130,52 @@ public class GameActivity extends BaseGameActivity {
 		if (ResourcesManager.getInstance().engine != null) {
 			if (SceneManager.getInstance().isLayerShown) {
 				SceneManager.getInstance().currentLayer.onHideLayer();
-			} else if (SceneManager.getInstance().getCurrentScene()
-					.equals("GameLevel")) {
+			} else if (SceneManager.getInstance().getCurrentSceneType()
+					.equals(SceneType.SCENE_LEVEL)) {
+				SceneManager.getInstance().backToMenu();
+			} else if (SceneManager.getInstance().getCurrentSceneType()
+					.equals(SceneType.SCENE_GAME)) {
+				SceneManager.getInstance().backToLevelMenu();
 			} else {
-				ResourcesManager.getInstance().showMessageExit();
+				this.showMessageExit();
 			}
 		}
 	}
+	
+	public void showMessageExit() {
+		this.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						ResourcesManager.getActivity())
+						.setTitle("Universe Rescue")
+						.setMessage(
+								Html.fromHtml("Estas seguro que desea salir?"))
+						.setPositiveButton("Si",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+										System.exit(0);
+									}
+								})
+						.setNegativeButton("No",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+									}
+								});
+
+				final AlertDialog alert = builder.create();
+				alert.show();
+			}
+		});
+	}
+	
 	/**
 	 * Getter with the width of the camera
 	 * @return the width of the camera
