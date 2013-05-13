@@ -91,12 +91,12 @@ public class Player extends AnimatedSprite {
 	}
 
 	public void run(float pValueX) {
-		if (pValueX > 0) {
+		if (pValueX > 0 && !isJump) {
 			numSteps = numSteps > 8 ? 4 : numSteps;
 			this.setCurrentTileIndex(numSteps);
 			isFire = false;
 			numSteps++;
-		}else if(pValueX < 0){
+		}else if(pValueX < 0 && !isJump){
 			numSteps = numSteps > 8 ? 4 : numSteps;
 			this.setCurrentTileIndex(numSteps);
 			isFire = false;
