@@ -91,7 +91,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
-//		createFlyEnemy();
+		// createFlyEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -155,15 +155,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createWalls() {
-		new Wall(GameActivity.getWidth(), 50,
-				GameActivity.getWidth() * 2, 1, this.vbom, physics);
+		new Wall(GameActivity.getWidth(), 50, GameActivity.getWidth() * 2, 1,
+				this.vbom, physics);
 		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		new Wall(0, GameActivity.getHeight() / 2f, 1,
-				GameActivity.getHeight(), this.vbom, physics);
-		new Wall(GameActivity.getWidth() * 2,
-				GameActivity.getHeight() / 2, 1, GameActivity.getHeight(),
+		new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
 				this.vbom, physics);
+		new Wall(GameActivity.getWidth() * 2, GameActivity.getHeight() / 2, 1,
+				GameActivity.getHeight(), this.vbom, physics);
 	}
 
 	public void createPlayer() {
@@ -184,10 +183,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createFlyEnemy() {
-		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3, manager.playerSprite, vbom, camera, physics);
+		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
+				manager.playerSprite, vbom, camera, physics, player, this);
 		this.attachChild(fly);
 	}
-	
+
 	public void createBulletPool() {
 		BULLET_POOL = new BulletPool(manager.bulletSprite, this);
 		bulletList = new LinkedList();
@@ -205,7 +205,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							float pValueX, float pValueY) {
 						if (pValueX > 0) {
 							player.setFlippedHorizontal(false);
-						}else if(pValueY < 0){
+						} else if (pValueY < 0) {
 							player.setFlippedHorizontal(true);
 						}
 						player.run(pValueX);

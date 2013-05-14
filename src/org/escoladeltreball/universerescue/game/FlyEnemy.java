@@ -18,6 +18,7 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -41,22 +42,25 @@ public class FlyEnemy extends AnimatedSprite {
 	private Random random;
 	private Path path;
 	private Camera camera;
-	private int impulseX;
-	private int impulseY;
+	private Player player;
+	private GameScene scene;
+	private PhysicsWorld physics;
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
-			VertexBufferObjectManager pVertexBufferObject,
-			Camera cam, PhysicsWorld physicsWorld) {
+			VertexBufferObjectManager pVertexBufferObject, Camera cam,
+			PhysicsWorld physicsWorld, Player p, GameScene s) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
 		random = new Random();
 		X = pX;
 		Y = pY;
 		camera = cam;
-		body = PhysicsFactory.createBoxBody(physicsWorld, this,
+		player = p;
+		scene = s;
+		physics = physicsWorld;
+		body = PhysicsFactory.createBoxBody(physics, this,
 				BodyType.KinematicBody,
 				PhysicsFactory.createFixtureDef(0, 0, 0));
 		body.setUserData("enemy");
-		this.setCullingEnabled(true);
 		this.setScale(0.8f);
 		minY = camera.getHeight() / 2f;
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
@@ -66,103 +70,97 @@ public class FlyEnemy extends AnimatedSprite {
 			public void onUpdate(float pSecondsElapsed) {
 				if (canAttack) {
 					if (CoolDown.getInstance().timeHasPassed()) {
-					attack();
-//					canAttack = false;
+						attack();
+						// canAttack = false;
 					}
-					
+
 				}
 			}
 
 			@Override
 			public void reset() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 	}
-		
-		public void attack() {
-			float tempX;
-			float tempY = Y;
-			impulseX = 1;
-			impulseY = 1;
-			
-			// if true suposed move positive, false move negative
+
+	public void attack() {
+		float tempX;
+		float tempY = Y;
+
+		// if true suposed move positive, false move negative
+		if (random.nextBoolean()) {
+			// Check if enemy goes out of screen, if it then move negative
+			if (X + 60 < camera.getWidth()) {
+				tempX = X + 50;
+			} else {
+				tempX = X - 50;
+			}
+		} else {
+			// Check if enemy goes out of screen, if it then move positive
+			if (X - 60 > 0) {
+				tempX = X - 50;
+			} else {
+				tempX = X + 50;
+			}
+
+		}
+		// random boolean for move Y or not
+		if (random.nextBoolean()) {
+			// randon boolean for move Y positive
 			if (random.nextBoolean()) {
-				// Check if enemy goes out of screen, if it then move negative
-				if (X + 60 < camera.getWidth()) {
-					tempX = X + 50;
+				// If it goes out of the screen then move Y negative
+				if (Y + 35 < camera.getHeight()) {
+					tempY = Y + 25;
 				} else {
-					tempX = X - 50;
-					impulseX = -1;
+					tempY = Y - 25;
 				}
 			} else {
-				// Check if enemy goes out of screen, if it then move positive
-				if (X - 60 > 0) {
-					tempX = X - 50;
-					impulseX = -1;
+				// If it goes more than minY then move Y positive
+				if (Y - 35 < minY) {
+					tempY = Y + 25;
 				} else {
-					tempX = X + 50;
-				}
-
-			}
-			// random boolean for move Y or not
-			if (random.nextBoolean()) {
-				// randon boolean for move Y positive
-				if (random.nextBoolean()) {
-					// If it goes out of the screen then move Y negative
-					if (Y + 35 < camera.getHeight()) {
-						tempY = Y + 25;
-					} else {
-						tempY = Y - 25;
-						impulseY = -1;
-					}
-				} else {
-					// If it goes more than minY then move Y positive
-					if (Y - 35 < minY) {
-						tempY = Y + 25;
-					} else {
-						tempY = Y - 25;
-						impulseY = -1;
-					}
+					tempY = Y - 25;
 				}
 			}
-			// Create a new path
-			path = new Path(2).to(X, Y).to(tempX, tempY);
-			X = tempX;
-			Y = tempY;
-			//Set a new PathModifier for set action on path event
-			PathModifier modifier = new PathModifier(1f, path,
-					new IPathModifierListener() {
-						@Override
-						public void onPathStarted(
-								final PathModifier pPathModifier,
-								final IEntity pEntity) {
-						}
-
-						@Override
-						public void onPathWaypointStarted(
-								final PathModifier pPathModifier,
-								final IEntity pEntity, final int pWaypointIndex) {
-						}
-
-						@Override
-						public void onPathWaypointFinished(
-								final PathModifier pPathModifier,
-								final IEntity pEntity, final int pWaypointIndex) {
-							final Vector2 vector = new Vector2(X/32, Y/32);
-							body.applyLinearImpulse(new Vector2(impulseX,impulseY), vector);
-							body.setTransform(vector, 0.0f);
-						}
-
-						@Override
-						public void onPathFinished(
-								final PathModifier pPathModifier,
-								final IEntity pEntity) {
-						}
-					});
-			modifier.setAutoUnregisterWhenFinished(false);
-			registerEntityModifier(modifier);
 		}
+		// Create a new path
+		path = new Path(2).to(X, Y).to(tempX, tempY);
+		X = tempX;
+		Y = tempY;
+		// Set a new PathModifier for set action on path event
+		PathModifier modifier = new PathModifier(0.5f, path,
+				new IPathModifierListener() {
+					@Override
+					public void onPathStarted(final PathModifier pPathModifier,
+							final IEntity pEntity) {
+					}
+
+					@Override
+					public void onPathWaypointStarted(
+							final PathModifier pPathModifier,
+							final IEntity pEntity, final int pWaypointIndex) {
+						final Vector2 vector = new Vector2(X / 32, Y / 32);
+						body.setTransform(vector, 0.0f);
+					}
+
+					@Override
+					public void onPathWaypointFinished(
+							final PathModifier pPathModifier,
+							final IEntity pEntity, final int pWaypointIndex) {
+						final Vector2 vector = new Vector2(X / 32, Y / 32);
+					}
+
+					@Override
+					public void onPathFinished(
+							final PathModifier pPathModifier,
+							final IEntity pEntity) {
+					}
+				});
+		modifier.setAutoUnregisterWhenFinished(false);
+		registerUpdateHandler(physics);
+		registerEntityModifier(modifier);
+	}
 }
