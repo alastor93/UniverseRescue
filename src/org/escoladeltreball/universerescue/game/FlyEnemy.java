@@ -6,11 +6,13 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
 import org.andengine.entity.modifier.PathModifier.Path;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -18,6 +20,7 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.graphics.Point;
@@ -29,22 +32,34 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class FlyEnemy extends AnimatedSprite {
 
-	protected Body body;
-	private int life = 1000;
-	private boolean alive;
-	private final int miniumDamage = 1;
-	private final int maxiumDamage = 2;
-	private float minY;
+	// Attributes //
 
+	// random boolean
+	private Random random;
+
+	// Scene reference
+	private Camera camera;
+	private PhysicsWorld physics;
+	private GameScene scene;
+
+	// Player reference
+	private Player player;
+	// Variable for exact position on enemy's attack
+	private float playerX;
+	private float playerY;
+
+	// Enemy attributes
+	// Position
+	protected Body body;
 	private float X;
 	private float Y;
+	private float minY;
+	// attack
 	private boolean canAttack = true;
-	private Random random;
+	// randomPath
 	private Path path;
-	private Camera camera;
-	private Player player;
-	private GameScene scene;
-	private PhysicsWorld physics;
+
+	// Methods //
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, Camera cam,
@@ -73,16 +88,13 @@ public class FlyEnemy extends AnimatedSprite {
 						attack();
 						// canAttack = false;
 					}
-
 				}
 			}
 
 			@Override
 			public void reset() {
 				// TODO Auto-generated method stub
-
 			}
-
 		});
 	}
 
@@ -142,6 +154,7 @@ public class FlyEnemy extends AnimatedSprite {
 					public void onPathWaypointStarted(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
+						// Move body to the position
 						final Vector2 vector = new Vector2(X / 32, Y / 32);
 						body.setTransform(vector, 0.0f);
 					}
@@ -150,7 +163,8 @@ public class FlyEnemy extends AnimatedSprite {
 					public void onPathWaypointFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						final Vector2 vector = new Vector2(X / 32, Y / 32);
+						// When finish moving then attack player
+						attackPlayer(player);
 					}
 
 					@Override
@@ -162,5 +176,28 @@ public class FlyEnemy extends AnimatedSprite {
 		modifier.setAutoUnregisterWhenFinished(false);
 		registerUpdateHandler(physics);
 		registerEntityModifier(modifier);
+	}
+
+	public void attackPlayer(Player p) {
+		playerX = p.getX() + p.getWidth() / 2;
+		playerY = p.getY() + p.getHeight() / 2;
+		float posX = playerX - this.getX();
+		float posY = playerY - this.getY();
+
+		Sprite bullet = new Sprite(0, 0,
+				ResourcesManager.getInstance().bulletSprite,
+				ResourcesManager.getInstance().vbom);
+		if (playerX <= X) {
+			bullet.setPosition(X - this.getWidth() / 2f, Y - this.getHeight());
+
+		} else {
+			bullet.setPosition(X + this.getWidth() / 2f, Y - this.getHeight());
+		}
+		scene.attachChild(bullet);
+
+		MoveByModifier movMByod = new MoveByModifier(0.5f, posX, posY);
+
+		bullet.registerEntityModifier(movMByod);
+		canAttack = false;
 	}
 }
