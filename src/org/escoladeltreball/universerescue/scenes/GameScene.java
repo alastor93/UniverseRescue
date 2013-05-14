@@ -87,11 +87,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createHUD();
 		createPhysics();
 		this.createWalls();
-		createPlayer();
+//		createPlayer();
 		createControls();
 		createPlatform();
 		createBulletPool();
-		// createFlyEnemy();
+		 createFlyEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -374,9 +374,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		super.onManagedUpdate(pSecondsElapsed);
-		// Cuando el jugador pasa esa recta y no se ha creado aun el item
-		if (player.getX() >= 600 && !addItem) {
+		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa recta y no se ha creado aun el item
 			// se añade el item
 			addItem = true;
 			this.createItem();
@@ -387,6 +385,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			healstate.setX(this.camera.getCameraSceneWidth() - 664);
 
 		}
+		super.onManagedUpdate(pSecondsElapsed);
 	}
 
 }
