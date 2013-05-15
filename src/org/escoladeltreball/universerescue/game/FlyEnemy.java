@@ -123,7 +123,7 @@ public class FlyEnemy extends AnimatedSprite {
 		X = tempX;
 		Y = tempY;
 		// Set a new PathModifier for set action on path event
-		PathModifier modifier = new PathModifier(0.5f, path,
+		PathModifier modifier = new PathModifier(0.1f, path,
 				new IPathModifierListener() {
 					@Override
 					public void onPathStarted(final PathModifier pPathModifier,
@@ -159,8 +159,8 @@ public class FlyEnemy extends AnimatedSprite {
 	}
 
 	public void attackPlayer(Player p, Sprite bullet) {
-		playerX = p.getX() + p.getWidth() / 2;
-		playerY = p.getY() + p.getHeight() / 2;
+		playerX = p.getX() + p.getWidth() / 2f;
+		playerY = p.getY() + p.getHeight() / 2f;
 		float posX = playerX - this.getX();
 		float posY = playerY - this.getY();
 
@@ -172,7 +172,7 @@ public class FlyEnemy extends AnimatedSprite {
 		}
 //		scene.attachChild(bullet);
 
-		MoveByModifier movMByod = new MoveByModifier(0.5f, posX, posY);
+		MoveByModifier movMByod = new MoveByModifier(1f, posX, posY);
 
 		bullet.registerEntityModifier(movMByod);
 		canAttack = false;
