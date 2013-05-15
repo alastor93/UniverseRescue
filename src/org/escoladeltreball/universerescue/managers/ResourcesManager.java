@@ -90,7 +90,7 @@ public class ResourcesManager {
 	public ITextureRegion controlKnobRegion;
 	public ITextureRegion buttonA;
 	public ITextureRegion bulletSprite;
-	public ITextureRegion bulletVSprite;
+	public ITextureRegion flyEnemyBullet;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -265,6 +265,10 @@ public class ResourcesManager {
 		if (this.bulletSprite == null) {
 			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "bullet.png");
+		}
+		if (this.flyEnemyBullet == null) {
+			this.flyEnemyBullet = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "flyEnemyAttack.png");
 		}
 		if (this.platformSprite == null){
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
