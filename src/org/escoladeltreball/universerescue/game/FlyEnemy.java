@@ -40,10 +40,8 @@ public class FlyEnemy extends AnimatedSprite {
 	// Scene reference
 	private Camera camera;
 	private PhysicsWorld physics;
-	private GameScene scene;
 
 	// Player reference
-	private Player player;
 	// Variable for exact position on enemy's attack
 	private float playerX;
 	private float playerY;
@@ -63,14 +61,12 @@ public class FlyEnemy extends AnimatedSprite {
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, Camera cam,
-			PhysicsWorld physicsWorld, Player p, GameScene s) {
+			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
 		random = new Random();
 		X = pX;
 		Y = pY;
 		camera = cam;
-		player = p;
-		scene = s;
 		physics = physicsWorld;
 		body = PhysicsFactory.createBoxBody(physics, this,
 				BodyType.KinematicBody,
@@ -79,26 +75,10 @@ public class FlyEnemy extends AnimatedSprite {
 		this.setScale(0.8f);
 		minY = camera.getHeight() / 2f;
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
-				true, false) {
-
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				if (canAttack) {
-					if (CoolDown.getInstance().timeHasPassed()) {
-						attack();
-						// canAttack = false;
-					}
-				}
-			}
-
-			@Override
-			public void reset() {
-				// TODO Auto-generated method stub
-			}
-		});
+				true, false));
 	}
 
-	public void attack() {
+	public void move() {
 		float tempX;
 		float tempY = Y;
 
@@ -163,8 +143,9 @@ public class FlyEnemy extends AnimatedSprite {
 					public void onPathWaypointFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						// When finish moving then attack player
-						attackPlayer(player);
+						// When finish to move then attack player
+						canAttack = true;
+						path = null;
 					}
 
 					@Override
@@ -173,31 +154,31 @@ public class FlyEnemy extends AnimatedSprite {
 							final IEntity pEntity) {
 					}
 				});
-		modifier.setAutoUnregisterWhenFinished(false);
-		registerUpdateHandler(physics);
+		modifier.setAutoUnregisterWhenFinished(true);
 		registerEntityModifier(modifier);
 	}
 
-	public void attackPlayer(Player p) {
+	public void attackPlayer(Player p, Sprite bullet) {
 		playerX = p.getX() + p.getWidth() / 2;
 		playerY = p.getY() + p.getHeight() / 2;
 		float posX = playerX - this.getX();
 		float posY = playerY - this.getY();
 
-		Sprite bullet = new Sprite(0, 0,
-				ResourcesManager.getInstance().bulletSprite,
-				ResourcesManager.getInstance().vbom);
 		if (playerX <= X) {
 			bullet.setPosition(X - this.getWidth() / 2f, Y - this.getHeight());
 
 		} else {
 			bullet.setPosition(X + this.getWidth() / 2f, Y - this.getHeight());
 		}
-		scene.attachChild(bullet);
+//		scene.attachChild(bullet);
 
 		MoveByModifier movMByod = new MoveByModifier(0.5f, posX, posY);
 
 		bullet.registerEntityModifier(movMByod);
 		canAttack = false;
+	}
+	
+	public boolean canAttack() {
+		return canAttack;
 	}
 }
