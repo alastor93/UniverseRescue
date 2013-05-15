@@ -297,26 +297,25 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				Fixture x1 = contact.getFixtureA();
 				Fixture x2 = contact.getFixtureB();
 				if (x1.getBody().getUserData().equals("player")
-						&& x2.getBody().getUserData().equals("item")) {
-					item.detachSelf();
-					healstate.setWidth(healstate.getWidth() + 30);
-					healstate.setX(camera.getCameraSceneWidth() - 664);
-				}
-				if (x1.getBody().getUserData().equals("wall")
-						&& x2.getBody().getUserData().equals("player")) {
-					player.setJump(false);
-					player.setCurrentTileIndex(0);
-				}
-				if (x1.getBody().getUserData().equals("player")
-						&& x2.getBody().getUserData().equals("platform")) {
-					player.setJump(false);
-					player.setCurrentTileIndex(0);
-					healstate.setWidth(210);
-					healstate.setX(camera.getCameraSceneWidth() - 664);
-				}
-				if (x1.getBody().getUserData().equals("item")
-						&& x2.getBody().getUserData().equals("player")) {
-					item.removeItem();
+						|| x2.getBody().getUserData().equals("player")) {
+					if (x1.getBody().getUserData().equals("item")
+							|| x2.getBody().getUserData().equals("item")) {
+						item.removeItem();
+						healstate.setWidth(healstate.getWidth() + 30);
+						healstate.setX(camera.getCameraSceneWidth() - 650);
+					}
+					if (x1.getBody().getUserData().equals("wall")
+							|| x2.getBody().getUserData().equals("wall")) {
+						player.setJump(false);
+						player.setCurrentTileIndex(3);
+					}
+					if (x1.getBody().getUserData().equals("platform")
+							|| x2.getBody().getUserData().equals("platform")) {
+						player.setJump(false);
+						player.setCurrentTileIndex(3);
+						healstate.setWidth(210);
+						healstate.setX(camera.getCameraSceneWidth() - 664);
+					}
 				}
 			}
 		});
@@ -399,11 +398,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// this.createItem();
 		// }
 		//
-		// if (player.collidesWith(platform)) {
-		// healstate.setWidth(210);
-		// healstate.setX(this.camera.getCameraSceneWidth() - 664);
-		//
-		// }
 
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
