@@ -109,11 +109,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void disposeScene() {
 		camera.setHUD(null);
+		camera.setChaseEntity(null);
 		player.detachSelf();
 		platform.detachSelf();
 		platform2.detachSelf();
 		this.dispose();
 		this.detachSelf();
+		camera.setCenter(camera.getWidth()/2,camera.getHeight()/2);
 	}
 
 	/**
