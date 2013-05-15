@@ -177,10 +177,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	public void createPlatform() {
 		this.platform = new Platform(400f, 100f, manager.platformSprite,
-				this.vbom, camera, physics, true);
+				this.vbom, camera, physics);
 
 		this.platform2 = new Platform(800f, 230f, manager.platformSprite,
-				this.vbom, camera, physics, false);
+				this.vbom, camera, physics);
 
 		this.attachChild(platform);
 		this.attachChild(platform2);
@@ -415,6 +415,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				fly.move();
 			}
 		}
+		
+		platform.moveX();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 

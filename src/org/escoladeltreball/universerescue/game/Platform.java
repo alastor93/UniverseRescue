@@ -14,17 +14,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Platform extends AnimatedSprite {
 	private Body bdBody;
-	private boolean movePlatform;
 	private float finX = this.getX();
 	private boolean back;
 
 	public Platform(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
-			Camera camera, PhysicsWorld physicsWorld, boolean movePlat) {
+			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
 		this.createPhysics(camera, physicsWorld);
-		movePlatform = movePlat;
 		// this.animate(200);
 	}
 
@@ -37,9 +35,8 @@ public class Platform extends AnimatedSprite {
 				bdBody, true, false));
 	}
 
-	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (movePlatform) {
+	
+	public void moveX(){
 			if (finX < 600 && !back) {
 				finX += 1;
 				bdBody.setLinearVelocity(1.7f, 0);
@@ -50,7 +47,6 @@ public class Platform extends AnimatedSprite {
 				back = true;
 				bdBody.setLinearVelocity(-1.7f, 0);
 			}
-		}
 	}
 
 	@Override
