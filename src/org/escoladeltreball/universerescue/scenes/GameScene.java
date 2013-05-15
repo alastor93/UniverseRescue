@@ -302,9 +302,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						|| x2.getBody().getUserData().equals("player")) {
 					if (x1.getBody().getUserData().equals("item")
 							|| x2.getBody().getUserData().equals("item")) {
-						item.removeItem();
 						healstate.setWidth(healstate.getWidth() + 30);
 						healstate.setX(camera.getCameraSceneWidth() - 650);
+						item.removeItem();
 					}
 					if (x1.getBody().getUserData().equals("wall")
 							|| x2.getBody().getUserData().equals("wall")) {
@@ -393,13 +393,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		// if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
+		 if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
 		// recta y no se ha creado aun el item
 		// // se añade el item
-		// addItem = true;
-		// this.createItem();
-		// }
-		//
+		 addItem = true;
+		 this.createItem();
+		 }
+		
 
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
