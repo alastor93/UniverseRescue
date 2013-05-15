@@ -127,9 +127,9 @@ public class MainMenuScene extends BaseScene implements
 		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY() + 70);
 		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY()+50);
 
-		playMenuItem.registerEntityModifier(new MoveModifier(3, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
-		optionMenuItem.registerEntityModifier(new MoveModifier(4, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
-		exitMenuItem.registerEntityModifier(new MoveModifier(5, camera.getWidth(), exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
+		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
+		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
+		exitMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
 
 		// Finally, put the MenuScene
 		setChildScene(menuChildScene);
