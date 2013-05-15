@@ -73,6 +73,7 @@ public class ResourcesManager {
 	public ITextureRegion game_background = null;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
+	public TiledTextureRegion enemySprite;
 	
 	
 	// Texture for load the platform sprite
@@ -252,7 +253,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 1800, 630, BILINEAR);
+				this.engine.getTextureManager(), 2800, 630, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity,
@@ -265,6 +266,9 @@ public class ResourcesManager {
 		if (this.bulletSprite == null) {
 			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "bullet.png");
+		}
+		if (this.enemySprite == null){
+			this.enemySprite = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "enemy.png", 6, 2);
 		}
 		if (this.flyEnemyBullet == null) {
 			this.flyEnemyBullet = BitmapTextureAtlasTextureRegionFactory

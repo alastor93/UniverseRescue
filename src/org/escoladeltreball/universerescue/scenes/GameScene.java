@@ -24,10 +24,10 @@ import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
+import org.escoladeltreball.universerescue.game.Enemy;
 import org.escoladeltreball.universerescue.game.FlyEnemy;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
-import org.escoladeltreball.universerescue.game.PlatformMoveX;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
@@ -59,7 +59,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** The player */
 	private Player player;
 	/** Platforms */
-	private PlatformMoveX platform;
+	private Platform platform;
 	private Platform platform2;
 	/** Add Item */
 	private boolean addItem;
@@ -74,11 +74,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public LinkedList bulletList;
 	/** FlyEnemy for test */
 	private FlyEnemy fly;
+	/** Enemy for test */
+	private Enemy enemy;
 
 	// Heal parts
 	private Rectangle healstate;
 	private Sprite heal;
-	
 
 	@Override
 	public void createScene() {
@@ -91,9 +92,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.createWalls();
 		createPlayer();
 		createControls();
-//		createPlatform();
+		createPlatform();
 		createBulletPool();
-		 createFlyEnemy();
+		createFlyEnemy();
+		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		setOnSceneTouchListener(this);
@@ -174,11 +176,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createPlatform() {
-		this.platform = new PlatformMoveX(400f, 100f, manager.platformSprite,
-				this.vbom, camera, physics);
+		this.platform = new Platform(400f, 100f, manager.platformSprite,
+				this.vbom, camera, physics, true);
 
-		this.platform2 = new Platform(800f, 200f, manager.platformSprite,
-				this.vbom, camera, physics);
+		this.platform2 = new Platform(800f, 230f, manager.platformSprite,
+				this.vbom, camera, physics, false);
 
 		this.attachChild(platform);
 		this.attachChild(platform2);
@@ -188,6 +190,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
 				manager.playerSprite, vbom, camera, physics);
 		this.attachChild(fly);
+	}
+
+	public void createEnemy() {
+		enemy = new Enemy(camera.getBoundsXMax(), 100, manager.enemySprite,
+				this.vbom, camera, physics);
+		this.attachChild(enemy);
+
 	}
 
 	public void createBulletPool() {
@@ -383,23 +392,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-//		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa recta y no se ha creado aun el item
-//			// se añade el item
-//			addItem = true;
-//			this.createItem();
-//		}
-//
-//		if (player.collidesWith(platform)) {
-//			healstate.setWidth(210);
-//			healstate.setX(this.camera.getCameraSceneWidth() - 664);
-//
-//		}
+		// if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
+		// recta y no se ha creado aun el item
+		// // se añade el item
+		// addItem = true;
+		// this.createItem();
+		// }
+		//
+		// if (player.collidesWith(platform)) {
+		// healstate.setWidth(210);
+		// healstate.setX(this.camera.getCameraSceneWidth() - 664);
+		//
+		// }
 
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attackPlayer(player, fireEnemy);
-//			System.out.println("FIREEEEEEEEEEEEEEEEEEEEEEEEEEE");
-			
+			// System.out.println("FIREEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
 		} else {
 			if (CoolDown.getInstance().timeHasPassed()) {
 				fly.move();
