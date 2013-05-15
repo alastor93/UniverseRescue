@@ -1,7 +1,9 @@
 package org.escoladeltreball.universerescue.game;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.pool.GenericPool;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
@@ -23,7 +25,7 @@ public class BulletPool extends GenericPool<Sprite> {
 	 */
 	@Override
 	protected Sprite onAllocatePoolItem() {
-		Sprite newSprite = new Sprite(10, 10, ResourcesManager.getInstance().bulletSprite, ResourcesManager.getInstance().vbom); 
+		Sprite newSprite = new Sprite(10, 10, bullet, ResourcesManager.getInstance().vbom);
 		scene.attachChild(newSprite);
 		scene.bulletList.add(newSprite);
 		return newSprite;
