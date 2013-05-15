@@ -43,7 +43,6 @@ public class Enemy extends AnimatedSprite {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		this.runEnemy();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 

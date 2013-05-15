@@ -417,6 +417,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		}
 		
 		platform.moveX();
+		enemy.runEnemy();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
