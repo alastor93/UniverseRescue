@@ -68,7 +68,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** Check if scene is touched */
 	private boolean isTouched = false;
 	/** A bulletPool for manage bullet sprites */
-	private BulletPool BULLET_POOL;
+	private BulletPool PLAYER_BULLET_POOL;
+	private BulletPool FLYENEMY_BULLET_POOL;
 	/** LinkedList for available bullet sprites */
 	public LinkedList bulletList;
 	/** FlyEnemy for test */
@@ -77,6 +78,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Heal parts
 	private Rectangle healstate;
 	private Sprite heal;
+	
 
 	@Override
 	public void createScene() {
@@ -87,9 +89,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createHUD();
 		createPhysics();
 		this.createWalls();
-//		createPlayer();
+		createPlayer();
 		createControls();
-		createPlatform();
+//		createPlatform();
 		createBulletPool();
 		 createFlyEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
@@ -184,12 +186,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	public void createFlyEnemy() {
 		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
-				manager.playerSprite, vbom, camera, physics, player, this);
+				manager.playerSprite, vbom, camera, physics);
 		this.attachChild(fly);
 	}
 
 	public void createBulletPool() {
-		BULLET_POOL = new BulletPool(manager.bulletSprite, this);
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, this);
+		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet, this);
 		bulletList = new LinkedList();
 	}
 
@@ -340,7 +343,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
 		if (CoolDown.getInstance().timeHasPassed()) {
-			Sprite fire = BULLET_POOL.obtainPoolItem();
+			Sprite fire = PLAYER_BULLET_POOL.obtainPoolItem();
 			player.fire(physics, fire);
 		}
 	}
@@ -364,9 +367,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				if (b.getX() >= b.getWidth()
 						|| b.getY() >= b.getHeight() + b.getHeight()
 						|| b.getY() <= -b.getHeight()) {
-					BULLET_POOL.recyclePoolItem(b);
-					it.remove();
-					continue;
+					if (b.getParent().equals(PLAYER_BULLET_POOL)) {
+						PLAYER_BULLET_POOL.recyclePoolItem(b);
+						it.remove();
+						continue;
+					} else {
+						FLYENEMY_BULLET_POOL.recyclePoolItem(b);
+						it.remove();
+						continue;
+					}
 				}
 			}
 		}
@@ -374,16 +383,27 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa recta y no se ha creado aun el item
-			// se añade el item
-			addItem = true;
-			this.createItem();
-		}
+//		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa recta y no se ha creado aun el item
+//			// se añade el item
+//			addItem = true;
+//			this.createItem();
+//		}
+//
+//		if (player.collidesWith(platform)) {
+//			healstate.setWidth(210);
+//			healstate.setX(this.camera.getCameraSceneWidth() - 664);
+//
+//		}
 
-		if (player.collidesWith(platform)) {
-			healstate.setWidth(210);
-			healstate.setX(this.camera.getCameraSceneWidth() - 664);
-
+		if (fly.canAttack()) {
+			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
+			fly.attackPlayer(player, fireEnemy);
+//			System.out.println("FIREEEEEEEEEEEEEEEEEEEEEEEEEEE");
+			
+		} else {
+			if (CoolDown.getInstance().timeHasPassed()) {
+				fly.move();
+			}
 		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
