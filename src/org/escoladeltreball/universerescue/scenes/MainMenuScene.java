@@ -97,7 +97,7 @@ public class MainMenuScene extends BaseScene implements
 				1);
 		
 		// MUSIC
-				final GrowToggleButton MusicToggleButton = new GrowToggleButton(ResourcesManager.music_region.getWidth() / 2f, ResourcesManager.music_region.getHeight() / 2f, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
+				final GrowToggleButton MusicToggleButton = new GrowToggleButton((ResourcesManager.music_region.getWidth() / 2f)*2, (ResourcesManager.music_region.getHeight() / 2f)*2, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
 					@Override
 					public boolean checkState() {
 						return !SFXManager.isMusicMuted();

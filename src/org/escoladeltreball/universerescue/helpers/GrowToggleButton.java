@@ -14,8 +14,8 @@ public abstract class GrowToggleButton extends TiledSprite {
 	// CONSTANTS
 	// ====================================================
 	private static final float mGROW_DURATION_SECONDS = 0.05f;
-	private static final float mNORMAL_SCALE_DEFAULT = 1f;
-	private static final float mGROWN_SCALE_DEFAULT = 1.4f;
+	private static final float mNORMAL_SCALE_DEFAULT = 2f;
+	private static final float mGROWN_SCALE_DEFAULT = 2.5f;
 	private static final float mENABLED_ALPHA = 1f;
 	private static final float mDISABLED_ALPHA = 0.5f;
 	
@@ -43,6 +43,7 @@ public abstract class GrowToggleButton extends TiledSprite {
 	// ====================================================
 	public GrowToggleButton(final float pX, final float pY, final ITiledTextureRegion pTextureRegion, final boolean pCurrentState) {
 		super(pX, pY, pTextureRegion, ResourcesManager.getActivity().getVertexBufferObjectManager());
+		this.setScale(mNORMAL_SCALE_DEFAULT);
 		isStateTrue = pCurrentState;
 		if(isStateTrue)
 			this.setCurrentTileIndex(0);
