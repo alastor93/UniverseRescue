@@ -222,23 +222,23 @@ public class ResourcesManager {
 		BitmapTextureAtlasTextureRegionFactory
 				.setAssetBasePath("gfx/levelSelector/");
 		BitmapTextureAtlas levelAtlas = new BitmapTextureAtlas(
-				this.engine.getTextureManager(), 270, 160, BILINEAR);
+				this.engine.getTextureManager(), 300, 160, BILINEAR);
 		if (menuLevelIcon == null) {	
 			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(levelAtlas, activity, "LevelIcon.png", 10, 10);
 		}
 		if (this.menuLevelLocked == null) {
 			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "Lock.png", 160, 10);
+					.createFromAsset(levelAtlas, activity, "Lock.png", 170, 10);
 		}
 		if (this.menuLevelStar == null) {
 			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 160,70
+					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 170,70
 							, 4, 1);
 		}
 		if (this.backarrow == null) {
 			this.backarrow = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "arrowback.png", 220, 10);
+					.createFromAsset(levelAtlas, activity, "arrowback.png", 240, 10);
 		}
 		levelAtlas.load();
 	}
