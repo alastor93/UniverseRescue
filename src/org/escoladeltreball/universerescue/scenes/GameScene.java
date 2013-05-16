@@ -400,7 +400,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		 this.createItem();
 		 }
 		
-
+ 
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attackPlayer(player, fireEnemy);

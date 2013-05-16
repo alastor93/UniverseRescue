@@ -3,6 +3,7 @@ package org.escoladeltreball.universerescue.game;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -16,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class Player extends AnimatedSprite {
+public class Player extends AnimatedSprite implements IAnimationListener {
 	private Body dynamicBody;
 	private Body bulletBody;
 	private boolean isJump;
@@ -25,7 +26,7 @@ public class Player extends AnimatedSprite {
 	private double directionY;
 	private int numSteps;
 
-	public void setDirection(double directionX,double directionY) {
+	public void setDirection(double directionX, double directionY) {
 		this.directionX = directionX;
 		this.directionY = directionY;
 	}
@@ -39,7 +40,7 @@ public class Player extends AnimatedSprite {
 		camera.setChaseEntity(this);
 		this.numSteps = 4;
 	}
-	
+
 	@Override
 	protected void preDraw(GLState pGLState, Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
@@ -59,7 +60,8 @@ public class Player extends AnimatedSprite {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(dynamicBody
 					.getLinearVelocity().y, 6));
-			this.animate(new long[]{200,200,200},new int[]{9,10,11},false);
+			this.animate(new long[] { 200, 200, 200 }, new int[] { 9, 10, 11 },
+					false);
 			isJump = true;
 		}
 	}
@@ -68,7 +70,6 @@ public class Player extends AnimatedSprite {
 		isFire = true;
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
-		this.setFlippedHorizontal(false);
 		if (directionX < 0) {
 			sprite.setFlippedHorizontal(true);
 			sprite.setPosition(this.getX() - 95, this.getY());
@@ -87,30 +88,60 @@ public class Player extends AnimatedSprite {
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,
 				this.bulletBody, true, false));
-		this.animate(new long[]{100,100,200,100},new int[]{0,1,2,0},false);
+		this.animate(new long[] { 100, 100, 200, 100 },
+				new int[] { 0, 1, 2, 0 }, false, this);
 	}
 
 	public void run(float pValueX) {
-		if (pValueX > 0 && !isJump) {
+		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 8 ? 4 : numSteps;
 			this.setCurrentTileIndex(numSteps);
 			isFire = false;
 			numSteps++;
-		}else if(pValueX < 0 && !isJump){
-			numSteps = numSteps > 8 ? 4 : numSteps;
-			this.setCurrentTileIndex(numSteps);
-			isFire = false;
-			numSteps++;
-		}else if(pValueX == 0 && dynamicBody.getPosition().y < 4 && !isFire){
+		} else if (pValueX == 0 && !isJump && !isFire) {
 			this.setCurrentTileIndex(3);
 		}
-		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
-				dynamicBody.getLinearVelocity().y);
-		dynamicBody.setLinearVelocity(velocity);
-		Vector2Pool.recycle(velocity);
+		if (isFire) {
+			Vector2 velocity = Vector2Pool.obtain(0, 0);
+			dynamicBody.setLinearVelocity(velocity);
+			Vector2Pool.recycle(velocity);
+		} else {
+			Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
+					dynamicBody.getLinearVelocity().y);
+			dynamicBody.setLinearVelocity(velocity);
+			Vector2Pool.recycle(velocity);
+		}
 	}
-	
+
+	@Override
+	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
+			int pInitialLoopCount) {
+
+	}
+
+	@Override
+	public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
+			int pOldFrameIndex, int pNewFrameIndex) {
+
+	}
+
+	@Override
+	public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
+			int pRemainingLoopCount, int pInitialLoopCount) {
+
+	}
+
+	@Override
+	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+		isFire = false;
+	}
+
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;
 	}
+
+	public void setFire(boolean isFire) {
+		this.isFire = isFire;
+	}
+
 }
