@@ -86,8 +86,13 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,
 				this.bulletBody, true, false));
-		this.animate(new long[] { 100, 100, 200, 100 },
-				new int[] { 0, 1, 2, 0 }, false, this);
+		if (!isJump) {
+			this.animate(new long[] { 100, 100, 200, 100 }, new int[] { 0, 1,
+					2, 0 }, false, this);
+		} else {
+			this.animate(new long[] { 200, 200, 200, 200 }, new int[] { 15, 16,
+					17, 11 }, false, this);
+		}
 	}
 
 	public void run(float pValueX) {

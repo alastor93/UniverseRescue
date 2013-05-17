@@ -101,7 +101,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createFlyEnemy();
 		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
-		his.attachChild(debug);
+		this.attachChild(debug);
 		setOnSceneTouchListener(this);
 	}
 
