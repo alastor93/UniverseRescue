@@ -71,7 +71,7 @@ public class FlyEnemy extends AnimatedSprite {
 		body = PhysicsFactory.createBoxBody(physics, this,
 				BodyType.KinematicBody,
 				PhysicsFactory.createFixtureDef(0, 0, 0));
-		body.setUserData("enemy");
+		body.setUserData("flyenemy");
 		this.setScale(0.8f);
 		minY = camera.getHeight() / 2f;
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
