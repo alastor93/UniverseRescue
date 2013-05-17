@@ -32,6 +32,8 @@ import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
+import android.hardware.SensorManager;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -115,7 +117,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		platform2.detachSelf();
 		this.dispose();
 		this.detachSelf();
-		camera.setCenter(camera.getWidth()/2,camera.getHeight()/2);
+		camera.setCenter(camera.getWidth() / 2, camera.getHeight() / 2);
 	}
 
 	/**
@@ -219,11 +221,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							float pValueX, float pValueY) {
 						if (pValueX > 0) {
 							player.setFlippedHorizontal(false);
-						} else if (pValueY < 0) {
+						} else if (pValueX < 0) {
 							player.setFlippedHorizontal(true);
 						}
 						player.run(pValueX);
-						player.setDirection(pValueX, pValueY);
+						player.setDirection(pValueY);
 					}
 
 					@Override
@@ -272,7 +274,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	 */
 
 	public void createPhysics() {
-		this.physics = new FixedStepPhysicsWorld(50, new Vector2(0, -5), false);
+		this.physics = new FixedStepPhysicsWorld(60, new Vector2(0,
+				-SensorManager.GRAVITY_EARTH), false);
 		registerUpdateHandler(this.physics);
 		physics.setContactListener(new ContactListener() {
 
@@ -286,12 +289,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 			@Override
 			public void endContact(Contact contact) {
-				Fixture x1 = contact.getFixtureA();
-				Fixture x2 = contact.getFixtureB();
-				if (x1.getBody().getUserData().equals("player")
-						&& x2.getBody().getUserData().equals("item")) {
-					item.removeItem();
-				}
 			}
 
 			@Override
@@ -393,14 +390,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		 if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
-		// recta y no se ha creado aun el item
-		// // se añade el item
-		 addItem = true;
-		 this.createItem();
-		 }
-		
- 
+		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
+			// recta y no se ha creado aun el item
+			// // se añade el item
+			addItem = true;
+			this.createItem();
+		}
+
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attackPlayer(player, fireEnemy);
@@ -411,7 +407,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				fly.move();
 			}
 		}
-		
+
 		platform.moveX();
 		enemy.runEnemy();
 		super.onManagedUpdate(pSecondsElapsed);

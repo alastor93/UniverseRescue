@@ -2,8 +2,8 @@ package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -22,12 +22,10 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private Body bulletBody;
 	private boolean isJump;
 	private boolean isFire;
-	private double directionX;
 	private double directionY;
 	private int numSteps;
 
-	public void setDirection(double directionX, double directionY) {
-		this.directionX = directionX;
+	public void setDirection(double directionY) {
 		this.directionY = directionY;
 	}
 
@@ -59,7 +57,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public void jump() {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(dynamicBody
-					.getLinearVelocity().y, 6));
+					.getLinearVelocity().x, 6));
 			this.animate(new long[] { 200, 200, 200 }, new int[] { 9, 10, 11 },
 					false);
 			isJump = true;
@@ -70,7 +68,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		isFire = true;
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
-		if (directionX < 0) {
+		if (isFlippedHorizontal()) {
 			sprite.setFlippedHorizontal(true);
 			sprite.setPosition(this.getX() - 95, this.getY());
 			velocity = Vector2Pool.obtain(-10, 0);
