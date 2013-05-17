@@ -16,6 +16,9 @@ public class Enemy extends AnimatedSprite {
 	private Body dynamicBody;
 	private float initX = this.getX();
 	private float finX = this.getX();
+	private int damage = 10;
+	private int hp = 80;
+
 
 	public Enemy(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, Camera camera,
@@ -58,6 +61,23 @@ public class Enemy extends AnimatedSprite {
 
 		}
 
+	}
+	
+	public int  attack(){
+		return damage;	
+	}
+	
+	public void takeDamage(int dmg){
+		if ((hp - dmg) <= 0){
+			hp = 0;
+			this.detachSelf();
+		}else {
+			hp = hp - dmg;
+		}
+	}
+	
+	public int getHP(){
+		return hp;
 	}
 
 }
