@@ -12,12 +12,20 @@ public class BulletPool extends GenericPool<Sprite> {
 
 	private ITextureRegion bullet = null;
 	private GameScene scene;
+	private int damage  = 20;
 
 	public BulletPool(final ITextureRegion pTextureRegion, final GameScene pScene) {
 		super();
 		bullet = pTextureRegion;
 		scene = pScene;
 		
+	}
+	/**
+	 * attack
+	 * @return damage of the attack
+	 */
+	public int shoot(){
+		return damage;
 	}
 
 	/**
