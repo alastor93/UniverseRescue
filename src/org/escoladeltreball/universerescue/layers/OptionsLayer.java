@@ -98,6 +98,16 @@ public class OptionsLayer extends Layer {
 				- OptionsLayerTitle.getHeight());
 		this.attachChild(OptionsLayerTitle);
 
+		Text OptionsLayerBrightness = new Text(0, 0,
+				ResourcesManager.getInstance().defaultFont, "Brillo",
+				ResourcesManager.getInstance().engine
+						.getVertexBufferObjectManager());
+		OptionsLayerBrightness.setPosition(-BackgroundWidth / 2
+				+ OptionsLayerBrightness.getWidth(), OptionsLayerTitle.getY()
+				- OptionsLayerBrightness.getHeight());
+		
+		this.attachChild(OptionsLayerBrightness);
+
 		this.setPosition(GameActivity.getWidth() / 2f,
 				GameActivity.getHeight() / 2f + 480f);
 	}

@@ -72,17 +72,15 @@ public class ResourcesManager {
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
-	
-	
+
 	// Texture for load the platform sprite
 	public TiledTextureRegion platformSprite;
-	
-	//Itexture for load the life of the player
-	public ITextureRegion life = null;
-	
-	//Itexture for load the item
-	public ITextureRegion item = null;
 
+	// Itexture for load the life of the player
+	public ITextureRegion life = null;
+
+	// Itexture for load the item
+	public ITextureRegion item = null;
 
 	// ITextureRegion for load game controls
 	public ITextureRegion controlBaseRegion;
@@ -121,6 +119,7 @@ public class ResourcesManager {
 		if (defaultFont == null) {
 			defaultFont = FontFactory.create(engine.getFontManager(),
 					engine.getTextureManager(), 256, 256,
+					TextureOptions.BILINEAR,
 					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50f,
 					true, Color.WHITE_ARGB_PACKED_INT);
 			defaultFont.load();
@@ -128,6 +127,7 @@ public class ResourcesManager {
 		if (levelsFont == null) {
 			this.levelsFont = FontFactory.create(this.engine.getFontManager(),
 					this.engine.getTextureManager(), 256, 256,
+					TextureOptions.BILINEAR,
 					Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32f,
 					true, Color.WHITE_ARGB_PACKED_INT);
 			levelsFont.load();
@@ -202,7 +202,8 @@ public class ResourcesManager {
 		}
 		if (music_region == null) {
 			music_region = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(menuTextureAtlas, activity, "tiledsound.png", 2, 1);
+					.createTiledFromAsset(menuTextureAtlas, activity,
+							"tiledsound.png", 2, 1);
 		}
 		try {
 			this.menuTextureAtlas
@@ -223,9 +224,10 @@ public class ResourcesManager {
 				.setAssetBasePath("gfx/levelSelector/");
 		BitmapTextureAtlas levelAtlas = new BitmapTextureAtlas(
 				this.engine.getTextureManager(), 300, 160, BILINEAR);
-		if (menuLevelIcon == null) {	
+		if (menuLevelIcon == null) {
 			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "LevelIcon.png", 10, 10);
+					.createFromAsset(levelAtlas, activity, "LevelIcon.png", 10,
+							10);
 		}
 		if (this.menuLevelLocked == null) {
 			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
@@ -233,12 +235,13 @@ public class ResourcesManager {
 		}
 		if (this.menuLevelStar == null) {
 			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 170,70
-							, 4, 1);
+					.createTiledFromAsset(levelAtlas, activity, "Stars.png",
+							170, 70, 4, 1);
 		}
 		if (this.backarrow == null) {
 			this.backarrow = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "arrowback.png", 240, 10);
+					.createFromAsset(levelAtlas, activity, "arrowback.png",
+							240, 10);
 		}
 		levelAtlas.load();
 	}
@@ -253,33 +256,38 @@ public class ResourcesManager {
 				this.engine.getTextureManager(), 2800, 630, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(gameAtlas, activity,
-							"gameBackground.png");
+					.createFromAsset(gameAtlas, activity, "gameBackground.png");
 		}
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(gameAtlas, activity, "player.png", 6, 3);
+					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
+							3);
 		}
 		if (this.bulletSprite == null) {
 			this.bulletSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "bullet.png");
 		}
-		if (this.enemySprite == null){
-			this.enemySprite = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "enemy.png", 6, 2);
+		if (this.enemySprite == null) {
+			this.enemySprite = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "enemy.png", 6,
+							2);
 		}
 		if (this.flyEnemyBullet == null) {
 			this.flyEnemyBullet = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "flyEnemyAttack.png");
 		}
-		if (this.platformSprite == null){
+		if (this.platformSprite == null) {
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(gameAtlas, activity, "platform.png",4, 1);
+					.createTiledFromAsset(gameAtlas, activity, "platform.png",
+							4, 1);
 		}
-		if (this.life == null){
-			this.life = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "vida.png", 1, 1);
+		if (this.life == null) {
+			this.life = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "vida.png", 1, 1);
 		}
-		if (this.item == null){
-			this.item = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameAtlas, activity, "item.png", 1, 1);
+		if (this.item == null) {
+			this.item = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "item.png", 1, 1);
 		}
 		try {
 			this.gameAtlas
@@ -307,12 +315,12 @@ public class ResourcesManager {
 		}
 		if (this.buttonA == null) {
 			this.buttonA = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(controlAtlas, activity,
-							"Button_A.png", 140, 80);
+					.createFromAsset(controlAtlas, activity, "Button_A.png",
+							140, 80);
 		}
 		controlAtlas.load();
 	}
-	
+
 	public static GameActivity getActivity() {
 		return getInstance().activity;
 	}
