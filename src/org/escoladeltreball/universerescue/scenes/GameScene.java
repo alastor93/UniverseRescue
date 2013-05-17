@@ -35,6 +35,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -78,6 +79,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private FlyEnemy fly;
 	/** Enemy for test */
 	private Enemy enemy;
+	private Sprite b;
 
 	// Heal parts
 	private Rectangle healstate;
@@ -99,7 +101,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createFlyEnemy();
 		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
-		this.attachChild(debug);
+		his.attachChild(debug);
 		setOnSceneTouchListener(this);
 	}
 
@@ -405,6 +407,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		} else {
 			if (CoolDown.getInstance().timeHasPassed()) {
 				fly.move();
+			}
+		}
+		Iterator it = bulletList.iterator();
+		while (it.hasNext()) {
+			b = (Sprite) it.next();
+			if (b.collidesWith(enemy)) {
+				activity.runOnUpdateThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Body bodyBullet = physics.getPhysicsConnectorManager()
+								.findBodyByShape(b);
+						enemy.takeDamage(20);
+						System.out.println(enemy.getHP());
+						bodyBullet.setActive(false);
+						//physics.destroyBody(bodyBullet);
+						b.detachSelf();
+						System.gc();
+					}
+				});
 			}
 		}
 
