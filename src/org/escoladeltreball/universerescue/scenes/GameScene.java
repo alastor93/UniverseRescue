@@ -24,11 +24,11 @@ import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
-import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.FlyEnemy;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
+import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
@@ -202,8 +202,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createEnemy() {
-		teraEnemy = new TeraEnemy(camera.getBoundsXMax(), 100, manager.enemySprite,
-				this.vbom, camera, physics);
+		teraEnemy = new TeraEnemy(camera.getBoundsXMax(), 100,
+				manager.enemySprite, this.vbom, camera, physics);
 		this.attachChild(teraEnemy);
 
 	}

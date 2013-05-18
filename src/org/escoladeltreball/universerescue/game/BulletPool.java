@@ -1,9 +1,7 @@
 package org.escoladeltreball.universerescue.game;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.pool.GenericPool;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
@@ -12,19 +10,22 @@ public class BulletPool extends GenericPool<Sprite> {
 
 	private ITextureRegion bullet = null;
 	private GameScene scene;
-	private int damage  = 20;
+	private int damage = 20;
 
-	public BulletPool(final ITextureRegion pTextureRegion, final GameScene pScene) {
+	public BulletPool(final ITextureRegion pTextureRegion,
+			final GameScene pScene) {
 		super();
 		bullet = pTextureRegion;
 		scene = pScene;
-		
+
 	}
+
 	/**
 	 * attack
+	 * 
 	 * @return damage of the attack
 	 */
-	public int shoot(){
+	public int shoot() {
 		return damage;
 	}
 
@@ -33,7 +34,8 @@ public class BulletPool extends GenericPool<Sprite> {
 	 */
 	@Override
 	protected Sprite onAllocatePoolItem() {
-		Sprite newSprite = new Sprite(10, 10, bullet, ResourcesManager.getInstance().vbom);
+		Sprite newSprite = new Sprite(10, 10, bullet,
+				ResourcesManager.getInstance().vbom);
 		scene.attachChild(newSprite);
 		scene.bulletList.add(newSprite);
 		return newSprite;

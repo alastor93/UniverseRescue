@@ -3,7 +3,6 @@ package org.escoladeltreball.universerescue.levels;
 import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
