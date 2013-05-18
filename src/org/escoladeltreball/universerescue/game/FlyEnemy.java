@@ -3,57 +3,30 @@ package org.escoladeltreball.universerescue.game;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveByModifier;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
 import org.andengine.entity.modifier.PathModifier.Path;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.escoladeltreball.universerescue.managers.ResourcesManager;
-import org.escoladeltreball.universerescue.scenes.GameScene;
-
-import android.graphics.Point;
-import android.graphics.PointF;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class FlyEnemy extends AnimatedSprite {
+public class FlyEnemy extends Enemy {
 
 	// Attributes //
 
 	// random boolean
 	private Random random;
 
-	// Scene reference
-	private Camera camera;
-	private PhysicsWorld physics;
-
-	// Player reference
-	// Variable for exact position on enemy's attack
-	private float playerX;
-	private float playerY;
-
-	// Enemy attributes
 	// Position
-	protected Body body;
-	private float X;
-	private float Y;
 	private float minY;
-	// attack
-	private boolean canAttack = true;
 	// randomPath
 	private Path path;
 
@@ -62,12 +35,9 @@ public class FlyEnemy extends AnimatedSprite {
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, Camera cam,
 			PhysicsWorld physicsWorld) {
-		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
+		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
+				physicsWorld);
 		random = new Random();
-		X = pX;
-		Y = pY;
-		camera = cam;
-		physics = physicsWorld;
 		body = PhysicsFactory.createBoxBody(physics, this,
 				BodyType.KinematicBody,
 				PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -158,9 +128,9 @@ public class FlyEnemy extends AnimatedSprite {
 		registerEntityModifier(modifier);
 	}
 
-	public void attackPlayer(Player p, Sprite bullet) {
-		playerX = p.getX() + p.getWidth() / 2f;
-		playerY = p.getY() + p.getHeight() / 2f;
+	public void attack(Player p, Sprite bullet) {
+		float playerX = p.getX() + p.getWidth() / 2f;
+		float playerY = p.getY() + p.getHeight() / 2f;
 		float posX = playerX - this.getX();
 		float posY = playerY - this.getY();
 
@@ -170,15 +140,15 @@ public class FlyEnemy extends AnimatedSprite {
 		} else {
 			bullet.setPosition(X + this.getWidth() / 2f, Y - this.getHeight());
 		}
-//		scene.attachChild(bullet);
+		// scene.attachChild(bullet);
 
 		MoveByModifier movMByod = new MoveByModifier(1f, posX, posY);
 
 		bullet.registerEntityModifier(movMByod);
 		canAttack = false;
 	}
-	
-	public boolean canAttack() {
-		return canAttack;
+
+	public void takeDamage(int dmg) {
 	}
+
 }

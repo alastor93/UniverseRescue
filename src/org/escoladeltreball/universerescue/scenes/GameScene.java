@@ -24,11 +24,11 @@ import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
-import org.escoladeltreball.universerescue.game.Enemy;
 import org.escoladeltreball.universerescue.game.FlyEnemy;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
+import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
@@ -77,7 +77,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** FlyEnemy for test */
 	private FlyEnemy fly;
 	/** Enemy for test */
-	private Enemy enemy;
+	private TeraEnemy teraEnemy;
 	private Sprite b;
 
 	// Heal parts
@@ -202,9 +202,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createEnemy() {
-		enemy = new Enemy(camera.getBoundsXMax(), 100, manager.enemySprite,
-				this.vbom, camera, physics);
-		this.attachChild(enemy);
+		teraEnemy = new TeraEnemy(camera.getBoundsXMax(), 100,
+				manager.enemySprite, this.vbom, camera, physics);
+		this.attachChild(teraEnemy);
 
 	}
 
@@ -444,15 +444,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		Iterator it = bulletList.iterator();
 		while (it.hasNext()) {
 			b = (Sprite) it.next();
-			if (b.collidesWith(enemy)) {
+			if (b.collidesWith(teraEnemy)) {
 				activity.runOnUpdateThread(new Runnable() {
 
 					@Override
 					public void run() {
 						Body bodyBullet = physics.getPhysicsConnectorManager()
 								.findBodyByShape(b);
-						enemy.takeDamage(20);
-						System.out.println(enemy.getHP());
+						teraEnemy.takeDamage(20);
+						System.out.println(teraEnemy.getHP());
 						bodyBullet.setActive(false);
 						// physics.destroyBody(bodyBullet);
 						b.detachSelf();
@@ -464,7 +464,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		platform3.moveLeftToRight(10, 780);
 		platform2.moveRightToLeft(1500, 820);
-		enemy.runEnemy();
+		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
