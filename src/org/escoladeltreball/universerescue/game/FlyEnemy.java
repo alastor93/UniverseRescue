@@ -30,30 +30,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class FlyEnemy extends AnimatedSprite {
+public class FlyEnemy extends Enemy {
 
 	// Attributes //
 
 	// random boolean
 	private Random random;
 
-	// Scene reference
-	private Camera camera;
-	private PhysicsWorld physics;
-
-	// Player reference
-	// Variable for exact position on enemy's attack
-	private float playerX;
-	private float playerY;
-
-	// Enemy attributes
 	// Position
-	protected Body body;
-	private float X;
-	private float Y;
 	private float minY;
-	// attack
-	private boolean canAttack = true;
 	// randomPath
 	private Path path;
 
@@ -62,12 +47,8 @@ public class FlyEnemy extends AnimatedSprite {
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, Camera cam,
 			PhysicsWorld physicsWorld) {
-		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
+		super(pX, pY,pTiledTextureRegion, pVertexBufferObject, cam, physicsWorld);
 		random = new Random();
-		X = pX;
-		Y = pY;
-		camera = cam;
-		physics = physicsWorld;
 		body = PhysicsFactory.createBoxBody(physics, this,
 				BodyType.KinematicBody,
 				PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -158,9 +139,9 @@ public class FlyEnemy extends AnimatedSprite {
 		registerEntityModifier(modifier);
 	}
 
-	public void attackPlayer(Player p, Sprite bullet) {
-		playerX = p.getX() + p.getWidth() / 2f;
-		playerY = p.getY() + p.getHeight() / 2f;
+	public void attack(Player p, Sprite bullet) {
+		float playerX = p.getX() + p.getWidth() / 2f;
+		float playerY = p.getY() + p.getHeight() / 2f;
 		float posX = playerX - this.getX();
 		float posY = playerY - this.getY();
 
@@ -178,7 +159,7 @@ public class FlyEnemy extends AnimatedSprite {
 		canAttack = false;
 	}
 	
-	public boolean canAttack() {
-		return canAttack;
+	public void takeDamage(int dmg) {
 	}
+
 }
