@@ -75,7 +75,7 @@ public class ResourcesManager {
 	public TiledTextureRegion enemySprite;
 
 	// Texture for load the platform sprite
-	public TiledTextureRegion platformSprite;
+	public ITextureRegion platformSprite;
 
 	// Itexture for load the life of the player
 	public ITextureRegion life = null;
@@ -286,8 +286,7 @@ public class ResourcesManager {
 		}
 		if (this.platformSprite == null) {
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(gameAtlas, activity, "platform.png",
-							4, 1);
+					.createFromAsset(gameAtlas, activity, "platform.png");
 		}
 		if (this.life == null) {
 			this.life = BitmapTextureAtlasTextureRegionFactory
