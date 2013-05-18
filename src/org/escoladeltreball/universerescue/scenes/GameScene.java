@@ -181,9 +181,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createPlatform() {
-		this.platform = new Platform(800f, 110f, manager.platformSprite,
+		this.platform = new Platform(800f, 120f, manager.platformSprite,
 				this.vbom, camera, physics);
-
+		
 		this.platform2 = new Platform(1500, 200f, manager.platformSprite,
 				this.vbom, camera, physics);
 
@@ -329,7 +329,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					if (x1.getBody().getUserData().equals("platform")
 							|| x2.getBody().getUserData().equals("platform")) {
 						if (player.getY() - player.getHeight() > platform
-								.getY()) {
+								.getY() + platform.getHeight()) {
 							player.setJump(false);
 							player.setCurrentTileIndex(3);
 							healstate.setWidth(210);
@@ -340,9 +340,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							|| x2.getBody().getUserData()
 									.equals("movePlatform")) {
 						if (player.getY() - player.getHeight() > platform2
-								.getY()
+								.getY()+ platform.getHeight()
 								|| player.getY() - player.getHeight() > platform3
-										.getY()) {
+										.getY()+ platform.getHeight()) {
 							player.setJump(false);
 							player.setCurrentTileIndex(3);
 							healstate.setWidth(210);
