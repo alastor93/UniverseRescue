@@ -48,9 +48,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// VARIABLES //
 
 	/** Counter for player's score */
-	private int score = 0;
+	private int score;
 	/** Counter for enemies killed */
-	private int enemiesKilled = 0;
+	private int enemiesKilled;
 	/** Counter for goal enemies */
 	private final int enemiesGoal = 30;
 	/** Our game HUD */
