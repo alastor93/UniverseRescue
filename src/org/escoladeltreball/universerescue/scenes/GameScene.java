@@ -62,7 +62,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** The player */
 	private Player player;
 	/** Platforms */
-	private Platform platform,platform2,platform3;
+	private Platform platform, platform2, platform3;
 	/** Add Item */
 	private boolean addItem;
 	/** Item */
@@ -97,7 +97,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
-		createFlyEnemy();
+		// createFlyEnemy();
 		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
@@ -181,12 +181,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createPlatform() {
-		this.platform = new Platform(800f, 140f, manager.platformSprite,
+		this.platform = new Platform(800f, 110f, manager.platformSprite,
 				this.vbom, camera, physics);
 
-		this.platform2 = new Platform(1500 , 200f, manager.platformSprite,
+		this.platform2 = new Platform(1500, 200f, manager.platformSprite,
 				this.vbom, camera, physics);
-		
+
 		this.platform3 = new Platform(10, 200f, manager.platformSprite,
 				this.vbom, camera, physics);
 
@@ -294,6 +294,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 			@Override
 			public void endContact(Contact contact) {
+				Fixture x1 = contact.getFixtureA();
+				Fixture x2 = contact.getFixtureB();
+				if (x1.getBody().getUserData().equals("player")
+						|| x2.getBody().getUserData().equals("player")) {
+					if (x1.getBody().getUserData().equals("platform")
+							|| x2.getBody().getUserData().equals("platform")) {
+						if (player.getY() - player.getHeight() > platform
+								.getY()) {
+							player.setJump(true);
+							player.setCurrentTileIndex(11);
+						}
+					}
+				}
 			}
 
 			@Override
@@ -315,10 +328,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 					if (x1.getBody().getUserData().equals("platform")
 							|| x2.getBody().getUserData().equals("platform")) {
-						player.setJump(false);
-						player.setCurrentTileIndex(3);
-						healstate.setWidth(210);
-						healstate.setX(camera.getCameraSceneWidth() - 664);
+						if (player.getY() - player.getHeight() > platform
+								.getY()) {
+							player.setJump(false);
+							player.setCurrentTileIndex(3);
+							healstate.setWidth(210);
+							healstate.setX(camera.getCameraSceneWidth() - 664);
+						}
+					}
+					if (x1.getBody().getUserData().equals("movePlatform")
+							|| x2.getBody().getUserData()
+									.equals("movePlatform")) {
+						if (player.getY() - player.getHeight() > platform2
+								.getY()
+								|| player.getY() - player.getHeight() > platform3
+										.getY()) {
+							player.setJump(false);
+							player.setCurrentTileIndex(3);
+							healstate.setWidth(210);
+							healstate.setX(camera.getCameraSceneWidth() - 664);
+						}
 					}
 				}
 			}
@@ -402,16 +431,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			this.createItem();
 		}
 
-		if (fly.canAttack()) {
-			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
-			fly.attackPlayer(player, fireEnemy);
-			// System.out.println("FIREEEEEEEEEEEEEEEEEEEEEEEEEEE");
-
-		} else {
-			if (CoolDown.getInstance().timeHasPassed()) {
-				fly.move();
-			}
-		}
+		// if (fly.canAttack()) {
+		// Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
+		// fly.attackPlayer(player, fireEnemy);
+		// // System.out.println("FIREEEEEEEEEEEEEEEEEEEEEEEEEEE");
+		//
+		// } else {
+		// if (CoolDown.getInstance().timeHasPassed()) {
+		// fly.move();
+		// }
+		// }
 		Iterator it = bulletList.iterator();
 		while (it.hasNext()) {
 			b = (Sprite) it.next();
@@ -425,7 +454,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						enemy.takeDamage(20);
 						System.out.println(enemy.getHP());
 						bodyBullet.setActive(false);
-						//physics.destroyBody(bodyBullet);
+						// physics.destroyBody(bodyBullet);
 						b.detachSelf();
 						System.gc();
 					}
@@ -433,8 +462,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 		}
 
-		platform3.moveLeftToRight(10,780);
-		platform2.moveRightToLeft(1500,820);
+		platform3.moveLeftToRight(10, 780);
+		platform2.moveRightToLeft(1500, 820);
 		enemy.runEnemy();
 		super.onManagedUpdate(pSecondsElapsed);
 	}

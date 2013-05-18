@@ -17,8 +17,7 @@ public class Platform extends Sprite {
 	private float finX = this.getX();
 	private boolean back;
 
-	public Platform(float pX, float pY,
-			ITextureRegion pTextureRegion,
+	public Platform(float pX, float pY, ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
@@ -36,21 +35,22 @@ public class Platform extends Sprite {
 				bdBody, true, false));
 	}
 
-	
-	public void moveRightToLeft(int init,int limit){
-			if (finX > limit && !back) {
-				finX -= 1;
-				bdBody.setLinearVelocity(-1.7f, 0);
-			} else if (finX == init) {
-				back = false;
-			} else if (finX == limit || back) {
-				finX += 1;
-				back = true;
-				bdBody.setLinearVelocity(1.7f, 0);
-			}
+	public void moveRightToLeft(int init, int limit) {
+		bdBody.setUserData("movePlatform");
+		if (finX > limit && !back) {
+			finX -= 1;
+			bdBody.setLinearVelocity(-1.7f, 0);
+		} else if (finX == init) {
+			back = false;
+		} else if (finX == limit || back) {
+			finX += 1;
+			back = true;
+			bdBody.setLinearVelocity(1.7f, 0);
+		}
 	}
-	
-	public void moveLeftToRight(int init,int limit){
+
+	public void moveLeftToRight(int init, int limit) {
+		bdBody.setUserData("movePlatform");
 		if (finX < limit && !back) {
 			finX += 1;
 			bdBody.setLinearVelocity(1.7f, 0);
@@ -61,14 +61,12 @@ public class Platform extends Sprite {
 			back = true;
 			bdBody.setLinearVelocity(-1.7f, 0);
 		}
-}
+	}
 
 	@Override
 	protected void preDraw(GLState pGLState, Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
 		pGLState.setDitherEnabled(true);
 	}
-	
-	
 
 }
