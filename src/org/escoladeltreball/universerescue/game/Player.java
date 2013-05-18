@@ -57,7 +57,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public void jump() {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(dynamicBody
-					.getLinearVelocity().x, 6));
+					.getLinearVelocity().x, 7));
 			this.animate(new long[] { 200, 200, 200 }, new int[] { 9, 10, 11 },
 					false);
 			isJump = true;
