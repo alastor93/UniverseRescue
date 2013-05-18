@@ -62,8 +62,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** The player */
 	private Player player;
 	/** Platforms */
-	private Platform platform;
-	private Platform platform2;
+	private Platform platform,platform2,platform3;
 	/** Add Item */
 	private boolean addItem;
 	/** Item */
@@ -182,14 +181,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createPlatform() {
-		this.platform = new Platform(400f, 100f, manager.platformSprite,
+		this.platform = new Platform(800f, 140f, manager.platformSprite,
 				this.vbom, camera, physics);
 
-		this.platform2 = new Platform(800f, 230f, manager.platformSprite,
+		this.platform2 = new Platform(1500 , 200f, manager.platformSprite,
+				this.vbom, camera, physics);
+		
+		this.platform3 = new Platform(10, 200f, manager.platformSprite,
 				this.vbom, camera, physics);
 
 		this.attachChild(platform);
 		this.attachChild(platform2);
+		this.attachChild(platform3);
 	}
 
 	public void createFlyEnemy() {
@@ -430,7 +433,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 		}
 
-		platform.moveX();
+		platform3.moveLeftToRight(10,780);
+		platform2.moveRightToLeft(1500,820);
 		enemy.runEnemy();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
