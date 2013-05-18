@@ -12,7 +12,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Enemy extends AnimatedSprite {
+public class TeraEnemy extends AnimatedSprite {
 	private Body dynamicBody;
 	private float initX = this.getX();
 	private float finX = this.getX();
@@ -20,7 +20,7 @@ public class Enemy extends AnimatedSprite {
 	private int hp = 80;
 
 
-	public Enemy(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
+	public TeraEnemy(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, Camera camera,
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
