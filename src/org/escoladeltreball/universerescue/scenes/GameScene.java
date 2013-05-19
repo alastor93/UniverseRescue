@@ -30,6 +30,7 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import android.hardware.SensorManager;
@@ -445,20 +446,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		while (it.hasNext()) {
 			b = (Sprite) it.next();
 			if (b.collidesWith(teraEnemy)) {
-				activity.runOnUpdateThread(new Runnable() {
-
-					@Override
-					public void run() {
-						Body bodyBullet = physics.getPhysicsConnectorManager()
-								.findBodyByShape(b);
-						teraEnemy.takeDamage(20);
-						System.out.println(teraEnemy.getHP());
-						bodyBullet.setActive(false);
-						// physics.destroyBody(bodyBullet);
-						b.detachSelf();
-						System.gc();
-					}
-				});
+				teraEnemy.eliminateEnemy();
 			}
 		}
 
