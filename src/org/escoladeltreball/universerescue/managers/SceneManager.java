@@ -132,6 +132,7 @@ public class SceneManager {
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						engine.unregisterUpdateHandler(pTimerHandler);
+						loadingScene.disposeScene();
 						ResourcesManager.getInstance().loadGameGraphics();
 						gameScene = new GameScene();
 						setScene(gameScene);
