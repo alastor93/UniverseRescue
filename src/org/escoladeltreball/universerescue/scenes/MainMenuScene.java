@@ -33,6 +33,7 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_OPTIONS = 1;
 	/** An int associated with Menu's option 'exit' */
 	private final int MENU_EXIT = 2;
+	private IMenuItem playMenuItem,optionMenuItem,exitMenuItem;
 
 	// Methods
 
@@ -50,11 +51,12 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
-		menuScene.detachSelf();
-		menuScene.dispose();
-		this.detachSelf();
-		this.dispose();
-
+		playMenuItem.detachSelf();
+		playMenuItem.dispose();
+		exitMenuItem.detachSelf();
+		exitMenuItem.dispose();
+		optionMenuItem.detachSelf();
+		optionMenuItem.dispose();
 	}
 
 	/**
@@ -84,15 +86,15 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.setPosition(0, -50);
 		// Build a menu item's
 		// PLAY
-		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
+		playMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_PLAY, manager.play_region, vbom), 1.2f,
 				1);
 		// OPTIONS
-		final IMenuItem optionMenuItem = new ScaleMenuItemDecorator(
+		optionMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_OPTIONS, manager.options_region, vbom),
 				1.2f, 1);
 		// EXIT
-		final IMenuItem exitMenuItem = new ScaleMenuItemDecorator(
+		exitMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 1.2f,
 				1);
 		
