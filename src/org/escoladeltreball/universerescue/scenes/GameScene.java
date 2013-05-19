@@ -202,7 +202,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createEnemy() {
-		teraEnemy = new TeraEnemy(camera.getBoundsXMax(), 100,
+		teraEnemy = new TeraEnemy(1600 - 10, 100,
 				manager.enemySprite, this.vbom, camera, physics);
 		this.attachChild(teraEnemy);
 

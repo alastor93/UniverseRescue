@@ -21,8 +21,9 @@ public class TeraEnemy extends Enemy {
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject, camera,
 				physicsWorld);
-		this.setScale(2);
+		this.setScale(1.4f);
 		this.createPhysics(camera, physicsWorld);
+		this.animate(new long[]{200,200,200},1,3,true);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,7 +43,6 @@ public class TeraEnemy extends Enemy {
 	public void move() {
 		if (finX > 0) {
 			finX -= 1;
-			this.setPosition(finX, 100f);
 			body.setLinearVelocity(1.7f, 0);
 		}
 		if (finX == 0) {
