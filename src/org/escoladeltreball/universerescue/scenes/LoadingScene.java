@@ -35,8 +35,10 @@ public class LoadingScene extends BaseScene {
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
-		
+		loading.detachSelf();
+		loading.dispose();
+		this.detachSelf();
+		this.dispose();
 	}
 
 }
