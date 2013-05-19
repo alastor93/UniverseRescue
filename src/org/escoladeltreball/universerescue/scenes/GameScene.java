@@ -184,10 +184,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.platform = new Platform(800f, 120f, manager.platformSprite,
 				this.vbom, camera, physics);
 		
-		this.platform2 = new Platform(1500, 200f, manager.platformSprite,
+		this.platform2 = new Platform(1500, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
 
-		this.platform3 = new Platform(10, 200f, manager.platformSprite,
+		this.platform3 = new Platform(10, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
 
 		this.attachChild(platform);
@@ -202,7 +202,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	public void createEnemy() {
-		teraEnemy = new TeraEnemy(1600 - 10, 100,
+		teraEnemy = new TeraEnemy(1500, 100,
 				manager.enemySprite, this.vbom, camera, physics);
 		this.attachChild(teraEnemy);
 

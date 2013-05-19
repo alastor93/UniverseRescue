@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class TeraEnemy extends Enemy {
 
 	private float initX = this.getX();
-	private float finX = this.getX();
+	private boolean back;
 
 	public TeraEnemy(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
@@ -41,14 +41,17 @@ public class TeraEnemy extends Enemy {
 	}
 
 	public void move() {
-		if (finX > 0) {
-			finX -= 1;
+		if (this.getX() - this.getWidth() > 900 && !back) {
+			System.out.println(this.getX() - this.getWidth());
+			this.setFlippedHorizontal(false);
+			body.setLinearVelocity(-1.7f, 0);
+		}else if (this.getX() == initX) {
+			back = false;
+		} else if (this.getX() - this.getWidth() <= 900 || back) {
+			System.out.println(this.getX() - this.getWidth());
+			this.setFlippedHorizontal(true);
+			back = true;
 			body.setLinearVelocity(1.7f, 0);
-		}
-		if (finX == 0) {
-			this.setPosition(initX, 100f);
-			this.finX = initX;
-
 		}
 
 	}
