@@ -80,7 +80,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 				0, 0);
 		this.bulletBody = PhysicsFactory.createBoxBody(physicsWorld, sprite,
 				BodyType.KinematicBody, bulletFixtureDef1);
-		this.bulletBody.setUserData("fire");
+		this.bulletBody.setUserData("bullet");
 		this.bulletBody.setLinearVelocity(velocity);
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,

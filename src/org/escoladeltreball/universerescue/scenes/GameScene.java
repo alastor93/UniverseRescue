@@ -30,13 +30,11 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
-import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -98,7 +96,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
-		// createFlyEnemy();
+		 createFlyEnemy();
 		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
@@ -198,7 +196,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	public void createFlyEnemy() {
 		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
-				manager.playerSprite, vbom, camera, physics);
+				manager.flyEnemySprite, vbom, camera, physics);
 		this.attachChild(fly);
 	}
 
@@ -314,6 +312,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			public void beginContact(Contact contact) {
 				Fixture x1 = contact.getFixtureA();
 				Fixture x2 = contact.getFixtureB();
+				if (x1.getBody().getUserData().equals("bullet")
+						|| x2.getBody().getUserData().equals("bullet")) {
+					if (x1.getBody().getUserData().equals("teraEnemy")
+							|| x2.getBody().getUserData().equals("teraEnemy")) {
+						teraEnemy.eliminateEnemy();
+					}
+				}
 				if (x1.getBody().getUserData().equals("player")
 						|| x2.getBody().getUserData().equals("player")) {
 					if (x1.getBody().getUserData().equals("item")
@@ -431,7 +436,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			addItem = true;
 			this.createItem();
 		}
-
 		// if (fly.canAttack()) {
 		// Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 		// fly.attackPlayer(player, fireEnemy);
@@ -442,14 +446,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// fly.move();
 		// }
 		// }
-		Iterator it = bulletList.iterator();
-		while (it.hasNext()) {
-			b = (Sprite) it.next();
-			if (b.collidesWith(teraEnemy)) {
-				teraEnemy.eliminateEnemy();
-			}
-		}
-
 		platform3.moveLeftToRight(10, 780);
 		platform2.moveRightToLeft(1500, 820);
 		teraEnemy.move();
