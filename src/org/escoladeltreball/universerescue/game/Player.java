@@ -103,7 +103,6 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
-			isFire = false;
 			numSteps++;
 		} else if (pValueX == 0 && !isJump && !isFire) {
 			this.setCurrentTileIndex(9);
@@ -123,19 +122,16 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	@Override
 	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
 			int pInitialLoopCount) {
-
 	}
 
 	@Override
 	public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
 			int pOldFrameIndex, int pNewFrameIndex) {
-
 	}
 
 	@Override
 	public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
 			int pRemainingLoopCount, int pInitialLoopCount) {
-
 	}
 
 	@Override
@@ -146,9 +142,4 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;
 	}
-
-	public void setFire(boolean isFire) {
-		this.isFire = isFire;
-	}
-
 }
