@@ -30,7 +30,7 @@ public class Stalactite extends Sprite {
 	private void createPhysics(Camera camera) {
 		stalactiteBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
-		stalactiteBody.setUserData("item");
+		stalactiteBody.setUserData("stalactite");
 		physicsConnector = new PhysicsConnector(this, stalactiteBody, true,
 				false);
 		physicsWorld.registerPhysicsConnector(physicsConnector);

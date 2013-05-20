@@ -83,6 +83,9 @@ public class ResourcesManager {
 
 	// Itexture for load the item
 	public ITextureRegion item = null;
+	
+	//Itexture for load the stalactite
+	public ITextureRegion stalactite = null;
 
 	// ITextureRegion for load game controls
 	public ITextureRegion controlBaseRegion;
@@ -262,7 +265,7 @@ public class ResourcesManager {
 		gameAtlas = new BuildableBitmapTextureAtlas(
 				this.engine.getTextureManager(), 1886, 1902, BILINEAR);
 		gameAtlas2 = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 340, 125, BILINEAR);
+				this.engine.getTextureManager(), 550, 125, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "gameBackground.png");
@@ -306,6 +309,11 @@ public class ResourcesManager {
 		if (this.item == null) {
 			this.item = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas2, activity, "item.png", 1,
+							1);
+		}
+		if (this.stalactite == null){
+			this.stalactite = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas2, activity, "stalactite.png", 1,
 							1);
 		}
 		try {
