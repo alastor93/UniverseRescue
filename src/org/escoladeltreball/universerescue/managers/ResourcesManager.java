@@ -73,6 +73,7 @@ public class ResourcesManager {
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
+	public TiledTextureRegion flyEnemySprite;
 
 	// Texture for load the platform sprite
 	public ITextureRegion platformSprite;
@@ -279,6 +280,15 @@ public class ResourcesManager {
 			this.enemySprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "enemy.png", 4,
 							2);
+		}
+		if (this.flyEnemySprite == null) {
+			this.flyEnemySprite = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas, activity, "flyEnemy.png",
+							4, 1);
+		}
+		if (this.flyEnemyBullet == null) {
+			this.flyEnemyBullet = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "flyEnemyAttack.png");
 		}
 		if (this.flyEnemyBullet == null) {
 			this.flyEnemyBullet = BitmapTextureAtlasTextureRegionFactory
