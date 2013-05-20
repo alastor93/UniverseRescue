@@ -7,16 +7,16 @@ public class CoolDown {
 	private boolean valid;
 	private Timer timer;
 	private long delay = 500;
-	private static CoolDown instance = null;
+//	private static CoolDown instance = null;
 
-	public static CoolDown getInstance() {
-		if (instance == null) {
-			instance = new CoolDown();
-		}
-		return instance;
-	}
+//	public static CoolDown getInstance() {
+//		if (instance == null) {
+//			instance = new CoolDown();
+//		}
+//		return instance;
+//	}
 
-	private CoolDown() {
+	public CoolDown() {
 		timer = new Timer();
 		valid = true;
 	}
