@@ -9,14 +9,9 @@ import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
 import org.andengine.entity.modifier.PathModifier.Path;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.extension.physics.box2d.PhysicsConnector;
-import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class FlyEnemy extends Enemy {
 
@@ -53,84 +48,94 @@ public class FlyEnemy extends Enemy {
 	}
 
 	public void move() {
-		tempX = 0;
-		tempY = Y;
-
-		// if true suposed move positive, false move negative
-		if (random.nextBoolean()) {
-			// Check if enemy goes out of screen, if it then move negative
-			if (X + 60 < camera.getWidth()) {
-				tempX = X + 50;
+	// if true suposed move positive, false move negative
+			if (random.nextBoolean()) {
+				// Check if enemy goes out of screen, if it then move negative
+				if (X + 80 < camera.getWidth()) {
+					tempX = X + 70;
+				} else {
+					tempX = X - 70;
+				}
 			} else {
-				tempX = X - 50;
-			}
-		} else {
-			// Check if enemy goes out of screen, if it then move positive
-			if (X - 60 > 0) {
-				tempX = X - 50;
-			} else {
-				tempX = X + 50;
-			}
+				// Check if enemy goes out of screen, if it then move positive
+				if (X - 80 > 0) {
+					tempX = X - 70;
+				} else {
+					tempX = X + 70;
+				}
 
-		}
-		// random boolean for move Y or not
-		if (random.nextBoolean()) {
-			// randon boolean for move Y positive
+			}
+			// random boolean for move Y positive or negative
 			if (random.nextBoolean()) {
 				// If it goes out of the screen then move Y negative
-				if (Y + 35 < camera.getHeight()) {
-					tempY = Y + 25;
+				if (Y + 80 < camera.getHeight()) {
+					tempY = Y + 70;
 				} else {
-					tempY = Y - 25;
+					tempY = Y - 70;
 				}
 			} else {
 				// If it goes more than minY then move Y positive
-				if (Y - 35 < minY) {
-					tempY = Y + 25;
+				if (Y - 80 < minY) {
+					tempY = Y + 70;
 				} else {
-					tempY = Y - 25;
+					tempY = Y - 70;
 				}
 			}
+//			MoveXModifier modifier = new MoveXModifier(2, X, tempX, new IEntityModifierListener() {
+//				
+//				@Override
+//				public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				
+//				@Override
+//				public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+//					canAttack = true;
+//					X = tempX;
+//					
+//				}
+//			});
+			// Create a new path
+			path = new Path(2).to(X, Y).to(tempX, tempY);
+			X = tempX;
+			Y = tempY;
+			// Set a new PathModifier for set action on path event
+			PathModifier modifier = new PathModifier(0.5f, path,
+					new IPathModifierListener() {
+						@Override
+						public void onPathStarted(final PathModifier pPathModifier,
+								final IEntity pEntity) {
+						}
+
+						@Override
+						public void onPathWaypointStarted(
+								final PathModifier pPathModifier,
+								final IEntity pEntity, final int pWaypointIndex) {
+							// Move body to the position
+//							final Vector2 vector = new Vector2(X / 32, Y / 32);
+//							body.setTransform(vector, 0.0f);
+						}
+
+						@Override
+						public void onPathWaypointFinished(
+								final PathModifier pPathModifier,
+								final IEntity pEntity, final int pWaypointIndex) {
+							// When finish to move then attack player
+							canAttack = true;
+							path = null;
+						}
+
+						@Override
+						public void onPathFinished(
+								final PathModifier pPathModifier,
+								final IEntity pEntity) {
+						}
+					});
+			
+			this.registerEntityModifier(modifier);
 		}
-		// Create a new path
-		path = new Path(2).to(X, Y).to(tempX, tempY);
-		X = tempX;
-		Y = tempY;
-		// Set a new PathModifier for set action on path event
-		PathModifier modifier = new PathModifier(0.1f, path,
-				new IPathModifierListener() {
-					@Override
-					public void onPathStarted(final PathModifier pPathModifier,
-							final IEntity pEntity) {
-					}
 
-					@Override
-					public void onPathWaypointStarted(
-							final PathModifier pPathModifier,
-							final IEntity pEntity, final int pWaypointIndex) {
-						// Move body to the position
-						final Vector2 vector = new Vector2(X / 32, Y / 32);
-						body.setTransform(vector, 0.0f);
-					}
-
-					@Override
-					public void onPathWaypointFinished(
-							final PathModifier pPathModifier,
-							final IEntity pEntity, final int pWaypointIndex) {
-						// When finish to move then attack player
-						canAttack = true;
-						path = null;
-					}
-
-					@Override
-					public void onPathFinished(
-							final PathModifier pPathModifier,
-							final IEntity pEntity) {
-					}
-				});
-		modifier.setAutoUnregisterWhenFinished(true);
-		registerEntityModifier(modifier);
-	}
 
 	public void attack(Player p, Sprite bullet) {
 		float playerX = p.getX() + p.getWidth() / 2f;
