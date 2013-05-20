@@ -27,6 +27,9 @@ public class FlyEnemy extends Enemy {
 
 	// Position
 	private float minY;
+	private float tempX;
+	private float tempY;
+
 	// randomPath
 	private Path path;
 
@@ -39,18 +42,19 @@ public class FlyEnemy extends Enemy {
 				physicsWorld);
 		random = new Random();
 		this.setScale(2f);
-		body = PhysicsFactory.createBoxBody(physics, this,
-				BodyType.KinematicBody,
-				PhysicsFactory.createFixtureDef(0, 0, 0));
-		body.setUserData("flyenemy");
+		// body = PhysicsFactory.createBoxBody(physics, this,
+		// BodyType.KinematicBody,
+		// PhysicsFactory.createFixtureDef(0, 0, 0));
+		// body.setUserData("flyenemy");
 		minY = camera.getHeight() / 2f;
-		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
-				true, false));
+		// physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
+		// body,
+		// true, false));
 	}
 
 	public void move() {
-		float tempX;
-		float tempY = Y;
+		tempX = 0;
+		tempY = Y;
 
 		// if true suposed move positive, false move negative
 		if (random.nextBoolean()) {
