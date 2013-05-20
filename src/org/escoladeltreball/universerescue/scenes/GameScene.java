@@ -79,7 +79,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private FlyEnemy fly;
 	/** Enemy for test */
 	private TeraEnemy teraEnemy;
-	private Sprite b;
 
 	// Heal parts
 	private Rectangle healstate;
@@ -304,7 +303,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						if (player.getY() - player.getHeight() > platform
 								.getY()) {
 							player.setJump(true);
-							player.setCurrentTileIndex(11);
+							player.setCurrentTileIndex(8);
 						}
 					}
 					if (x1.getBody().getUserData().equals("movePlatform")
@@ -344,14 +343,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					if (x1.getBody().getUserData().equals("wall")
 							|| x2.getBody().getUserData().equals("wall")) {
 						player.setJump(false);
-						player.setCurrentTileIndex(3);
+						player.setCurrentTileIndex(9);
 					}
 					if (x1.getBody().getUserData().equals("platform")
 							|| x2.getBody().getUserData().equals("platform")) {
 						if (player.getY() - player.getHeight() > platform
 								.getY() + platform.getHeight()) {
 							player.setJump(false);
-							player.setCurrentTileIndex(3);
+							player.setCurrentTileIndex(9);
 							healstate.setWidth(210);
 							healstate.setX(camera.getCameraSceneWidth() - 664);
 						}
@@ -364,7 +363,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 								|| player.getY() - player.getHeight() > platform3
 										.getY()+ platform.getHeight()) {
 							player.setJump(false);
-							player.setCurrentTileIndex(3);
+							player.setCurrentTileIndex(9);
 							healstate.setWidth(210);
 							healstate.setX(camera.getCameraSceneWidth() - 664);
 						}
@@ -444,9 +443,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (player.getX() >= 600 && !addItem) { // Cuando el jugador pasa esa
-			// recta y no se ha creado aun el item
-			// // se añade el item
+		if (player.getX() >= 600 && !addItem) { 
 			addItem = true;
 			this.createItem();
 		}

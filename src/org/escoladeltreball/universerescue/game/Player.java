@@ -36,7 +36,6 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		this.setScale(2);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
-		this.numSteps = 4;
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public void jump() {
 		if (!isJump) {
 			dynamicBody.setLinearVelocity(new Vector2(0, 7.5f));
-			this.animate(new long[] { 200, 200, 200 }, new int[] { 9, 10, 11 },
+			this.animate(new long[] { 200, 200, 200 }, new int[] { 6, 7, 8 },
 					false);
 			isJump = true;
 		}
@@ -85,23 +84,29 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		Vector2Pool.recycle(velocity);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,
 				this.bulletBody, true, false));
-		if (!isJump) {
-			this.animate(new long[] { 100, 100, 200, 100 }, new int[] { 0, 1,
-					2, 0 }, false, this);
+		if (isJump && directionY == 0) {
+			this.animate(new long[] { 200, 200}, new int[] { 13, 8}, false, this);
+		}else if(!isJump && directionY > 0){
+			this.animate(new long[] { 300, 300}, new int[] { 10,
+					9}, false, this);
+		}else if(isJump && directionY > 0){
+			this.animate(new long[] { 300, 300}, new int[] { 12,
+					9}, false, this);
 		} else {
-			this.animate(new long[] { 200, 200, 200, 200 }, new int[] { 15, 16,
-					17, 11 }, false, this);
+			this.animate(new long[] { 300, 300}, new int[] { 11,
+					9}, false, this);
+
 		}
 	}
 
 	public void run(float pValueX) {
 		if (pValueX != 0 && !isJump && !isFire) {
-			numSteps = numSteps > 8 ? 4 : numSteps;
+			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
 			isFire = false;
 			numSteps++;
 		} else if (pValueX == 0 && !isJump && !isFire) {
-			this.setCurrentTileIndex(3);
+			this.setCurrentTileIndex(9);
 		}
 		if (isFire) {
 			Vector2 velocity = Vector2Pool.obtain(0, 0);
