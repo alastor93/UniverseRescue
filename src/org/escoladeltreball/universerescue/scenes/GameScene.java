@@ -9,6 +9,8 @@ import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -96,7 +98,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createControls();
 		createPlatform();
 		createBulletPool();
-		 createFlyEnemy();
+		createFlyEnemy();
 		createEnemy();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
@@ -305,6 +307,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 							player.setCurrentTileIndex(11);
 						}
 					}
+					if (x1.getBody().getUserData().equals("movePlatform")
+							|| x2.getBody().getUserData()
+									.equals("movePlatform")) {
+						if (player.getY() - player.getHeight() > platform2
+								.getY()+ platform.getHeight()
+								|| player.getY() - player.getHeight() > platform3
+										.getY()+ platform.getHeight()) {
+							player.setJump(true);
+							player.setCurrentTileIndex(11);
+						}
+					}
 				}
 			}
 
@@ -317,6 +330,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					if (x1.getBody().getUserData().equals("teraEnemy")
 							|| x2.getBody().getUserData().equals("teraEnemy")) {
 						teraEnemy.eliminateEnemy();
+						addEnemiesKilled(1);
 					}
 				}
 				if (x1.getBody().getUserData().equals("player")
