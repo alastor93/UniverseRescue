@@ -40,7 +40,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener,
+public abstract class GameScene extends BaseScene implements IOnSceneTouchListener,
 		OnClickListener {
 
 	// VARIABLES //
@@ -48,47 +48,37 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	/** Counter for player's score */
 	private int score;
 	/** Counter for enemies killed */
-	private int enemiesKilled;
+	protected int enemiesKilled;
 	/** Counter for goal enemies */
-	private final int enemiesGoal = 30;
+	private static final int ENEMIESGOAL = 30;
 	/** Our game HUD */
 	private HUD gameHUD;
 	/** Displays the enemies remaining */
 	private Text enemiesLeftText;
-	/** Game's physics */
-	private PhysicsWorld physics;
 	/** The player */
-	private Player player;
-	/** Platforms */
-	private Platform platform, platform2, platform3;
+	protected Player player;
 	/** Add Item */
-	private boolean addItem;
+	protected boolean addItem;
 	/** Item */
-	private Item item;
+	protected Item item;
 	/** Check if scene is touched */
 	private boolean isTouched;
 	/** A bulletPool for manage bullet sprites */
-	private BulletPool PLAYER_BULLET_POOL;
-	private BulletPool FLYENEMY_BULLET_POOL;
+	protected BulletPool PLAYER_BULLET_POOL;
 	/** LinkedList for available bullet sprites */
 	public LinkedList bulletList;
-	/** FlyEnemy for test */
-	private FlyEnemy fly;
-	/** Enemy for test */
-	private TeraEnemy teraEnemy;
 
 	// Heal parts
-	private Rectangle healstate;
+	protected Rectangle healstate;
 	private Sprite heal;
 
 	// CoolDowns
 	private CoolDown coolDownPlayer;
-	private CoolDown coolDownEnemy;
+	
 
 	public GameScene() {
 		super();
 		this.coolDownPlayer = new CoolDown();
-		this.coolDownEnemy = new CoolDown();
 		camera.setBounds(0, 0, GameActivity.getWidth() * 2,
 				GameActivity.getHeight());
 		camera.setBoundsEnabled(true);
@@ -96,18 +86,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void createScene() {
-		createBackground();
-		createHUD();
-		createPhysics();
+		this.createBackground();
+		this.createHUD();
+		this.createPhysics();
 		this.createWalls();
-		createPlayer();
-		createControls();
-		createPlatform();
-		createBulletPool();
-		createFlyEnemy();
-		createEnemy();
-		DebugRenderer debug = new DebugRenderer(physics, vbom);
-		this.attachChild(debug);
+		this.createPlayer();
+		this.createControls();
+		this.createPlatform();
+		this.createBulletPool();
+		this.createFlyEnemy();
+		this.createEnemy();
 		setOnSceneTouchListener(this);
 	}
 
@@ -120,31 +108,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void disposeScene() {
 		camera.setHUD(null);
 		camera.setChaseEntity(null);
-		player.detachSelf();
-		platform.detachSelf();
-		platform2.detachSelf();
 		this.dispose();
 		this.detachSelf();
 		camera.setCenter(camera.getWidth() / 2, camera.getHeight() / 2);
 	}
 
 	/**
-	 * Build a background for our game scene
+	 * Create  and add the Background of scene 
 	 */
+	public abstract void createBackground();
 
-	public void createBackground() {
-		Sprite sprite = new Sprite(0, 0, manager.game_background, vbom) {
-			@Override
-			protected void preDraw(GLState pGLState, Camera pCamera) {
-				super.preDraw(pGLState, pCamera);
-				pGLState.enableDither();
-			}
-		};
-		sprite.setWidth(GameActivity.getWidth() * 2);
-		sprite.setOffsetCenter(0, 0);
-		this.attachChild(sprite);
-	}
-
+	
 	public void createHUD() {
 		// Build a new HUD for our game
 		this.gameHUD = new HUD();
@@ -155,7 +129,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
-						+ String.valueOf(this.enemiesGoal), manager.vbom);
+						+ String.valueOf(ENEMIESGOAL), manager.vbom);
 
 		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
@@ -171,56 +145,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		this.camera.getHUD().setVisible(true);
 	}
 
-	public void createWalls() {
-		new Wall(GameActivity.getWidth(), 50, GameActivity.getWidth() * 2, 1,
-				this.vbom, physics);
-		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
-				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
-				this.vbom, physics);
-		new Wall(GameActivity.getWidth() * 2, GameActivity.getHeight() / 2, 1,
-				GameActivity.getHeight(), this.vbom, physics);
-	}
+	/**
+	 * Create the walls that limit the scene
+	 */
+	public abstract void createWalls();
 
-	public void createPlayer() {
-		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
-				camera, physics);
-		this.attachChild(player);
-	}
+	/**
+	 * Create and add to scene the main player 
+	 */
+	public abstract void createPlayer();
+	
+	public abstract void createBulletPool();
 
-	public void createPlatform() {
-		this.platform = new Platform(800f, 120f, manager.platformSprite,
-				this.vbom, camera, physics);
+	/**
+	 * Create and add to scene platforms
+	 */
+	public abstract void createPlatform();
 
-		this.platform2 = new Platform(1500, 210f, manager.platformSprite,
-				this.vbom, camera, physics);
+	public abstract void createFlyEnemy();
 
-		this.platform3 = new Platform(10, 210f, manager.platformSprite,
-				this.vbom, camera, physics);
+	public abstract void createEnemy();
 
-		this.attachChild(platform);
-		this.attachChild(platform2);
-		this.attachChild(platform3);
-	}
-
-	public void createFlyEnemy() {
-		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite, vbom, camera, physics);
-		this.attachChild(fly);
-	}
-
-	public void createEnemy() {
-		teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite, this.vbom,
-				camera, physics);
-		this.attachChild(teraEnemy);
-
-	}
-
-	public void createBulletPool() {
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, this);
-		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet, this);
-		bulletList = new LinkedList();
-	}
+	
 
 	public void createControls() {
 		manager.loadControls();
@@ -269,109 +215,30 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	/**
-	 * Add to enemies killed
+	 * Plus i in the counter of enemies killed
+	 * @param i the number of enemies killed
 	 */
-
 	public void addEnemiesKilled(int i) {
-		if (this.enemiesKilled + i > this.enemiesGoal) {
-			this.enemiesKilled = this.enemiesGoal;
+		if (this.enemiesKilled + i > this.ENEMIESGOAL) {
+			this.enemiesKilled = this.ENEMIESGOAL;
 		} else {
 			this.enemiesKilled += i;
 		}
 		this.enemiesLeftText.setText(String.valueOf(this.enemiesKilled) + "/"
-				+ String.valueOf(this.enemiesGoal));
+				+ String.valueOf(this.ENEMIESGOAL));
 	}
 
 	/**
 	 * Create our physics for the level
 	 */
 
-	public void createPhysics() {
-		this.physics = new FixedStepPhysicsWorld(60, new Vector2(0,
-				-SensorManager.GRAVITY_EARTH), false);
-		registerUpdateHandler(this.physics);
-		physics.setContactListener(new ContactListener() {
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {
-			}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				if (areBodiesContacted("player", "platform", contact)) {
-					if (player.getY() - player.getHeight() > platform.getY()) {
-						player.setJump(true);
-						player.setCurrentTileIndex(8);
-					}
-				}
-				if (areBodiesContacted("player", "movePlatform", contact)) {
-					if (player.getY() - player.getHeight() > platform2.getY()
-							+ platform.getHeight()
-							|| player.getY() - player.getHeight() > platform3
-									.getY() + platform.getHeight()) {
-						player.setJump(true);
-						player.setCurrentTileIndex(8);
-					}
-				}
-			}
-
-			@Override
-			public void beginContact(Contact contact) {
-				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
-					teraEnemy.eliminateEnemy();
-					addEnemiesKilled(1);
-				}
-				if (areBodiesContacted("player", "teraEnemy", contact)) {
-					teraEnemy.animate(new long[] { 200, 200, 200, 200 }, 4, 7,
-							false);
-					player.setHp(player.getHp() - teraEnemy.getAt());
-					healstate.setWidth(player.getHp());
-					player.setAttack(true);
-					player.animate(new long[] { 600, 200 },
-							new int[] { 14, 9 }, false, player);
-				}
-				if (areBodiesContacted("player", "item", contact)) {
-					player.setHp(player.getHp() + 20);
-					healstate.setWidth(player.getHp());
-					item.removeItem();
-				}
-				if (areBodiesContacted("player", "wall", contact)) {
-					player.setJump(false);
-					player.setCurrentTileIndex(9);
-				}
-				if (areBodiesContacted("player", "platform", contact)) {
-					if (player.getY() - player.getHeight() > platform.getY()
-							+ platform.getHeight()) {
-						player.setJump(false);
-						player.setCurrentTileIndex(9);
-					}
-				}
-				if (areBodiesContacted("player", "movePlatform", contact)) {
-					if (player.getY() - player.getHeight() > platform2.getY()
-							+ platform.getHeight()
-							|| player.getY() - player.getHeight() > platform3
-									.getY() + platform.getHeight()) {
-						player.setJump(false);
-						player.setCurrentTileIndex(9);
-					}
-				}
-			}
-		});
-	}
+	public abstract void createPhysics();
 
 	/**
 	 * Create Item
 	 */
 
-	public void createItem() {
-		item = new Item(800f, camera.getHeight() - 30, manager.item, this.vbom,
-				camera, physics);
-		this.attachChild(item);
-	}
+	public abstract void createItem();
 
 	/**
 	 * Do an action depends the kind of touch
@@ -394,7 +261,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			float pTouchAreaLocalY) {
 		if (coolDownPlayer.timeHasPassed()) {
 			Sprite fire = PLAYER_BULLET_POOL.obtainPoolItem();
-			player.fire(physics, fire);
+			player.fire(fire);
 		}
 	}
 
@@ -403,53 +270,35 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	 * and Y), then recycle it.
 	 */
 
-	IUpdateHandler detect = new IUpdateHandler() {
-		@Override
-		public void reset() {
-		}
+//	IUpdateHandler detect = new IUpdateHandler() {
+//		@Override
+//		public void reset() {
+//		}
+//
+//		@Override
+//		public void onUpdate(float pSecondsElapsed) {
+//			// iterating the targets
+//			Iterator it = bulletList.iterator();
+//			while (it.hasNext()) {
+//				Sprite b = (Sprite) it.next();
+//				if (b.getX() >= b.getWidth()
+//						|| b.getY() >= b.getHeight() + b.getHeight()
+//						|| b.getY() <= -b.getHeight()) {
+//					if (b.getParent().equals(PLAYER_BULLET_POOL)) {
+//						PLAYER_BULLET_POOL.recyclePoolItem(b);
+//						it.remove();
+//						continue;
+//					} else {
+//						FLYENEMY_BULLET_POOL.recyclePoolItem(b);
+//						it.remove();
+//						continue;
+//					}
+//				}
+//			}
+//		}
+//	};
 
-		@Override
-		public void onUpdate(float pSecondsElapsed) {
-			// iterating the targets
-			Iterator it = bulletList.iterator();
-			while (it.hasNext()) {
-				Sprite b = (Sprite) it.next();
-				if (b.getX() >= b.getWidth()
-						|| b.getY() >= b.getHeight() + b.getHeight()
-						|| b.getY() <= -b.getHeight()) {
-					if (b.getParent().equals(PLAYER_BULLET_POOL)) {
-						PLAYER_BULLET_POOL.recyclePoolItem(b);
-						it.remove();
-						continue;
-					} else {
-						FLYENEMY_BULLET_POOL.recyclePoolItem(b);
-						it.remove();
-						continue;
-					}
-				}
-			}
-		}
-	};
 
-	@Override
-	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (enemiesKilled == 1 && !addItem) {
-			addItem = true;
-			this.createItem();
-		}
-		if (fly.canAttack()) {
-			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
-			fly.attack(player, fireEnemy);
-		} else {
-			if (coolDownEnemy.timeHasPassed()) {
-				fly.move();
-			}
-		}
-		platform3.moveLeftToRight(10, 780);
-		platform2.moveRightToLeft(1500, 820);
-		teraEnemy.move();
-		super.onManagedUpdate(pSecondsElapsed);
-	}
 
 	public boolean areBodiesContacted(String pBody1, String pBody2,
 			Contact pContact) {

@@ -26,6 +26,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private boolean isAttacked;
 	private double directionY;
 	private int numSteps;
+	private PhysicsWorld physicsWorld;
 
 	public void setDirection(double directionY) {
 		this.directionY = directionY;
@@ -37,6 +38,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
 		this.setScale(2);
 		this.setHp(240);
+		this.physicsWorld = physicsWorld;
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
 	}
@@ -65,7 +67,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		}
 	}
 
-	public synchronized void fire(PhysicsWorld physicsWorld, Sprite sprite) {
+	public synchronized void fire(Sprite sprite) {
 		isFire = true;
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);

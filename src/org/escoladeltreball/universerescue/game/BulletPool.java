@@ -8,7 +8,7 @@ import org.escoladeltreball.universerescue.scenes.GameScene;
 
 public class BulletPool extends GenericPool<Sprite> {
 
-	private ITextureRegion bullet = null;
+	private ITextureRegion bullet;
 	private GameScene scene;
 	private int damage = 20;
 
