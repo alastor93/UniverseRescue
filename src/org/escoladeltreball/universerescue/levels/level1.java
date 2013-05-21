@@ -39,6 +39,12 @@ public class level1 extends GameScene {
 		super();
 		this.coolDownEnemy = new CoolDown();
 	}
+	
+	@Override
+	public void createScene() {
+		super.createScene();
+		this.createFlyEnemy();
+	}
 
 	@Override
 	public void createBackground() {
@@ -183,7 +189,6 @@ public class level1 extends GameScene {
 		this.attachChild(teraEnemy);
 	}
 
-	@Override
 	public void createFlyEnemy() {
 		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
 				manager.flyEnemySprite, vbom, camera, physics);

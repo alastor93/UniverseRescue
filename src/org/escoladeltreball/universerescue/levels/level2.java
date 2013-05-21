@@ -77,12 +77,6 @@ public class level2 extends GameScene {
 	}
 
 	@Override
-	public void createFlyEnemy() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void createEnemy() {
 		TeraEnemy teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite2, this.vbom,
 				camera, physics);
