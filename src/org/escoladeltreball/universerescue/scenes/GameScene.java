@@ -1,14 +1,11 @@
 package org.escoladeltreball.universerescue.scenes;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -16,32 +13,19 @@ import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.extension.debugdraw.DebugRenderer;
-import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
-import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
-import org.escoladeltreball.universerescue.game.FlyEnemy;
 import org.escoladeltreball.universerescue.game.Item;
-import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
-import org.escoladeltreball.universerescue.game.TeraEnemy;
-import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
-import android.hardware.SensorManager;
-
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
-public abstract class GameScene extends BaseScene implements IOnSceneTouchListener,
-		OnClickListener {
+public abstract class GameScene extends BaseScene implements
+		IOnSceneTouchListener, OnClickListener {
 
 	// VARIABLES //
 
@@ -74,7 +58,6 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 
 	// CoolDowns
 	private CoolDown coolDownPlayer;
-	
 
 	public GameScene() {
 		super();
@@ -94,7 +77,6 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 		this.createControls();
 		this.createPlatform();
 		this.createBulletPool();
-		this.createFlyEnemy();
 		this.createEnemy();
 		setOnSceneTouchListener(this);
 	}
@@ -114,11 +96,10 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 	}
 
 	/**
-	 * Create  and add the Background of scene 
+	 * Create and add the Background of scene
 	 */
 	public abstract void createBackground();
 
-	
 	public void createHUD() {
 		// Build a new HUD for our game
 		this.gameHUD = new HUD();
@@ -130,17 +111,8 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
 						+ String.valueOf(ENEMIESGOAL), manager.vbom);
-
-		heal = new Sprite(this.camera.getXMin() + 150,
-				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
-		healstate = new Rectangle(30, (this.camera.getHeight() / 2f) * 1.83f,
-				240, 22, vbom);
-		healstate.setAnchorCenterX(0f);
-		healstate.setColor(255, 255, 255);
-
+		this.createHealthBar();
 		// Put the Text to HUD
-		this.camera.getHUD().attachChild(heal);
-		this.camera.getHUD().attachChild(healstate);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		this.camera.getHUD().setVisible(true);
 	}
@@ -151,10 +123,10 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 	public abstract void createWalls();
 
 	/**
-	 * Create and add to scene the main player 
+	 * Create and add to scene the main player
 	 */
 	public abstract void createPlayer();
-	
+
 	public abstract void createBulletPool();
 
 	/**
@@ -162,11 +134,18 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 	 */
 	public abstract void createPlatform();
 
-	public abstract void createFlyEnemy();
-
 	public abstract void createEnemy();
 
-	
+	public void createHealthBar() {
+		heal = new Sprite(this.camera.getXMin() + 150,
+				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
+		healstate = new Rectangle(30, (this.camera.getHeight() / 2f) * 1.83f,
+				240, 22, vbom);
+		healstate.setAnchorCenterX(0f);
+		healstate.setColor(Color.GREEN);
+		this.camera.getHUD().attachChild(heal);
+		this.camera.getHUD().attachChild(healstate);
+	}
 
 	public void createControls() {
 		manager.loadControls();
@@ -202,7 +181,6 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 		controlBase.setAlpha(0.5f);
 		// center
 		controlBase.setOffsetCenter(0, 0);
-		control.getControlKnob().setScale(1.25f);
 		this.setChildScene(control);
 	}
 
@@ -216,16 +194,18 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 
 	/**
 	 * Plus i in the counter of enemies killed
-	 * @param i the number of enemies killed
+	 * 
+	 * @param i
+	 *            the number of enemies killed
 	 */
 	public void addEnemiesKilled(int i) {
-		if (this.enemiesKilled + i > this.ENEMIESGOAL) {
-			this.enemiesKilled = this.ENEMIESGOAL;
+		if (this.enemiesKilled + i > GameScene.ENEMIESGOAL) {
+			this.enemiesKilled = GameScene.ENEMIESGOAL;
 		} else {
 			this.enemiesKilled += i;
 		}
 		this.enemiesLeftText.setText(String.valueOf(this.enemiesKilled) + "/"
-				+ String.valueOf(this.ENEMIESGOAL));
+				+ String.valueOf(GameScene.ENEMIESGOAL));
 	}
 
 	/**
@@ -270,35 +250,33 @@ public abstract class GameScene extends BaseScene implements IOnSceneTouchListen
 	 * and Y), then recycle it.
 	 */
 
-//	IUpdateHandler detect = new IUpdateHandler() {
-//		@Override
-//		public void reset() {
-//		}
-//
-//		@Override
-//		public void onUpdate(float pSecondsElapsed) {
-//			// iterating the targets
-//			Iterator it = bulletList.iterator();
-//			while (it.hasNext()) {
-//				Sprite b = (Sprite) it.next();
-//				if (b.getX() >= b.getWidth()
-//						|| b.getY() >= b.getHeight() + b.getHeight()
-//						|| b.getY() <= -b.getHeight()) {
-//					if (b.getParent().equals(PLAYER_BULLET_POOL)) {
-//						PLAYER_BULLET_POOL.recyclePoolItem(b);
-//						it.remove();
-//						continue;
-//					} else {
-//						FLYENEMY_BULLET_POOL.recyclePoolItem(b);
-//						it.remove();
-//						continue;
-//					}
-//				}
-//			}
-//		}
-//	};
-
-
+	// IUpdateHandler detect = new IUpdateHandler() {
+	// @Override
+	// public void reset() {
+	// }
+	//
+	// @Override
+	// public void onUpdate(float pSecondsElapsed) {
+	// // iterating the targets
+	// Iterator it = bulletList.iterator();
+	// while (it.hasNext()) {
+	// Sprite b = (Sprite) it.next();
+	// if (b.getX() >= b.getWidth()
+	// || b.getY() >= b.getHeight() + b.getHeight()
+	// || b.getY() <= -b.getHeight()) {
+	// if (b.getParent().equals(PLAYER_BULLET_POOL)) {
+	// PLAYER_BULLET_POOL.recyclePoolItem(b);
+	// it.remove();
+	// continue;
+	// } else {
+	// FLYENEMY_BULLET_POOL.recyclePoolItem(b);
+	// it.remove();
+	// continue;
+	// }
+	// }
+	// }
+	// }
+	// };
 
 	public boolean areBodiesContacted(String pBody1, String pBody2,
 			Contact pContact) {
