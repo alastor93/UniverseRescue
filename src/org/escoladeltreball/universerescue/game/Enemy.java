@@ -25,6 +25,7 @@ public abstract class Enemy extends AnimatedSprite {
 	protected boolean canAttack = true;
 	protected int damage = 10;
 	protected int hp = 100;
+	protected int at;
 
 	public Enemy(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, Camera cam,
@@ -48,5 +49,9 @@ public abstract class Enemy extends AnimatedSprite {
 
 	public int getHP() {
 		return hp;
+	}
+	
+	public int getAt() {
+		return at;
 	}
 }
