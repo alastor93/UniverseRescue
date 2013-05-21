@@ -11,6 +11,9 @@ import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
+import org.escoladeltreball.universerescue.levels.level1;
+import org.escoladeltreball.universerescue.levels.level2;
+import org.escoladeltreball.universerescue.levels.level3;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 import org.escoladeltreball.universerescue.scenes.LoadingScene;
@@ -124,7 +127,7 @@ public class SceneManager {
 		gameScene.disposeScene();
 	}
 
-	public void createTempGameScene(final Engine engine) {
+	public void createTempGameScene(final Engine engine,final int level) {
 		ResourcesManager.getInstance().loadLoadingScreen();
 		this.loadingScene = new LoadingScene();
 		this.setScene(loadingScene);
@@ -134,7 +137,14 @@ public class SceneManager {
 						engine.unregisterUpdateHandler(pTimerHandler);
 						loadingScene.disposeScene();
 						ResourcesManager.getInstance().loadGameGraphics();
-						gameScene = new GameScene();
+						if (level == 1) {
+							gameScene = new level1();
+						}else if (level == 2) {
+							gameScene = new level2();
+						} else {
+							gameScene = new level3();
+						}
+
 						setScene(gameScene);
 					}
 				}));
