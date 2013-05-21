@@ -70,9 +70,11 @@ public class ResourcesManager {
 
 	/** ITextureRegion for load game background */
 	public ITextureRegion game_background = null;
+	public ITextureRegion game_background2 = null;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
+	public TiledTextureRegion enemySprite2;
 	public TiledTextureRegion flyEnemySprite;
 
 	// Texture for load the platform sprite
@@ -265,7 +267,7 @@ public class ResourcesManager {
 		gameAtlas = new BuildableBitmapTextureAtlas(
 				this.engine.getTextureManager(), 1886, 1902, BILINEAR);
 		gameAtlas2 = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 550, 125, BILINEAR);
+				this.engine.getTextureManager(), 1550, 825, BILINEAR);
 		if (this.game_background == null) {
 			this.game_background = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "gameBackground.png");
@@ -314,6 +316,16 @@ public class ResourcesManager {
 		if (this.stalactite == null){
 			this.stalactite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas2, activity, "stalactite.png", 1,
+							1);
+		}
+		if (this.game_background2 == null){
+			this.game_background2 = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas2, activity, "gameBackground2.png", 1,
+							1);
+		}
+		if (this.enemySprite2 == null) {
+			this.enemySprite2 = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(gameAtlas2, activity, "enemy2.png", 4,
 							1);
 		}
 		try {
