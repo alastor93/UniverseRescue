@@ -38,7 +38,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class GameScene extends BaseScene implements IOnSceneTouchListener,
@@ -81,12 +80,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Heal parts
 	private Rectangle healstate;
 	private Sprite heal;
-	
-	//CoolDowns
+
+	// CoolDowns
 	private CoolDown coolDownPlayer;
 	private CoolDown coolDownEnemy;
-	
-	
 
 	public GameScene() {
 		super();
@@ -162,8 +159,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
-		healstate = new Rectangle(this.camera.getXMin() + 151,
-				(this.camera.getHeight() / 2f) * 1.83f, 240, 22, vbom);
+		healstate = new Rectangle(30, (this.camera.getHeight() / 2f) * 1.83f,
+				240, 22, vbom);
+		healstate.setAnchorCenterX(0f);
 		healstate.setColor(255, 255, 255);
 
 		// Put the Text to HUD
@@ -304,79 +302,61 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 			@Override
 			public void endContact(Contact contact) {
-				Fixture x1 = contact.getFixtureA();
-				Fixture x2 = contact.getFixtureB();
-				if (x1.getBody().getUserData().equals("player")
-						|| x2.getBody().getUserData().equals("player")) {
-					if (x1.getBody().getUserData().equals("platform")
-							|| x2.getBody().getUserData().equals("platform")) {
-						if (player.getY() - player.getHeight() > platform
-								.getY()) {
-							player.setJump(true);
-							player.setCurrentTileIndex(8);
-						}
+				if (areBodiesContacted("player", "platform", contact)) {
+					if (player.getY() - player.getHeight() > platform.getY()) {
+						player.setJump(true);
+						player.setCurrentTileIndex(8);
 					}
-					if (x1.getBody().getUserData().equals("movePlatform")
-							|| x2.getBody().getUserData()
-									.equals("movePlatform")) {
-						if (player.getY() - player.getHeight() > platform2
-								.getY() + platform.getHeight()
-								|| player.getY() - player.getHeight() > platform3
-										.getY() + platform.getHeight()) {
-							player.setJump(true);
-							player.setCurrentTileIndex(11);
-						}
+				}
+				if (areBodiesContacted("player", "movePlatform", contact)) {
+					if (player.getY() - player.getHeight() > platform2.getY()
+							+ platform.getHeight()
+							|| player.getY() - player.getHeight() > platform3
+									.getY() + platform.getHeight()) {
+						player.setJump(true);
+						player.setCurrentTileIndex(8);
 					}
 				}
 			}
 
 			@Override
 			public void beginContact(Contact contact) {
-				Fixture x1 = contact.getFixtureA();
-				Fixture x2 = contact.getFixtureB();
-				if (x1.getBody().getUserData().equals("bullet")
-						|| x2.getBody().getUserData().equals("bullet")) {
-					if (x1.getBody().getUserData().equals("teraEnemy")
-							|| x2.getBody().getUserData().equals("teraEnemy")) {
-						teraEnemy.eliminateEnemy();
-						addEnemiesKilled(1);
-					}
+				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
+					teraEnemy.eliminateEnemy();
+					addEnemiesKilled(1);
 				}
-				if (x1.getBody().getUserData().equals("player")
-						|| x2.getBody().getUserData().equals("player")) {
-					if (x1.getBody().getUserData().equals("item")
-							|| x2.getBody().getUserData().equals("item")) {
-						healstate.setWidth(healstate.getWidth() + 30);
-						healstate.setX(camera.getCameraSceneWidth() - 650);
-						item.removeItem();
-					}
-					if (x1.getBody().getUserData().equals("wall")
-							|| x2.getBody().getUserData().equals("wall")) {
+				if (areBodiesContacted("player", "teraEnemy", contact)) {
+					teraEnemy.animate(new long[] { 200, 200, 200, 200 }, 4, 7,
+							false);
+					player.setHp(player.getHp() - teraEnemy.getAt());
+					healstate.setWidth(player.getHp());
+					player.setAttack(true);
+					player.animate(new long[] { 600, 200 },
+							new int[] { 14, 9 }, false, player);
+				}
+				if (areBodiesContacted("player", "item", contact)) {
+					player.setHp(player.getHp() + 20);
+					healstate.setWidth(player.getHp());
+					item.removeItem();
+				}
+				if (areBodiesContacted("player", "wall", contact)) {
+					player.setJump(false);
+					player.setCurrentTileIndex(9);
+				}
+				if (areBodiesContacted("player", "platform", contact)) {
+					if (player.getY() - player.getHeight() > platform.getY()
+							+ platform.getHeight()) {
 						player.setJump(false);
 						player.setCurrentTileIndex(9);
 					}
-					if (x1.getBody().getUserData().equals("platform")
-							|| x2.getBody().getUserData().equals("platform")) {
-						if (player.getY() - player.getHeight() > platform
-								.getY() + platform.getHeight()) {
-							player.setJump(false);
-							player.setCurrentTileIndex(9);
-							healstate.setWidth(210);
-							healstate.setX(camera.getCameraSceneWidth() - 664);
-						}
-					}
-					if (x1.getBody().getUserData().equals("movePlatform")
-							|| x2.getBody().getUserData()
-									.equals("movePlatform")) {
-						if (player.getY() - player.getHeight() > platform2
-								.getY() + platform.getHeight()
-								|| player.getY() - player.getHeight() > platform3
-										.getY() + platform.getHeight()) {
-							player.setJump(false);
-							player.setCurrentTileIndex(9);
-							healstate.setWidth(210);
-							healstate.setX(camera.getCameraSceneWidth() - 664);
-						}
+				}
+				if (areBodiesContacted("player", "movePlatform", contact)) {
+					if (player.getY() - player.getHeight() > platform2.getY()
+							+ platform.getHeight()
+							|| player.getY() - player.getHeight() > platform3
+									.getY() + platform.getHeight()) {
+						player.setJump(false);
+						player.setCurrentTileIndex(9);
 					}
 				}
 			}
@@ -453,7 +433,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (player.getX() >= 600 && !addItem) {
+		if (enemiesKilled == 1 && !addItem) {
 			addItem = true;
 			this.createItem();
 		}
@@ -469,6 +449,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		platform2.moveRightToLeft(1500, 820);
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
+	}
+
+	public boolean areBodiesContacted(String pBody1, String pBody2,
+			Contact pContact) {
+		if (pContact.getFixtureA().getBody().getUserData().equals(pBody1)
+				|| pContact.getFixtureB().getBody().getUserData()
+						.equals(pBody1))
+			if (pContact.getFixtureA().getBody().getUserData().equals(pBody2)
+					|| pContact.getFixtureB().getBody().getUserData()
+							.equals(pBody2))
+				return true;
+		return false;
 	}
 
 }
