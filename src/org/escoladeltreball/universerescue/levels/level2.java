@@ -6,7 +6,6 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
-import org.escoladeltreball.universerescue.game.Enemy;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Stalactite;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
@@ -16,10 +15,6 @@ import org.escoladeltreball.universerescue.scenes.GameScene;
 import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class level2 extends GameScene {
 
@@ -28,7 +23,6 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createScene() {
-		// TODO Auto-generated method stub
 		super.createScene();
 		createStalactite();
 
