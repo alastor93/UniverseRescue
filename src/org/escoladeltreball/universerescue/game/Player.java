@@ -20,8 +20,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class Player extends AnimatedSprite implements IAnimationListener {
 	private Body dynamicBody;
 	private Body bulletBody;
+	private int hp;
 	private boolean isJump;
 	private boolean isFire;
+	private boolean isAttacked;
 	private double directionY;
 	private int numSteps;
 
@@ -34,6 +36,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
 		this.setScale(2);
+		this.setHp(240);
 		this.createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
 	}
@@ -104,7 +107,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
 			numSteps++;
-		} else if (pValueX == 0 && !isJump && !isFire) {
+		} else if (pValueX == 0 && !isJump && !isFire && !isAttacked) {
 			this.setCurrentTileIndex(9);
 		}
 		if (isFire) {
@@ -137,9 +140,22 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	@Override
 	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 		isFire = false;
+		isAttacked = false;
 	}
 
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;
+	}
+	
+	public void setAttack(boolean isAttacked) {
+		this.isAttacked = isAttacked;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
 	}
 }
