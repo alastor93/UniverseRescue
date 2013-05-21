@@ -138,8 +138,10 @@ public class SceneManager {
 						loadingScene.disposeScene();
 						ResourcesManager.getInstance().loadGameGraphics();
 						if (level == 1) {
+							ResourcesManager.getInstance().loadLevel1Graphics();
 							gameScene = new level1();
 						}else if (level == 2) {
+							ResourcesManager.getInstance().loadLevel2Graphics();
 							gameScene = new level2();
 						} else {
 							gameScene = new level3();
