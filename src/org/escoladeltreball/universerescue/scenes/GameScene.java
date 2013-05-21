@@ -20,6 +20,7 @@ import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
 import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Player;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -69,6 +70,7 @@ public abstract class GameScene extends BaseScene implements
 
 	@Override
 	public void createScene() {
+		SFXManager.pauseMusic();
 		this.createBackground();
 		this.createHUD();
 		this.createPhysics();

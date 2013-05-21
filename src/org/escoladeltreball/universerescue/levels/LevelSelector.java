@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 
@@ -126,7 +127,7 @@ public class LevelSelector extends BaseScene {
 
 	@Override
 	public void createScene() {
-		// TODO Auto-generated method stub
+		SFXManager.resumeMusic();
 
 	}
 
