@@ -1,7 +1,9 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -11,7 +13,7 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class TeraEnemy extends Enemy {
+public class TeraEnemy extends Enemy implements IAnimationListener {
 
 	private float initX = this.getX();
 	private boolean back;
@@ -84,6 +86,27 @@ public class TeraEnemy extends Enemy {
 						System.gc();
 					}
 				});
+	}
+
+	@Override
+	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
+			int pInitialLoopCount) {
+	}
+
+	@Override
+	public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
+			int pOldFrameIndex, int pNewFrameIndex) {
+	}
+
+	@Override
+	public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
+			int pRemainingLoopCount, int pInitialLoopCount) {
+	}
+
+	@Override
+	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
+		
 	}
 
 }
