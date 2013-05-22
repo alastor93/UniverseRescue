@@ -141,6 +141,10 @@ public class level2 extends GameScene {
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					player.setHp(player.getHp() - teraEnemy.getAt());
+					if (!teraEnemy.isFlippedHorizontal()) {
+						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
+								false,teraEnemy);
+					}
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
 					player.attacked();
