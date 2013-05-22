@@ -8,7 +8,6 @@ import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
@@ -126,8 +125,10 @@ public class level1 extends GameScene {
 					addEnemiesKilled(1);
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
-					teraEnemy.animate(new long[] { 200, 200, 200, 200 }, 4, 7,
-							false);
+					if (!teraEnemy.isFlippedHorizontal()) {
+						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
+								false,teraEnemy);
+					}
 					player.setHp(player.getHp() - teraEnemy.getAt());
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
