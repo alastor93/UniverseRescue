@@ -16,13 +16,17 @@ import org.escoladeltreball.universerescue.scenes.GameScene;
 import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class level2 extends GameScene {
 
 	private PhysicsWorld physics;
 	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
-	private boolean back;
+	private boolean back,createNewStalactite = true;
 
 	@Override
 	public void createScene() {
@@ -110,6 +114,48 @@ public class level2 extends GameScene {
 		this.physics = new FixedStepPhysicsWorld(60, new Vector2(0,
 				-SensorManager.GRAVITY_EARTH), false);
 		registerUpdateHandler(this.physics);
+		physics.setContactListener(new ContactListener() {
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+				
+			}
+
+			@Override
+			public void beginContact(Contact contact) {
+				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
+					teraEnemy.eliminateEnemy();
+					addEnemiesKilled(1);
+				}
+				if (areBodiesContacted("player", "teraEnemy", contact)) {
+					teraEnemy.animate(new long[] { 200, 200, 200, 200 }, 1, 4,
+							false);
+					player.setHp(player.getHp() - teraEnemy.getAt());
+					healstate.setWidth(player.getHp());
+					player.setAttack(true);
+					player.attacked();
+					player.animate(new long[] { 600, 200 },
+							new int[] { 14, 9 }, false, player);
+				}
+				if (areBodiesContacted("player", "wall", contact)) {
+					player.setJump(false);
+					player.setCurrentTileIndex(9);
+				}
+				if(areBodiesContacted("stalactite", "player", contact)){
+					stalactite.removeStalac();
+					createNewStalactite = false;
+				}
+				
+			}
+		});
 	}
 
 	@Override
@@ -119,7 +165,8 @@ public class level2 extends GameScene {
 	}
 
 	public void createStalactite() {
-		stalactite = new Stalactite(600f, camera.getHeight() - 30,
+		stalactite = new Stalactite((float) Math.random()
+				* camera.getWidth(), camera.getHeight() - 30,
 				manager.stalactite, this.vbom, camera, physics);
 		this.attachChild(stalactite);
 	}
@@ -128,10 +175,10 @@ public class level2 extends GameScene {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (stalactite.getY() <= 77) {
 			stalactite.removeStalac();
-			stalactite = new Stalactite((float) Math.random()
-					* camera.getWidth(), camera.getHeight() - 30,
-					manager.stalactite, this.vbom, camera, physics);
-			this.attachChild(stalactite);
+			this.createStalactite();
+		}else if (!createNewStalactite){
+			this.createStalactite();
+			createNewStalactite = true;
 		}
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
