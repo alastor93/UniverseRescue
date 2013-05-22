@@ -152,6 +152,17 @@ public class level2 extends GameScene {
 				if(areBodiesContacted("stalactite", "player", contact)){
 					stalactite.removeStalac();
 					createNewStalactite = false;
+					player.setHp(player.getHp() - stalactite.getAt());
+					healstate.setWidth(player.getHp());
+					player.setAttack(true);
+					player.attacked();
+					player.animate(new long[] { 600, 200 },
+							new int[] { 14, 9 }, false, player);
+				}
+				
+				if (areBodiesContacted("stalactite", "teraEnemy", contact)){
+					stalactite.removeStalac();
+					createNewStalactite = false;
 				}
 				
 			}
