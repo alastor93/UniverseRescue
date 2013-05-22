@@ -195,7 +195,7 @@ public class level1 extends GameScene {
 
 	public void createFlyEnemy() {
 		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite, vbom, camera, physics);
+				manager.flyEnemySprite.deepCopy(), vbom, camera, physics);
 		this.attachChild(fly);
 	}
 
