@@ -118,10 +118,8 @@ public class FlyEnemy extends Enemy {
 		// });
 		// Create a new path
 		path = new Path(2).to(X, Y).to(tempX, tempY);
-		X = tempX;
-		Y = tempY;
 		// Set a new PathModifier for set action on path event
-		PathModifier modifier = new PathModifier(0.5f, path,
+		PathModifier modifier = new PathModifier(0.1f, path,null,
 				new IPathModifierListener() {
 					@Override
 					public void onPathStarted(final PathModifier pPathModifier,
@@ -132,24 +130,33 @@ public class FlyEnemy extends Enemy {
 					public void onPathWaypointStarted(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						// Move body to the position
-						// final Vector2 vector = new Vector2(X / 32, Y / 32);
-						// body.setTransform(vector, 0.0f);
+						//If enemy may moves left then flip himself
+						if (X > tempX) {
+							setFlippedHorizontal(true);
+							setCurrentTileIndex(2);
+						//If enemy may moves right then do not flip himself
+						} else if (X < tempX) {
+							setFlippedHorizontal(false);
+							setCurrentTileIndex(2);
+						}
 					}
 
 					@Override
 					public void onPathWaypointFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						// When finish to move then attack player
-						canAttack = true;
-						path = null;
+					
 					}
 
 					@Override
 					public void onPathFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity) {
+						// When finish to move then attack player
+						canAttack = true;
+						path = null;
+						X = tempX;
+						Y = tempY;
 					}
 				});
 
