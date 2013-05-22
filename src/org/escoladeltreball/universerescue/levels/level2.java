@@ -21,6 +21,8 @@ public class level2 extends GameScene {
 
 	private PhysicsWorld physics;
 	private Stalactite stalactite;
+	private TeraEnemy teraEnemy;
+	private boolean back;
 
 	@Override
 	public void createScene() {
@@ -81,8 +83,24 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createEnemy() {
-		TeraEnemy teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite2, this.vbom,
-				camera, physics);
+		final float  initX = 1500;
+		teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite2, this.vbom,
+				camera, physics){
+			@Override
+			public void move(){
+				if (this.getX() - this.getWidth() > 100 && !back) {
+					this.setFlippedHorizontal(false);
+					body.setLinearVelocity(-1.7f, 0);
+				} else if (this.getX() == initX) {
+					back = false;
+				} else if (this.getX() - this.getWidth() <= 100 || back) {
+					this.setFlippedHorizontal(true);
+					back = true;
+					body.setLinearVelocity(1.7f, 0);
+				}
+				
+			}
+		};
 		this.attachChild(teraEnemy);
 
 	}
@@ -105,6 +123,18 @@ public class level2 extends GameScene {
 				manager.stalactite, this.vbom, camera, physics);
 		this.attachChild(stalactite);
 	}
-	
+
+	@Override
+	protected void onManagedUpdate(float pSecondsElapsed) {
+		if (stalactite.getY() <= 77) {
+			stalactite.removeStalac();
+			stalactite = new Stalactite((float) Math.random()
+					* camera.getWidth(), camera.getHeight() - 30,
+					manager.stalactite, this.vbom, camera, physics);
+			this.attachChild(stalactite);
+		}
+		teraEnemy.move();
+		super.onManagedUpdate(pSecondsElapsed);
+	}
 
 }
