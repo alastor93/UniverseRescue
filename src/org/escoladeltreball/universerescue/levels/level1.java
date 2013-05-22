@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
@@ -43,13 +44,13 @@ public class level1 extends GameScene {
 	@Override
 	public void createScene() {
 		super.createScene();
+		DebugRenderer debug = new DebugRenderer(physics, vbom);
+		this.attachChild(debug);
 		this.createFlyEnemy();
 	}
 
 	@Override
 	public void createBackground() {
-//		DebugRenderer debug = new DebugRenderer(physics, vbom);
-//		this.attachChild(debug);
 		Sprite sprite = new Sprite(0, 0, manager.game_background, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
