@@ -1,5 +1,7 @@
 package org.escoladeltreball.universerescue.levels;
 
+import java.util.LinkedList;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
@@ -7,6 +9,7 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Stalactite;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
@@ -75,7 +78,8 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createBulletPool() {
-		// TODO Auto-generated method stub
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, this);
+		bulletList = new LinkedList();
 
 	}
 
@@ -136,8 +140,6 @@ public class level2 extends GameScene {
 					addEnemiesKilled(1);
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
-					teraEnemy.animate(new long[] { 200, 200, 200, 200 }, 1, 4,
-							false);
 					player.setHp(player.getHp() - teraEnemy.getAt());
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
