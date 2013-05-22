@@ -6,6 +6,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -30,8 +31,6 @@ public abstract class GameScene extends BaseScene implements
 
 	// VARIABLES //
 
-	/** Counter for player's score */
-	private int score;
 	/** Counter for enemies killed */
 	protected int enemiesKilled;
 	/** Counter for goal enemies */
@@ -143,8 +142,24 @@ public abstract class GameScene extends BaseScene implements
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
 		healstate = new Rectangle(30, (this.camera.getHeight() / 2f) * 1.83f,
 				240, 22, vbom);
+		healstate.registerUpdateHandler(new IUpdateHandler() {
+			
+			@Override
+			public void reset() {
+			}
+			
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				if (player.getHp() > 160) {
+					healstate.setColor(Color.GREEN);
+				}else if(player.getHp() <= 160 && player.getHp() > 80){
+					healstate.setColor(Color.YELLOW);
+				} else {
+					healstate.setColor(Color.RED);
+				}
+			}
+		});
 		healstate.setAnchorCenterX(0f);
-		healstate.setColor(Color.GREEN);
 		this.camera.getHUD().attachChild(heal);
 		this.camera.getHUD().attachChild(healstate);
 	}
@@ -184,14 +199,6 @@ public abstract class GameScene extends BaseScene implements
 		// center
 		controlBase.setOffsetCenter(0, 0);
 		this.setChildScene(control);
-	}
-
-	/**
-	 * Add score to player's score
-	 */
-
-	public void addToScore(int i) {
-		this.score += i;
 	}
 
 	/**
