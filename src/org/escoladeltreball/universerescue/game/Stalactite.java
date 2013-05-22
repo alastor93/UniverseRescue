@@ -18,6 +18,7 @@ public class Stalactite extends Sprite {
 	private Body stalactiteBody;
 	private PhysicsWorld physicsWorld;
 	private PhysicsConnector physicsConnector;
+	private int at = 10;
 
 	public Stalactite(float pX, float pY, ITextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
@@ -34,6 +35,10 @@ public class Stalactite extends Sprite {
 		physicsConnector = new PhysicsConnector(this, stalactiteBody, true,
 				false);
 		physicsWorld.registerPhysicsConnector(physicsConnector);
+	}
+	
+	public int getAt(){
+		return at;
 	}
 
 	public void removeStalac() {
