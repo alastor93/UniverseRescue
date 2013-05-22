@@ -8,6 +8,7 @@ import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
@@ -130,6 +131,7 @@ public class level1 extends GameScene {
 					player.setHp(player.getHp() - teraEnemy.getAt());
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
+					player.attacked();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
 				}
@@ -164,7 +166,7 @@ public class level1 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (enemiesKilled == 1 && !addItem) {
+		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
 			this.createItem();
 			GameActivity.writeIntToSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);

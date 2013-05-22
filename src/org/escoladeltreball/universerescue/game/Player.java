@@ -60,12 +60,20 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 
 	public void jump() {
+		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 		if (!isJump) {
-			dynamicBody.setLinearVelocity(new Vector2(0, 7.5f));
+			dynamicBody.setLinearVelocity(vector2);
+			Vector2Pool.recycle(vector2);
 			this.animate(new long[] { 200, 200, 200 }, new int[] { 6, 7, 8 },
 					false);
 			isJump = true;
 		}
+	}
+
+	public void attacked() {
+		Vector2 vector2 = Vector2Pool.obtain(-50, 6);
+		dynamicBody.setLinearVelocity(vector2);
+		Vector2Pool.recycle(vector2);
 	}
 
 	public synchronized void fire(Sprite sprite) {
@@ -92,21 +100,23 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(sprite,
 				this.bulletBody, true, false));
 		if (isJump && directionY == 0) {
-			this.animate(new long[] { 200, 200}, new int[] { 13, 8}, false, this);
-		}else if(!isJump && directionY > 0){
-			this.animate(new long[] { 300, 300}, new int[] { 10,
-					9}, false, this);
-		}else if(isJump && directionY > 0){
-			this.animate(new long[] { 300, 300}, new int[] { 12,
-					9}, false, this);
+			this.animate(new long[] { 200, 200 }, new int[] { 13, 8 }, false,
+					this);
+		} else if (!isJump && directionY > 0) {
+			this.animate(new long[] { 300, 300 }, new int[] { 10, 9 }, false,
+					this);
+		} else if (isJump && directionY > 0) {
+			this.animate(new long[] { 300, 300 }, new int[] { 12, 9 }, false,
+					this);
 		} else {
-			this.animate(new long[] { 300, 300}, new int[] { 11,
-					9}, false, this);
+			this.animate(new long[] { 300, 300 }, new int[] { 11, 9 }, false,
+					this);
 
 		}
 	}
 
 	public void run(float pValueX) {
+		Vector2 velocity = Vector2Pool.obtain(0, 0);
 		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
@@ -114,16 +124,12 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		} else if (pValueX == 0 && !isJump && !isFire && !isAttacked) {
 			this.setCurrentTileIndex(9);
 		}
-		if (isFire) {
-			Vector2 velocity = Vector2Pool.obtain(0, 0);
-			dynamicBody.setLinearVelocity(velocity);
-			Vector2Pool.recycle(velocity);
-		} else {
-			Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
+		if (!isFire) {
+			velocity = Vector2Pool.obtain(pValueX * 10,
 					dynamicBody.getLinearVelocity().y);
-			dynamicBody.setLinearVelocity(velocity);
-			Vector2Pool.recycle(velocity);
 		}
+		dynamicBody.setLinearVelocity(velocity);
+		Vector2Pool.recycle(velocity);
 	}
 
 	@Override
@@ -150,7 +156,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;
 	}
-	
+
 	public void setAttack(boolean isAttacked) {
 		this.isAttacked = isAttacked;
 	}
