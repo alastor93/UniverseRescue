@@ -6,6 +6,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
@@ -166,9 +167,9 @@ public abstract class GameScene extends BaseScene implements
 
 	public void createControls() {
 		manager.loadControls();
-		AnalogOnScreenControl control = new AnalogOnScreenControl(0, 0, camera,
+		DigitalOnScreenControl control = new DigitalOnScreenControl(0, 0, camera,
 				manager.controlBaseRegion, manager.controlKnobRegion, 0.1f,
-				200, vbom, new IAnalogOnScreenControlListener() {
+				 vbom, new IAnalogOnScreenControlListener() {
 
 					@Override
 					public void onControlChange(
