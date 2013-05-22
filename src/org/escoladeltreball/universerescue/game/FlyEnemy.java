@@ -3,16 +3,26 @@ package org.escoladeltreball.universerescue.game;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.IEntityFactory;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.MoveByModifier;
 import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
 import org.andengine.entity.modifier.PathModifier.Path;
+import org.andengine.entity.particle.ParticleSystem;
+import org.andengine.entity.particle.emitter.PointParticleEmitter;
+import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
+import org.andengine.entity.particle.modifier.AlphaParticleModifier;
+import org.andengine.entity.particle.modifier.RotationParticleModifier;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
@@ -175,14 +185,10 @@ public class FlyEnemy extends Enemy {
 					@Override
 					public void onModifierFinished(
 							IModifier<IEntity> pModifier, final IEntity pItem) {
-						// Delete from scene the enemy attack bullet
-						ResourcesManager.getActivity().runOnUpdateThread(
-								new Runnable() {
-									@Override
-									public void run() {
-										pItem.detachSelf();
-									}
-								});
+						// Create an explosion and set Invisible the bullet attack on screen
+						pItem.setVisible(false);
+						createExplosion(pItem);
+
 					}
 
 				});
@@ -192,6 +198,47 @@ public class FlyEnemy extends Enemy {
 	}
 
 	public void takeDamage(int dmg) {
+	}
+	
+	public void createExplosion(final IEntity target) {
+		int nNumPart = 15;
+		int mTimePart = 2;
+		PointParticleEmitter particle = new PointParticleEmitter(target.getX(), target.getY());
+		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
+			@Override
+			public Rectangle create(float pX, float pY) {
+				Rectangle rect = new Rectangle(target.getX(), target.getY(), 5,5,ResourcesManager.getInstance().vbom);
+				rect.setColor(Color.PINK);
+				return rect;
+			}
+		};
+		
+		//Create a ParticleSysten which we will set the properties to our explosion, like number of rectangles, velocity
+		// Alpha modifier, rotation modifier, and much more
+		final ParticleSystem<Rectangle> particleSystem = new ParticleSystem<Rectangle>(recFact, particle, 500,500,nNumPart );
+		particleSystem.addParticleInitializer(new VelocityParticleInitializer<Rectangle>(-50, 50, -50, 50));
+		particleSystem.addParticleModifier(new AlphaParticleModifier<Rectangle>(0, 0.3f * mTimePart, 1, 0));
+		particleSystem.addParticleModifier(new RotationParticleModifier<Rectangle>(0, mTimePart, 0, 360));
+		//Add the partycle system getting the parent of the bullet attack, so our scene
+		target.getParent().attachChild(particleSystem);
+		//Register an Update Handler for detach particle system after the giving seconds
+		target.getParent().registerUpdateHandler(new TimerHandler(mTimePart, new ITimerCallback() {
+
+			@Override
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
+					@Override
+					public void run() {
+						//Detach partycle system and bullet from our scene
+						particleSystem.detachSelf();
+						target.detachSelf();
+					}
+				});
+				
+				
+			}
+			
+		}));
 	}
 
 }
