@@ -2,6 +2,7 @@ package org.escoladeltreball.universerescue.layers;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
@@ -64,6 +65,9 @@ public class GameOverLayer extends Layer {
 	@Override
 	public void onLoadLayer() {
 		// Create and attach a background that hides the Layer when touched.
+		Sprite sprite = new Sprite(0, 0,ResourcesManager.getInstance().gameOver,ResourcesManager.getInstance().vbom );
+		sprite.setHeight(440f);
+		sprite.setWidth(760f);
 		final float BackgroundX = 0f, BackgroundY = 0f;
 		final float BackgroundWidth = 760f, BackgroundHeight = 440f;
 		Rectangle smth = new Rectangle(BackgroundX, BackgroundY,
@@ -86,6 +90,7 @@ public class GameOverLayer extends Layer {
 		smth.setColor(0f, 0f, 0f, 0.85f);
 		this.attachChild(smth);
 		this.registerTouchArea(smth);
+		this.attachChild(sprite);
 		this.setPosition(GameActivity.getWidth() / 2f,
 				GameActivity.getHeight() / 2f + 480f);
 	}
