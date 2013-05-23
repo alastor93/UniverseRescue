@@ -145,6 +145,7 @@ public class SceneManager {
 							ResourcesManager.getInstance().loadLevel2Graphics();
 							gameScene = new level2();
 						} else {
+							ResourcesManager.getInstance().loadLevel3Graphics();
 							gameScene = new level3();
 						}
 
