@@ -155,7 +155,7 @@ public class level1 extends GameScene {
 								false, teraEnemy);
 					}
 					player.setHp(player.getHp() - teraEnemy.getAt());
-					healstate.setWidth(player.getHp());
+//					healstate.setWidth(player.getHp());
 					player.setAttack(true);
 					player.attacked();
 					player.animate(new long[] { 600, 200 },
@@ -163,7 +163,7 @@ public class level1 extends GameScene {
 				}
 				if (areBodiesContacted("player", "item", contact)) {
 					player.setHp(player.getHp() + 20);
-					healstate.setWidth(player.getHp());
+//					healstate.setWidth(player.getHp());
 					item.removeItem();
 				}
 				if (areBodiesContacted("player", "wall", contact)) {
@@ -213,6 +213,7 @@ public class level1 extends GameScene {
 				fly.move();
 			}
 		}
+		healstate.setWidth(player.getHp());
 		platform3.moveLeftToRight(10, 780);
 		platform2.moveRightToLeft(1500, 820);
 		teraEnemy.move();
