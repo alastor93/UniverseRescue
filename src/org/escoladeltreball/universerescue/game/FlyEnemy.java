@@ -52,6 +52,7 @@ public class FlyEnemy extends Enemy {
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
+		this.canAttack = false;
 		random = new Random();
 		this.setScale(2f);
 		this.animate(new long[]{200,200,200,200},0,3,true);
