@@ -25,7 +25,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject, camera,
 				physicsWorld);
-		this.setScale(1.4f);
+		this.setScale(1.3f);
 		this.at = 20;
 		this.createPhysics(camera, physicsWorld);
 		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
