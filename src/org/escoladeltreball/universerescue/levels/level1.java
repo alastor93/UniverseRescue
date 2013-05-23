@@ -105,6 +105,8 @@ public class level1 extends GameScene {
 					}else{
 						contact.setEnabled(false);
 					}
+				}else if(areBodiesContacted("teraEnemy", "platform", contact)){
+					contact.setEnabled(false);
 				}
 				if (areBodiesContacted("player", "movePlatform", contact)) {
 					if (player.getY() - player.getHeight() > platform2.getY()
