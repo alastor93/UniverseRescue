@@ -39,8 +39,12 @@ public class FlyEnemy extends Enemy {
 	private float tempY;
 
 	// Player position
-	float playerX;
-	float playerY;
+	private Player player;
+	private float playerX;
+	private float playerY;
+
+	// Sprite bullet attack
+	private Sprite bulletAttack = null;
 
 	// randomPath
 	private Path path;
@@ -52,9 +56,10 @@ public class FlyEnemy extends Enemy {
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
+		this.canAttack = false;
 		random = new Random();
 		this.setScale(2f);
-		this.animate(new long[]{200,200,200,200},0,3,true);
+		this.animate(new long[] { 200, 200, 200, 200 }, 0, 3, true);
 		// body = PhysicsFactory.createBoxBody(physics, this,
 		// BodyType.KinematicBody,
 		// PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -120,7 +125,7 @@ public class FlyEnemy extends Enemy {
 		// Create a new path
 		path = new Path(2).to(X, Y).to(tempX, tempY);
 		// Set a new PathModifier for set action on path event
-		PathModifier modifier = new PathModifier(0.1f, path,null,
+		PathModifier modifier = new PathModifier(0.1f, path, null,
 				new IPathModifierListener() {
 					@Override
 					public void onPathStarted(final PathModifier pPathModifier,
@@ -131,11 +136,11 @@ public class FlyEnemy extends Enemy {
 					public void onPathWaypointStarted(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						//If enemy may moves left then flip himself
+						// If enemy may moves left then flip himself
 						if (X > tempX) {
 							setFlippedHorizontal(true);
 							setCurrentTileIndex(2);
-						//If enemy may moves right then do not flip himself
+							// If enemy may moves right then do not flip himself
 						} else if (X < tempX) {
 							setFlippedHorizontal(false);
 							setCurrentTileIndex(2);
@@ -146,7 +151,7 @@ public class FlyEnemy extends Enemy {
 					public void onPathWaypointFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-					
+
 					}
 
 					@Override
@@ -165,18 +170,20 @@ public class FlyEnemy extends Enemy {
 	}
 
 	public void attack(Player p, Sprite bullet) {
+		player = p;
 		playerX = p.getX();
 		playerY = p.getY() - p.getHeight() / 2f;
-		
+		bulletAttack = bullet;
+
 		if (playerX < X) {
-			bullet.setPosition(X - this.getWidth() / 2f, Y);
+			bulletAttack.setPosition(X - this.getWidth() / 2f, Y);
 			this.setFlippedHorizontal(true);
 
 		} else if (playerX > X) {
-			bullet.setPosition(X + this.getWidth() / 2f, Y);
+			bulletAttack.setPosition(X + this.getWidth() / 2f, Y);
 			this.setFlippedHorizontal(false);
 		} else {
-			bullet.setPosition(X, Y);
+			bulletAttack.setPosition(X, Y);
 			this.setCurrentTileIndex(3);
 		}
 		float posX = playerX - bullet.getX();
@@ -196,7 +203,8 @@ public class FlyEnemy extends Enemy {
 					@Override
 					public void onModifierFinished(
 							IModifier<IEntity> pModifier, final IEntity pItem) {
-						// Create an explosion and set Invisible the bullet attack on screen
+						// Create an explosion and set Invisible the bullet
+						// attack on screen
 						pItem.setVisible(false);
 						createExplosion(pItem);
 
@@ -204,52 +212,80 @@ public class FlyEnemy extends Enemy {
 
 				});
 
-		bullet.registerEntityModifier(movMByod);
+		bulletAttack.registerEntityModifier(movMByod);
 		canAttack = false;
 	}
 
 	public void takeDamage(int dmg) {
 	}
-	
+
 	public void createExplosion(final IEntity target) {
 		int nNumPart = 15;
 		int mTimePart = 2;
-		PointParticleEmitter particle = new PointParticleEmitter(target.getX(), target.getY());
+		PointParticleEmitter particle = new PointParticleEmitter(target.getX(),
+				target.getY());
 		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
 			@Override
 			public Rectangle create(float pX, float pY) {
-				Rectangle rect = new Rectangle(target.getX(), target.getY(), 5,5,ResourcesManager.getInstance().vbom);
+				Rectangle rect = new Rectangle(target.getX(), target.getY(), 5,
+						5, ResourcesManager.getInstance().vbom);
 				rect.setColor(Color.PINK);
 				return rect;
 			}
 		};
-		
-		//Create a ParticleSysten which we will set the properties to our explosion, like number of rectangles, velocity
-		// Alpha modifier, rotation modifier, and much more
-		final ParticleSystem<Rectangle> particleSystem = new ParticleSystem<Rectangle>(recFact, particle, 500,500,nNumPart );
-		particleSystem.addParticleInitializer(new VelocityParticleInitializer<Rectangle>(-50, 50, -50, 50));
-		particleSystem.addParticleModifier(new AlphaParticleModifier<Rectangle>(0, 0.3f * mTimePart, 1, 0));
-		particleSystem.addParticleModifier(new RotationParticleModifier<Rectangle>(0, mTimePart, 0, 360));
-		//Add the partycle system getting the parent of the bullet attack, so our scene
-		target.getParent().attachChild(particleSystem);
-		//Register an Update Handler for detach particle system after the giving seconds
-		target.getParent().registerUpdateHandler(new TimerHandler(mTimePart, new ITimerCallback() {
 
-			@Override
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
+		// Create a ParticleSysten which we will set the properties to our
+		// explosion, like number of rectangles, velocity
+		// Alpha modifier, rotation modifier, and much more
+		final ParticleSystem<Rectangle> particleSystem = new ParticleSystem<Rectangle>(
+				recFact, particle, 500, 500, nNumPart);
+		particleSystem
+				.addParticleInitializer(new VelocityParticleInitializer<Rectangle>(
+						-50, 50, -50, 50));
+		particleSystem
+				.addParticleModifier(new AlphaParticleModifier<Rectangle>(0,
+						0.3f * mTimePart, 1, 0));
+		particleSystem
+				.addParticleModifier(new RotationParticleModifier<Rectangle>(0,
+						mTimePart, 0, 360));
+		// Add the partycle system getting the parent of the bullet attack, so
+		// our scene
+		target.getParent().attachChild(particleSystem);
+		// Register an Update Handler for detach particle system after the
+		// giving seconds
+		target.getParent().registerUpdateHandler(
+				new TimerHandler(mTimePart, new ITimerCallback() {
+
 					@Override
-					public void run() {
-						//Detach partycle system and bullet from our scene
-						particleSystem.detachSelf();
-						target.detachSelf();
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						ResourcesManager.getActivity().runOnUpdateThread(
+								new Runnable() {
+									@Override
+									public void run() {
+										// Detach partycle system and bullet
+										// from our scene
+										particleSystem.detachSelf();
+										target.detachSelf();
+										bulletAttack = null;
+									}
+								});
+						
 					}
-				});
-				
-				
+
+				}));
+	}
+
+	@Override
+	protected void onManagedUpdate(float pSecondsElapsed) {
+		if (bulletAttack != null) {
+			if (bulletAttack.isVisible()) {
+				if (bulletAttack.collidesWith(player)) {
+					createExplosion(bulletAttack);
+					player.setHp(getHP() - 5);
+				}
 			}
-			
-		}));
+		}
+		super.onManagedUpdate(pSecondsElapsed);
 	}
 
 }
