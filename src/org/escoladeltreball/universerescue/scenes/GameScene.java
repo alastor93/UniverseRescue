@@ -242,7 +242,8 @@ public abstract class GameScene extends BaseScene implements
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		if (coolDownPlayer.timeHasPassed()) {
+		//Create a small delay of 1seconds
+		if (coolDownPlayer.timeHasPassed(1000)) {
 			Sprite fire = PLAYER_BULLET_POOL.obtainPoolItem();
 			player.fire(fire);
 		}
