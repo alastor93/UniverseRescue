@@ -19,6 +19,7 @@ import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SFXManager;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.hardware.SensorManager;
@@ -198,6 +199,9 @@ public class level1 extends GameScene {
 		if (enemiesKilled == 1 && !addItemArmour) {
 			addItemArmour = true;
 			this.createItem(800,camera.getHeight() - 30,manager.itemArmour);
+		}
+		if (player.getHp() == 0){
+			SceneManager.getInstance().showLoseLayer(false);
 		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();

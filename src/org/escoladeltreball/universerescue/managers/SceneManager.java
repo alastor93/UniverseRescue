@@ -8,6 +8,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
@@ -189,6 +190,11 @@ public class SceneManager {
 
 	public void showOptionsLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(OptionsLayer.getInstance(), false,
+				pSuspendCurrentSceneUpdates, true);
+	}
+	
+	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(GameOverLayer.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
 
