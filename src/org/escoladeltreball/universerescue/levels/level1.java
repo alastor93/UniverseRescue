@@ -209,7 +209,8 @@ public class level1 extends GameScene {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attack(player, fireEnemy);
 		} else {
-			if (coolDownEnemy.timeHasPassed()) {
+			//FlyEnemy move after 4 seconds, so we create a small delay between attacks
+			if (coolDownEnemy.timeHasPassed(4000)) {
 				fly.move();
 			}
 		}
