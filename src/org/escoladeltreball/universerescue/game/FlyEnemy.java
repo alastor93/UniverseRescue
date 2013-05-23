@@ -54,6 +54,7 @@ public class FlyEnemy extends Enemy {
 				physicsWorld);
 		random = new Random();
 		this.setScale(2f);
+		this.animate(new long[]{200,200,200,200},0,3,true);
 		// body = PhysicsFactory.createBoxBody(physics, this,
 		// BodyType.KinematicBody,
 		// PhysicsFactory.createFixtureDef(0, 0, 0));
