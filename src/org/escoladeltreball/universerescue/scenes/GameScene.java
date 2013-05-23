@@ -75,9 +75,7 @@ public abstract class GameScene extends BaseScene implements
 		this.createHUD();
 		this.createPhysics();
 		this.createWalls();
-		this.createPlayer();
 		this.createControls();
-		this.createPlatform();
 		this.createBulletPool();
 		this.createEnemy();
 		setOnSceneTouchListener(this);
@@ -130,11 +128,6 @@ public abstract class GameScene extends BaseScene implements
 	public abstract void createPlayer();
 
 	public abstract void createBulletPool();
-
-	/**
-	 * Create and add to scene platforms
-	 */
-	public abstract void createPlatform();
 
 	public abstract void createEnemy();
 

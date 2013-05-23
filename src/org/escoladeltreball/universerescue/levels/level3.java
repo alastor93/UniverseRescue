@@ -29,12 +29,6 @@ public class level3 extends GameScene{
 	}
 
 	@Override
-	public void createPlatform() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void createEnemy() {
 		// TODO Auto-generated method stub
 		
