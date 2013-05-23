@@ -206,9 +206,9 @@ public class level3 extends GameScene{
 			
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				if (player.getHp() > 160) {
+				if (finalBoss.getHP() > 160) {
 					healstateEnemy.setColor(Color.GREEN);
-				}else if(player.getHp() <= 160 && player.getHp() > 80){
+				}else if(finalBoss.getHP() <= 160 && finalBoss.getHP() > 80){
 					healstateEnemy.setColor(Color.YELLOW);
 				} else {
 					healstateEnemy.setColor(Color.RED);
