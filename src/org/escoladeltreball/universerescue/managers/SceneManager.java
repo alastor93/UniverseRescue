@@ -195,7 +195,7 @@ public class SceneManager {
 	
 	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(GameOverLayer.getInstance(), false,
-				pSuspendCurrentSceneUpdates, true);
+				pSuspendCurrentSceneUpdates, false);
 	}
 
 	/**
