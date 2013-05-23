@@ -175,9 +175,9 @@ public class level3 extends GameScene{
 		this.platform = new Platform(700f, 100f, manager.platformSprite,
 				this.vbom, camera, physics);
 
-		this.platform2 = new Platform(1200, 210f, manager.platformSprite,
+		this.platform2 = new Platform(1200, 180f, manager.platformSprite,
 				this.vbom, camera, physics);
-		this.platform3 = new Platform(500, 210f, manager.platformSprite,
+		this.platform3 = new Platform(500, 180f, manager.platformSprite,
 				this.vbom, camera, physics);
 		this.platform4 = new Platform(1400, 100f, manager.platformSprite,
 				this.vbom, camera, physics);
