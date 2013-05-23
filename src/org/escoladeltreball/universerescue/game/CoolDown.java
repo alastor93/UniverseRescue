@@ -6,7 +6,6 @@ import java.util.TimerTask;
 public class CoolDown {
 	private boolean valid;
 	private Timer timer;
-	private long delay = 500;
 //	private static CoolDown instance = null;
 
 //	public static CoolDown getInstance() {
@@ -21,7 +20,7 @@ public class CoolDown {
 		valid = true;
 	}
 
-	public boolean timeHasPassed() {
+	public boolean timeHasPassed(long delay) {
 		if (valid) {
 			valid = false;
 			timer.schedule(new Task(), delay);
