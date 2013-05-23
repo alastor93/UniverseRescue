@@ -78,7 +78,6 @@ public abstract class GameScene extends BaseScene implements
 		this.createWalls();
 		this.createControls();
 		this.createBulletPool();
-		this.createEnemy();
 		setOnSceneTouchListener(this);
 	}
 

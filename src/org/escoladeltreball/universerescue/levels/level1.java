@@ -18,7 +18,6 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
-import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
@@ -51,6 +50,7 @@ public class level1 extends GameScene {
 		this.attachChild(debug);
 		this.createPlatform();
 		this.createPlayer();
+		this.createEnemy();
 		this.createFlyEnemy();
 	}
 

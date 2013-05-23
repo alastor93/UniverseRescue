@@ -37,6 +37,7 @@ public class level2 extends GameScene {
 		super.createScene();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
+		createEnemy();
 		createStalactite();
 
 	}
