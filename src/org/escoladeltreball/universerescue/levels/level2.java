@@ -190,6 +190,8 @@ public class level2 extends GameScene {
 			createNewStalactite = true;
 		}
 		teraEnemy.move();
+		GameActivity.writeIntToSharedPreferences(
+				GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 2);
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
