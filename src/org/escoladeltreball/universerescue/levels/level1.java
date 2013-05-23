@@ -17,6 +17,7 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.hardware.SensorManager;
@@ -40,12 +41,14 @@ public class level1 extends GameScene {
 		super();
 		this.coolDownEnemy = new CoolDown();
 	}
-	
+
 	@Override
 	public void createScene() {
 		super.createScene();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
+		this.createPlatform();
+		this.createPlayer();
 		this.createFlyEnemy();
 	}
 
@@ -63,17 +66,17 @@ public class level1 extends GameScene {
 		this.attachChild(sprite);
 	}
 
-	@Override
+	/**
+	 * Create and add to scene platforms
+	 */
 	public void createPlatform() {
 		this.platform = new Platform(800f, 120f, manager.platformSprite,
 				this.vbom, camera, physics);
 
 		this.platform2 = new Platform(1500, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
-
 		this.platform3 = new Platform(10, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
-
 		this.attachChild(platform);
 		this.attachChild(platform2);
 		this.attachChild(platform3);
@@ -93,6 +96,24 @@ public class level1 extends GameScene {
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
+				if (areBodiesContacted("player", "platform", contact)) {
+					if (player.getY() - player.getHeight() > platform.getY()
+							+ platform.getHeight()) {
+						contact.setEnabled(true);
+					}else{
+						contact.setEnabled(false);
+					}
+				}
+				if (areBodiesContacted("player", "movePlatform", contact)) {
+					if (player.getY() - player.getHeight() > platform2.getY()
+							+ platform.getHeight()
+							|| player.getY() - player.getHeight() > platform3
+									.getY() + platform.getHeight()) {
+						contact.setEnabled(true);
+					}else{
+						contact.setEnabled(false);
+					}
+				}
 			}
 
 			@Override
@@ -127,7 +148,7 @@ public class level1 extends GameScene {
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					if (!teraEnemy.isFlippedHorizontal()) {
 						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
-								false,teraEnemy);
+								false, teraEnemy);
 					}
 					player.setHp(player.getHp() - teraEnemy.getAt());
 					healstate.setWidth(player.getHp());
@@ -170,7 +191,8 @@ public class level1 extends GameScene {
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
 			this.createItem();
-			GameActivity.writeIntToSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
+			GameActivity.writeIntToSharedPreferences(
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
 		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
