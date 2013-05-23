@@ -43,12 +43,12 @@ public class FinalBoss extends Enemy {
 
 	@Override
 	public void move() {
-		if (this.getX() - this.getWidth() > 900 && !back) {
+		if (this.getX() - this.getWidth() > 100 && !back) {
 			this.setFlippedHorizontal(false);
 			body.setLinearVelocity(-1.7f, 0);
 		} else if (this.getX() == initX) {
 			back = false;
-		} else if (this.getX() - this.getWidth() <= 900 || back) {
+		} else if (this.getX() - this.getWidth() <= 100 || back) {
 			this.setFlippedHorizontal(true);
 			back = true;
 			body.setLinearVelocity(1.7f, 0);
