@@ -33,6 +33,7 @@ public class SceneManager {
 	private Engine engine = ResourcesManager.getInstance().engine;
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
 	private BaseScene currentScene;
+	private int currentlevel;
 
 	/** BaseScene of MainMenu */
 	private BaseScene mainMenu;
@@ -80,7 +81,9 @@ public class SceneManager {
 		ResourcesManager.getInstance().loadMenuGraphics();
 		mainMenu = new MainMenuScene();
 		setScene(mainMenu);
-		disposeSplashScene();
+		if (!currentSceneType.equals(SceneType.SCENE_MAINMENU)) {
+			disposeSplashScene();
+		}
 	}
 
 	public void createLevelScene() {
@@ -137,6 +140,7 @@ public class SceneManager {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						engine.unregisterUpdateHandler(pTimerHandler);
 						loadingScene.disposeScene();
+						currentlevel = level;
 						ResourcesManager.getInstance().loadGameGraphics();
 						if (level == 1) {
 							ResourcesManager.getInstance().loadLevel1Graphics();
@@ -154,6 +158,10 @@ public class SceneManager {
 				}));
 	}
 	
+	public int getCurrentlevel() {
+		return currentlevel;
+	}
+
 	public void unloadGameScene() {
 		gameScene.detachSelf();
 		gameScene.disposeScene();
@@ -194,8 +202,8 @@ public class SceneManager {
 				pSuspendCurrentSceneUpdates, true);
 	}
 	
-	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
-		showLayer(GameOverLayer.getInstance(), false,
+	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates,GameOverLayer gameOverLayer) {
+		showLayer(gameOverLayer, false,
 				pSuspendCurrentSceneUpdates, false);
 	}
 

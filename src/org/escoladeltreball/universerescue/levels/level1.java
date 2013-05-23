@@ -18,6 +18,7 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
@@ -203,7 +204,8 @@ public class level1 extends GameScene {
 			this.createItem(800,camera.getHeight() - 30,manager.itemArmour);
 		}
 		if (player.getHp() == 0){
-			SceneManager.getInstance().showLoseLayer(false);
+			GameOverLayer gameOverLayer = new GameOverLayer(this);
+			SceneManager.getInstance().showLoseLayer(false,gameOverLayer);
 		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();

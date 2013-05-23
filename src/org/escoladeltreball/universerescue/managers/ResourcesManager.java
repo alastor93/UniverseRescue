@@ -71,7 +71,12 @@ public class ResourcesManager {
 	/** ITextureRegion for load game background */
 	public ITextureRegion game_background;
 	public ITextureRegion game_background2;
+	
+	// ITextureRegions for load layer game over 
 	public ITextureRegion gameOver;
+	public ITextureRegion continueGame;
+	public ITextureRegion exitGame;
+	public ITextureRegion arrow;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
@@ -237,7 +242,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 896, 534, BILINEAR);
+				this.engine.getTextureManager(), 980, 553, BILINEAR);
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
@@ -262,6 +267,18 @@ public class ResourcesManager {
 		if (this.gameOver == null) {
 			this.gameOver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 					gameAtlas, activity, "gameOver.png");
+		}
+		if (this.continueGame == null) {
+			this.continueGame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "continue.png");
+		}
+		if (this.exitGame == null) {
+			this.exitGame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "exit.png");
+		}
+		if (this.arrow == null) {
+			this.arrow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "arrow.png");
 		}
 		try {
 			this.gameAtlas
