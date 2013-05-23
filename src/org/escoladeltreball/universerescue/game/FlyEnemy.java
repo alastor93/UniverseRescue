@@ -167,14 +167,17 @@ public class FlyEnemy extends Enemy {
 	public void attack(Player p, Sprite bullet) {
 		playerX = p.getX();
 		playerY = p.getY() - p.getHeight() / 2f;
-
+		
 		if (playerX < X) {
 			bullet.setPosition(X - this.getWidth() / 2f, Y);
+			this.setFlippedHorizontal(true);
 
 		} else if (playerX > X) {
 			bullet.setPosition(X + this.getWidth() / 2f, Y);
+			this.setFlippedHorizontal(false);
 		} else {
 			bullet.setPosition(X, Y);
+			this.setCurrentTileIndex(3);
 		}
 		float posX = playerX - bullet.getX();
 		float posY = playerY - bullet.getY();
