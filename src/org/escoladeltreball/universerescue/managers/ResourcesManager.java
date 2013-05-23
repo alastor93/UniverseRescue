@@ -77,6 +77,8 @@ public class ResourcesManager {
 	public TiledTextureRegion enemySprite;
 	public TiledTextureRegion enemySprite2;
 	public TiledTextureRegion flyEnemySprite;
+	public TiledTextureRegion finalBoss;
+
 
 	// Texture for load the platform sprite
 	public ITextureRegion platformSprite;
@@ -370,6 +372,35 @@ public class ResourcesManager {
 		}
 	}
 
+	public void loadLevel3Graphics(){
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+		level3Atlas = new BuildableBitmapTextureAtlas(
+				this.engine.getTextureManager(), 1600, 1000, BILINEAR);
+		if (this.game_background2 == null) {
+			this.game_background2 = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(level3Atlas, activity,
+							"gameBackground2.png");
+		}
+		if (this.finalBoss == null){
+			this.finalBoss = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(level3Atlas, activity, "finalboss.png",
+							5, 3);
+		}
+		if (this.platformSprite == null) {
+			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(level3Atlas, activity, "platform.png");
+		}
+		
+		try {
+			this.level3Atlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							1, 1, 1));
+			this.level3Atlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+		
+	}
 	public void loadControls() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BuildableBitmapTextureAtlas controlAtlas = new BuildableBitmapTextureAtlas(
