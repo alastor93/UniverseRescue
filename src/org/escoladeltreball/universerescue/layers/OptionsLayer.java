@@ -23,7 +23,7 @@ public class OptionsLayer extends Layer {
 								- (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f));
 			} else {
-				OptionsLayer.getInstance().unregisterUpdateHandler(this);
+				ResourcesManager.getInstance().engine.unregisterUpdateHandler(this);
 			}
 		}
 
@@ -44,7 +44,7 @@ public class OptionsLayer extends Layer {
 								+ (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f + 480f));
 			} else {
-				OptionsLayer.getInstance().unregisterUpdateHandler(this);
+				ResourcesManager.getInstance().engine.unregisterUpdateHandler(this);
 				SceneManager.getInstance().hideLayer();
 			}
 		}
@@ -114,12 +114,12 @@ public class OptionsLayer extends Layer {
 
 	@Override
 	public void onShowLayer() {
-		this.registerUpdateHandler(SlideIn);
+		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideIn);
 	}
 
 	@Override
 	public void onHideLayer() {
-		this.registerUpdateHandler(SlideOut);
+		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideOut);
 	}
 
 	@Override
