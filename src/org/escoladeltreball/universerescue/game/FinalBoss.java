@@ -81,11 +81,9 @@ public class FinalBoss extends Enemy {
 						physics.unregisterPhysicsConnector(physicsConnector);
 						takeDamage(20);
 						System.out.println(getHP());
-						if (hp <= 0) {
-							body.setActive(false);
-							physics.destroyBody(body);
-							detachSelf();
-						}
+						body.setActive(false);
+						physics.destroyBody(body);
+						detachSelf();
 						System.gc();
 					}
 				});
