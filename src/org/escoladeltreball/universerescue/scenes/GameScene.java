@@ -16,6 +16,7 @@ import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
@@ -43,7 +44,7 @@ public abstract class GameScene extends BaseScene implements
 	/** The player */
 	protected Player player;
 	/** Add Item */
-	protected boolean addItem;
+	protected boolean addItem,addItemArmour;
 	/** Item */
 	protected Item item;
 	/** Check if scene is touched */
@@ -221,7 +222,7 @@ public abstract class GameScene extends BaseScene implements
 	 * Create Item
 	 */
 
-	public abstract void createItem();
+	public abstract void createItem(float pX,float pY,ITextureRegion sprite);
 
 	/**
 	 * Do an action depends the kind of touch
