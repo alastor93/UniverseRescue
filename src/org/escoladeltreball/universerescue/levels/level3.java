@@ -1,5 +1,6 @@
 package org.escoladeltreball.universerescue.levels;
 
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 public class level3 extends GameScene{
@@ -41,7 +42,7 @@ public class level3 extends GameScene{
 	}
 
 	@Override
-	public void createItem() {
+	public void createItem(float pX, float pY, ITextureRegion sprite) {
 		// TODO Auto-generated method stub
 		
 	}

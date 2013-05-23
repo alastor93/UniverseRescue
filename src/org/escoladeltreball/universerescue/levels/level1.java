@@ -7,6 +7,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
@@ -190,9 +191,13 @@ public class level1 extends GameScene {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
-			this.createItem();
+			this.createItem(800,camera.getHeight() - 30,manager.item);
 			GameActivity.writeIntToSharedPreferences(
 					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
+		}
+		if (enemiesKilled == 1 && !addItemArmour) {
+			addItemArmour = true;
+			this.createItem(800,camera.getHeight() - 30,manager.itemArmour);
 		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
@@ -222,8 +227,8 @@ public class level1 extends GameScene {
 	}
 
 	@Override
-	public void createItem() {
-		item = new Item(800f, camera.getHeight() - 30, manager.item, this.vbom,
+	public void createItem(float pX,float pY,ITextureRegion sprite) {
+		item = new Item(pX, pY, sprite, this.vbom,
 				camera, physics);
 		this.attachChild(item);
 

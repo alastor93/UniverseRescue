@@ -85,6 +85,7 @@ public class ResourcesManager {
 
 	// Itexture for load the item
 	public ITextureRegion item;
+	public ITextureRegion itemArmour;
 
 	// Itexture for load the stalactite
 	public ITextureRegion stalactite;
@@ -233,7 +234,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 609, 331, BILINEAR);
+				this.engine.getTextureManager(), 654, 373, BILINEAR);
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
@@ -250,6 +251,10 @@ public class ResourcesManager {
 		if (this.item == null) {
 			this.item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 					gameAtlas, activity, "item.png");
+		}
+		if (this.itemArmour == null) {
+			this.itemArmour = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "armour.png");
 		}
 		try {
 			this.gameAtlas

@@ -7,6 +7,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
@@ -170,12 +171,6 @@ public class level2 extends GameScene {
 		});
 	}
 
-	@Override
-	public void createItem() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void createStalactite() {
 		stalactite = new Stalactite((float) Math.random()
 				* camera.getWidth(), camera.getHeight() - 30,
@@ -194,6 +189,12 @@ public class level2 extends GameScene {
 		}
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
+	}
+
+	@Override
+	public void createItem(float pX, float pY, ITextureRegion sprite) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
