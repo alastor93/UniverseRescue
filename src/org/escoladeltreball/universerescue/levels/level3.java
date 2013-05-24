@@ -15,6 +15,7 @@ import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.FinalBoss;
+import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
@@ -36,7 +37,7 @@ public class level3 extends GameScene{
 	protected Rectangle healstateEnemy;
 	private PhysicsWorld physics;
 	private FinalBoss finalBoss;
-	private Platform platform, platform2, platform3,platform4;
+	private Platform platform, platform2, platform3,platform4,platform5,platform6;
 	private boolean back;
 
 	
@@ -151,6 +152,12 @@ public class level3 extends GameScene{
 						player.setCurrentTileIndex(9);
 					}
 				}
+				if (areBodiesContacted("player", "item", contact)) {
+					if (player.getHp()+20 < 240) {
+						player.setHp(player.getHp() + 20);
+					}
+					item.removeItem();
+				}
 				if (areBodiesContacted("player", "finalBoss", contact)){
 					player.setHp(player.getHp() - finalBoss.getAt());
 					healstate.setWidth(player.getHp());
@@ -183,16 +190,23 @@ public class level3 extends GameScene{
 				this.vbom, camera, physics);
 		this.platform4 = new Platform(1400, 100f, manager.platformSprite,
 				this.vbom, camera, physics);
+		this.platform5 = new Platform(900, 300f, manager.platformSprite,
+				this.vbom, camera, physics);
+		this.platform6 = new Platform(700, 280f, manager.platformSprite,
+				this.vbom, camera, physics);
 		this.attachChild(platform);
 		this.attachChild(platform2);
 		this.attachChild(platform3);
 		this.attachChild(platform4);
+		this.attachChild(platform5);
+		this.attachChild(platform6);
+		platform6.setVisible(false);
 	}
 
 	@Override
 	public void createItem(float pX, float pY, ITextureRegion sprite) {
-		// TODO Auto-generated method stub
-		
+		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
+		this.attachChild(item);
 	}
 	
 	public void createHealthEnemyBar() {
@@ -230,6 +244,15 @@ public class level3 extends GameScene{
 		}
 		if(player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
+		}
+		if(player.collidesWith(platform6)){
+			platform6.setVisible(true);
+		}
+		if (player.getHp() <= 150 && !addItem) {
+			addItem = true;
+			this.createItem(900, camera.getHeight() - 30, manager.item);
+			GameActivity.writeIntToSharedPreferences(
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
 		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
