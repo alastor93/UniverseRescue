@@ -122,10 +122,10 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.setBackgroundEnabled(false);
 
 		// Put the menu items on specific position 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 30);
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY());
 		optionMenuItem.setPosition(optionMenuItem.getX(),
-				optionMenuItem.getY());
-		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY());
+				playMenuItem.getY() - 70);
+		exitMenuItem.setPosition(exitMenuItem.getX(), optionMenuItem.getY() - 70);
 		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY());
 
 		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
