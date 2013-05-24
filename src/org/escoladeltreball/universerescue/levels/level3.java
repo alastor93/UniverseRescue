@@ -94,7 +94,6 @@ public class level3 extends GameScene{
 
 	@Override
 	public void createEnemy() {
-		final float  initX = 1500;
 		finalBoss = new FinalBoss(1500, 100, manager.finalBoss, this.vbom,
 				camera, physics);
 		this.attachChild(finalBoss);
@@ -165,9 +164,11 @@ public class level3 extends GameScene{
 					player.attacked();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
+					finalBoss.animate(new long[] { 100,100,100,100 },5,8, false,finalBoss);
 
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)){
+					finalBoss.jump();
 					finalBoss.eliminateEnemy();
 					healstateEnemy.setWidth(0);
 				}
