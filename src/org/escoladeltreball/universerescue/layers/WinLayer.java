@@ -19,15 +19,15 @@ public class WinLayer extends Layer implements OnClickListener {
 	private boolean pressedContinue;
 	private boolean pressedExit;
 
-	private static GameOverLayer obj = null;
+	private static WinLayer obj = null;
 
 	// Animates the layer to slide in from the top.
 	IUpdateHandler SlideIn = new IUpdateHandler() {
 		@Override
 		public void onUpdate(float pSecondsElapsed) {
-			if (GameOverLayer.getInstance().getY() > GameActivity.getHeight() / 2f) {
-				GameOverLayer.getInstance().setPosition(
-						GameOverLayer.getInstance().getX(),
+			if (WinLayer.getInstance().getY() > GameActivity.getHeight() / 2f) {
+				WinLayer.getInstance().setPosition(
+						WinLayer.getInstance().getX(),
 						Math.max(OptionsLayer.getInstance().getY()
 								- (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f));
@@ -43,9 +43,9 @@ public class WinLayer extends Layer implements OnClickListener {
 	};
 
 	// Singleton
-	public static GameOverLayer getInstance() {
+	public static WinLayer getInstance() {
 		if (obj == null) {
-			obj = new GameOverLayer();
+			obj = new WinLayer();
 		}
 		return obj;
 	}

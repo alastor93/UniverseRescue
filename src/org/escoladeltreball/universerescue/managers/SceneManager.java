@@ -14,6 +14,7 @@ import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
+import org.escoladeltreball.universerescue.layers.WinLayer;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
 import org.escoladeltreball.universerescue.levels.level1;
 import org.escoladeltreball.universerescue.levels.level2;
@@ -222,6 +223,9 @@ public class SceneManager {
 
 	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(GameOverLayer.getInstance(), false, pSuspendCurrentSceneUpdates, false);
+	}
+	public void showWinLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(WinLayer.getInstance(), false, pSuspendCurrentSceneUpdates, false);
 	}
 
 	/**
