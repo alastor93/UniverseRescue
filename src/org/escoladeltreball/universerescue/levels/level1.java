@@ -219,6 +219,13 @@ public class level1 extends GameScene {
 				fly.move();
 			}
 		}
+		for (int i = 0; i < this.playerBulletList.size(); i++) {
+			Sprite bullet = (Sprite) this.playerBulletList.get(i);
+			if (bullet.collidesWith(fly)) {
+				fly.eliminateEnemy();
+			}
+			
+		}
 		healstate.setWidth(player.getHp());
 		platform3.moveLeftToRight(10, 780);
 		platform2.moveRightToLeft(1500, 820);
