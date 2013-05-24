@@ -81,7 +81,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		SFXManager.playShoot(1f, 0.5f);
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
-		if (isFlippedHorizontal()) {
+		if (isFlippedHorizontal() && directionY <= 0) {
 			sprite.setFlippedHorizontal(true);
 			sprite.setPosition(this.getX() - 95, this.getY());
 			velocity = Vector2Pool.obtain(-10, 0);

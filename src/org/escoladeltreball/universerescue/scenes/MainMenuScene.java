@@ -23,8 +23,6 @@ public class MainMenuScene extends BaseScene implements
 
 	// Attributes //
 
-	/** Sprite for build menu and resources */
-	private Sprite menuScene;
 	/** A MainMenuScene, class from andEngine library */
 	private MenuScene menuChildScene;
 	/** An int associated with Menu's play option */
