@@ -3,18 +3,21 @@ package org.escoladeltreball.universerescue.game;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.vbo.ITiledSpriteVertexBufferObject;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class FinalBoss extends Enemy {
+public class FinalBoss extends Enemy implements IAnimationListener {
 
 	private float initX = this.getX();
 	private boolean back;
@@ -87,6 +90,40 @@ public class FinalBoss extends Enemy {
 						System.gc();
 					}
 				});
+	}
+
+	public void jump() {
+		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
+		body.setLinearVelocity(vector2);
+		Vector2Pool.recycle(vector2);
+		this.animate(new long[] { 200, 200, 200 },9,11,false,this);
+
+	}
+
+	@Override
+	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
+			int pInitialLoopCount) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
+			int pOldFrameIndex, int pNewFrameIndex) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
+			int pRemainingLoopCount, int pInitialLoopCount) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+		this.animate(new long[] { 50, 50, 50, 50 }, 1, 4, true);
 	}
 
 }
