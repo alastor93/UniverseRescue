@@ -275,6 +275,20 @@ public class FlyEnemy extends Enemy {
 				}));
 	}
 
+	/**
+	 * Detach this enemy from our scene
+	 */
+	public void eliminateEnemy() {
+		ResourcesManager.getInstance().activity
+				.runOnUpdateThread(new Runnable() {
+
+					@Override
+					public void run() {
+						detachSelf();
+					}
+				});
+	}
+	
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (bulletAttack != null) {
