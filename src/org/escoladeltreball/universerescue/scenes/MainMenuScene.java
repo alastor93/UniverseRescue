@@ -94,8 +94,8 @@ public class MainMenuScene extends BaseScene implements
 				2.2f, 2);
 		// EXIT
 		exitMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 1.2f,
-				1);
+				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 2.2f,
+				2);
 		
 		// MUSIC
 				final GrowToggleButton MusicToggleButton = new GrowToggleButton((ResourcesManager.music_region.getWidth() / 2f)*2, (ResourcesManager.music_region.getHeight() / 2f)*2, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {

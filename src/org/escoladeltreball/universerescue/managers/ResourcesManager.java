@@ -215,7 +215,7 @@ public class ResourcesManager {
 		}
 		if (exit_region == null) {
 			exit_region = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(menuTextureAtlas, activity, "salir.png");
+					.createFromAsset(menuTextureAtlas, activity, "exit.png");
 		}
 		if (music_region == null) {
 			music_region = BitmapTextureAtlasTextureRegionFactory
