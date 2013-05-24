@@ -1,5 +1,7 @@
 package org.escoladeltreball.universerescue.game;
 
+import java.util.LinkedList;
+
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.pool.GenericPool;
@@ -11,11 +13,14 @@ public class BulletPool extends GenericPool<Sprite> {
 	private ITextureRegion bullet;
 	private GameScene scene;
 	private int damage = 20;
+	private LinkedList list;
+	
 
-	public BulletPool(final ITextureRegion pTextureRegion,
+	public BulletPool(final ITextureRegion pTextureRegion, final LinkedList bulletList,
 			final GameScene pScene) {
 		super();
 		bullet = pTextureRegion;
+		list = bulletList;
 		scene = pScene;
 
 	}
@@ -37,7 +42,7 @@ public class BulletPool extends GenericPool<Sprite> {
 		Sprite newSprite = new Sprite(10, 10, bullet,
 				ResourcesManager.getInstance().vbom);
 		scene.attachChild(newSprite);
-		scene.bulletList.add(newSprite);
+		list.add(newSprite);
 		return newSprite;
 	}
 
