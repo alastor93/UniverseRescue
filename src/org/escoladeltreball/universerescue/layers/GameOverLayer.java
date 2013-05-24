@@ -16,7 +16,9 @@ public class GameOverLayer extends Layer implements OnClickListener {
 	private Sprite background;
 	private ButtonSprite continueSprite;
 	private ButtonSprite exitSprite;
-	
+	private boolean pressedContinue;
+	private boolean pressedExit;
+
 	private static GameOverLayer obj = null;
 
 	// Animates the layer to slide in from the top.
@@ -40,36 +42,13 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		}
 	};
 
-	// Animates the layer to slide out through the top and tell the SceneManager
-	// to hide it when it is off-screen;
-	IUpdateHandler SlideOut = new IUpdateHandler() {
-		@Override
-		public void onUpdate(float pSecondsElapsed) {
-			if (GameOverLayer.getInstance().getY() < GameActivity.getHeight() / 2f + 480f) {
-				GameOverLayer.getInstance().setPosition(
-						GameOverLayer.getInstance().getX(),
-						Math.min(GameOverLayer.getInstance().getY()
-								+ (3600 * (pSecondsElapsed)),
-								GameActivity.getHeight() / 2f + 480f));
-			} else {
-				ResourcesManager.getInstance().engine
-						.unregisterUpdateHandler(this);
-				SceneManager.getInstance().hideLayer();
-			}
-		}
-
-		@Override
-		public void reset() {
-		}
-	};
-	
 	// Singleton
-		public static GameOverLayer getInstance() {
-			if (obj == null) {
-				obj = new GameOverLayer();
-			}
-			return obj;
+	public static GameOverLayer getInstance() {
+		if (obj == null) {
+			obj = new GameOverLayer();
 		}
+		return obj;
+	}
 
 	@Override
 	public void onLoadLayer() {
@@ -90,6 +69,7 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		exitSprite.setScale(3f);
 		this.registerTouchArea(continueSprite);
 		this.registerTouchArea(exitSprite);
+		this.setTouchAreaBindingOnActionDownEnabled(true);
 		final float BackgroundX = 0f, BackgroundY = 0f;
 		final float BackgroundWidth = 760f, BackgroundHeight = 440f;
 		Rectangle smth = new Rectangle(BackgroundX, BackgroundY,
@@ -133,7 +113,6 @@ public class GameOverLayer extends Layer implements OnClickListener {
 
 	@Override
 	public void onHideLayer() {
-		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideOut);
 	}
 
 	@Override
@@ -144,17 +123,35 @@ public class GameOverLayer extends Layer implements OnClickListener {
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
 		if (pButtonSprite.equals(continueSprite)) {
-			createArrow(pButtonSprite.getX() - pButtonSprite.getWidth() * 2,
-					pButtonSprite.getY());
-			ResourcesManager.getInstance().camera.setCenter(ResourcesManager.getInstance().camera.getWidth() / 2, ResourcesManager.getInstance().camera.getHeight() / 2);
-			SceneManager.getInstance().unloadGameScene();
-			SceneManager.getInstance().createTempGameScene(
-					ResourcesManager.getInstance().engine,
-					SceneManager.getInstance().getCurrentlevel());
+			if (!pressedContinue) {
+				background.detachChild(arrow);
+				createArrow(
+						pButtonSprite.getX() - pButtonSprite.getWidth() * 2,
+						pButtonSprite.getY());
+				pressedContinue = true;
+				pressedExit = false;
+			} else {
+				background.detachChild(arrow);
+				SceneManager.getInstance().hideLayer();
+				SceneManager.getInstance().unloadGameScene();
+				SceneManager.getInstance().createTempGameScene(
+						ResourcesManager.getInstance().engine,
+						SceneManager.getInstance().getCurrentlevel());
+				pressedContinue = false;
+			}
 		} else {
-			createArrow(pButtonSprite.getX() - pButtonSprite.getWidth() * 2,
-					pButtonSprite.getY());
-			SceneManager.getInstance().backToLevelMenu();
+			if (!pressedExit) {
+				background.detachChild(arrow);
+				createArrow(continueSprite.getX() - continueSprite.getWidth()
+						* 2, pButtonSprite.getY());
+				pressedExit = true;
+				pressedContinue = false;
+			} else {
+				background.detachChild(arrow);
+				SceneManager.getInstance().hideLayer();
+				SceneManager.getInstance().backToLevelMenu();
+				pressedExit = false;
+			}
 		}
 
 	}
