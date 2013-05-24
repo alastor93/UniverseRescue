@@ -52,7 +52,7 @@ public abstract class GameScene extends BaseScene implements
 	/** A bulletPool for manage bullet sprites */
 	protected BulletPool PLAYER_BULLET_POOL;
 	/** LinkedList for available bullet sprites */
-	public LinkedList bulletList;
+	public LinkedList playerBulletList;
 
 	// Heal parts
 	protected Rectangle healstate;
@@ -262,7 +262,7 @@ public abstract class GameScene extends BaseScene implements
 	// @Override
 	// public void onUpdate(float pSecondsElapsed) {
 	// // iterating the targets
-	// Iterator it = bulletList.iterator();
+	// Iterator it = playerBulletList.iterator();
 	// while (it.hasNext()) {
 	// Sprite b = (Sprite) it.next();
 	// if (b.getX() >= b.getWidth()
