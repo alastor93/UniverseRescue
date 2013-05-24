@@ -37,6 +37,9 @@ public class SceneManager {
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
 	private BaseScene currentScene;
 	private int currentlevel;
+	
+	private final float centerX = (GameActivity.getWidth() * 0.5f);
+	private final float centerY = (GameActivity.getHeight() * 0.5f);
 
 	/** BaseScene of MainMenu */
 	private BaseScene mainMenu;
@@ -123,9 +126,8 @@ public class SceneManager {
 	
 	public void pauseScene(){
 		CameraScene pauseScene = new CameraScene(ResourcesManager.getInstance().camera);
-		final float centerX = (GameActivity.getWidth() * 0.5f);
-		final float centerY = (GameActivity.getHeight() * 0.5f);
-		final Sprite pausedSprite = new Sprite(centerX, centerY, ResourcesManager.getInstance().continueGame,ResourcesManager.getInstance().vbom );
+		Sprite pausedSprite = new Sprite(centerX, centerY, ResourcesManager.getInstance().pause,ResourcesManager.getInstance().vbom );
+		pausedSprite.setScale(2f);
 		pauseScene.attachChild(pausedSprite);
 		pauseScene.setBackgroundEnabled(false);
 		gameScene.setChildScene(pauseScene, false, true,

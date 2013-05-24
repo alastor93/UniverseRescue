@@ -77,6 +77,7 @@ public class ResourcesManager {
 	public ITextureRegion continueGame;
 	public ITextureRegion exitGame;
 	public ITextureRegion arrow;
+	public ITextureRegion pause;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
@@ -242,7 +243,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 980, 553, BILINEAR);
+				this.engine.getTextureManager(), 1075, 576, BILINEAR);
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
@@ -279,6 +280,10 @@ public class ResourcesManager {
 		if (this.arrow == null) {
 			this.arrow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 					gameAtlas, activity, "arrow.png");
+		}
+		if (this.pause == null) {
+			this.pause = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "pause.png");
 		}
 		try {
 			this.gameAtlas
