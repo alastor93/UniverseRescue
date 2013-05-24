@@ -295,7 +295,9 @@ public class FlyEnemy extends Enemy {
 			if (bulletAttack.isVisible()) {
 				if (bulletAttack.collidesWith(player)) {
 					createExplosion(bulletAttack);
-					player.setHp(player.getHp() - 5);
+					if (player.getHp() > 0) {
+						player.setHp(player.getHp() - 5);
+					}
 				}
 			}
 		}

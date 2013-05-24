@@ -1,6 +1,7 @@
 package org.escoladeltreball.universerescue.levels;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
@@ -38,6 +39,8 @@ public class level1 extends GameScene {
 	private FlyEnemy fly;
 	private CoolDown coolDownEnemy;
 	private LinkedList flyEnemyBulletList;
+	private int countEnemies;
+	private static final float[] POSX = {20,1500};
 
 	public level1() {
 		super();
@@ -51,7 +54,6 @@ public class level1 extends GameScene {
 		this.attachChild(debug);
 		this.createPlatform();
 		this.createPlayer();
-		this.createEnemy();
 		this.createFlyEnemy();
 	}
 
@@ -151,6 +153,7 @@ public class level1 extends GameScene {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
 					teraEnemy.eliminateEnemy();
 					addEnemiesKilled(1);
+					countEnemies--;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					if (!teraEnemy.isFlippedHorizontal()) {
@@ -166,7 +169,7 @@ public class level1 extends GameScene {
 							new int[] { 14, 9 }, false, player);
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					if (player.getHp() > 240) {
+					if (player.getHp() < 240) {
 						player.setHp(player.getHp() + 20);
 					}
 					item.removeItem();
@@ -197,6 +200,10 @@ public class level1 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
+		if (countEnemies < 2) {
+			createEnemy();
+			countEnemies++;
+		}
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
 			this.createItem(800, camera.getHeight() - 30, manager.item);
@@ -235,7 +242,8 @@ public class level1 extends GameScene {
 
 	@Override
 	public void createEnemy() {
-		teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite, this.vbom,
+		Random random = new Random();
+		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 100, manager.enemySprite, this.vbom,
 				camera, physics);
 		this.attachChild(teraEnemy);
 	}
@@ -255,7 +263,7 @@ public class level1 extends GameScene {
 
 	@Override
 	public void createPlayer() {
-		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
+		this.player = new Player(GameActivity.getWidth() * 0.5f, 100, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
 	}
