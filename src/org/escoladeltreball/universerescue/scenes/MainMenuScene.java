@@ -83,16 +83,15 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene = new MenuScene(this.camera); // Use the constructor of
 														// andEngine for set a
 														// camera
-		menuChildScene.setPosition(0, -50);
 		// Build a menu item's
 		// PLAY
 		playMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_PLAY, manager.play_region, vbom), 1.2f,
-				1);
+				new SpriteMenuItem(MENU_PLAY, manager.play_region, vbom), 2.2f,
+				2);
 		// OPTIONS
 		optionMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_OPTIONS, manager.options_region, vbom),
-				1.2f, 1);
+				2.2f, 2);
 		// EXIT
 		exitMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 1.2f,
@@ -125,9 +124,9 @@ public class MainMenuScene extends BaseScene implements
 		// Put the menu items on specific position 
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 30);
 		optionMenuItem.setPosition(optionMenuItem.getX(),
-				optionMenuItem.getY() + 50);
-		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY() + 70);
-		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY()+50);
+				optionMenuItem.getY());
+		exitMenuItem.setPosition(exitMenuItem.getX(), exitMenuItem.getY());
+		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY());
 
 		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
 		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));

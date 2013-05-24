@@ -207,11 +207,11 @@ public class ResourcesManager {
 		}
 		if (play_region == null) {
 			play_region = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(menuTextureAtlas, activity, "newgame.png");
+					.createFromAsset(menuTextureAtlas, activity, "play.png");
 		}
 		if (options_region == null) {
 			options_region = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(menuTextureAtlas, activity, "opciones.png");
+					.createFromAsset(menuTextureAtlas, activity, "options.png");
 		}
 		if (exit_region == null) {
 			exit_region = BitmapTextureAtlasTextureRegionFactory
