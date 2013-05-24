@@ -19,6 +19,7 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.hardware.SensorManager;
@@ -161,6 +162,7 @@ public class level3 extends GameScene{
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)){
 					finalBoss.eliminateEnemy();
+					healstateEnemy.setWidth(0);
 				}
 
 			}
@@ -223,6 +225,12 @@ public class level3 extends GameScene{
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		finalBoss.move();
+		if(healstateEnemy.getWidth() == 0){
+			SceneManager.getInstance().showWinLayer(false);
+		}
+		if(player.getHp() <= 0) {
+			SceneManager.getInstance().showLoseLayer(false);
+		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
