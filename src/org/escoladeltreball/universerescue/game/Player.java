@@ -116,7 +116,8 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 
 	public void run(float pValueX) {
-		Vector2 velocity = Vector2Pool.obtain(0, 0);
+		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
+				dynamicBody.getLinearVelocity().y);
 		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
@@ -125,11 +126,11 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 			this.setCurrentTileIndex(9);
 		}
 		if (!isFire) {
-			velocity = Vector2Pool.obtain(pValueX * 10,
-					dynamicBody.getLinearVelocity().y);
+			dynamicBody.setLinearVelocity(velocity);
+			Vector2Pool.recycle(velocity);
+		}else{
+			dynamicBody.setLinearVelocity(0,0);
 		}
-		dynamicBody.setLinearVelocity(velocity);
-		Vector2Pool.recycle(velocity);
 	}
 
 	@Override
