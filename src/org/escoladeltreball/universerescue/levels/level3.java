@@ -85,7 +85,7 @@ public class level3 extends GameScene{
 		this.attachChild(player);
 	}
 
-	@Override
+@Override
 	public void createBulletPool() {
 		playerBulletList = new LinkedList();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, playerBulletList, this);
@@ -94,6 +94,7 @@ public class level3 extends GameScene{
 
 	@Override
 	public void createEnemy() {
+		final float  initX = 1500;
 		finalBoss = new FinalBoss(1500, 100, manager.finalBoss, this.vbom,
 				camera, physics);
 		this.attachChild(finalBoss);
