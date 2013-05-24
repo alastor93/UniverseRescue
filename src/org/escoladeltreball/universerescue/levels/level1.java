@@ -37,6 +37,7 @@ public class level1 extends GameScene {
 	private BulletPool FLYENEMY_BULLET_POOL;
 	private FlyEnemy fly;
 	private CoolDown coolDownEnemy;
+	private LinkedList flyEnemyBulletList;
 
 	public level1() {
 		super();
@@ -85,9 +86,11 @@ public class level1 extends GameScene {
 	}
 
 	public void createBulletPool() {
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, this);
-		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet, this);
-		bulletList = new LinkedList();
+		playerBulletList = new LinkedList();
+		flyEnemyBulletList = new LinkedList();
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,playerBulletList, this);
+		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet,flyEnemyBulletList, this);
+		
 	}
 
 	public void createPhysics() {

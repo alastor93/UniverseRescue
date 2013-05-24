@@ -87,8 +87,8 @@ public class level3 extends GameScene{
 
 	@Override
 	public void createBulletPool() {
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, this);
-		bulletList = new LinkedList();
+		playerBulletList = new LinkedList();
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, playerBulletList, this);
 		
 	}
 
