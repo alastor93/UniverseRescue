@@ -56,7 +56,7 @@ public class SceneManager {
 
 	// Methods
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME,SCENE_LEVEL;
+		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME, SCENE_LEVEL;
 	}
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -81,9 +81,7 @@ public class SceneManager {
 		ResourcesManager.getInstance().loadMenuGraphics();
 		mainMenu = new MainMenuScene();
 		setScene(mainMenu);
-		if (!currentSceneType.equals(SceneType.SCENE_MAINMENU)) {
-			disposeSplashScene();
-		}
+		disposeSplashScene();
 	}
 
 	public void createLevelScene() {
@@ -114,24 +112,24 @@ public class SceneManager {
 		backToMenuButton.setScale(1.5f);
 		backToMenuButton.setOffsetCenter(0, 0);
 	}
-	
+
 	public void unloadLevelScene() {
 		levelScene.detachSelf();
 		levelScene.dispose();
 	}
-	
+
 	public void backToMenu() {
 		mainMenu = new MainMenuScene();
 		setScene(mainMenu);
 		this.unloadLevelScene();
 	}
-	
+
 	public void backToLevelMenu() {
 		this.createLevelScene();
 		gameScene.disposeScene();
 	}
 
-	public void createTempGameScene(final Engine engine,final int level) {
+	public void createTempGameScene(final Engine engine, final int level) {
 		ResourcesManager.getInstance().loadLoadingScreen();
 		this.loadingScene = new LoadingScene();
 		this.setScene(loadingScene);
@@ -145,7 +143,7 @@ public class SceneManager {
 						if (level == 1) {
 							ResourcesManager.getInstance().loadLevel1Graphics();
 							gameScene = new level1();
-						}else if (level == 2) {
+						} else if (level == 2) {
 							ResourcesManager.getInstance().loadLevel2Graphics();
 							gameScene = new level2();
 						} else {
@@ -157,13 +155,12 @@ public class SceneManager {
 					}
 				}));
 	}
-	
+
 	public int getCurrentlevel() {
 		return currentlevel;
 	}
 
 	public void unloadGameScene() {
-		gameScene.detachSelf();
 		gameScene.disposeScene();
 	}
 
@@ -201,10 +198,9 @@ public class SceneManager {
 		showLayer(OptionsLayer.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
-	
-	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates,GameOverLayer gameOverLayer) {
-		showLayer(gameOverLayer, false,
-				pSuspendCurrentSceneUpdates, false);
+
+	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(GameOverLayer.getInstance(), false, pSuspendCurrentSceneUpdates, false);
 	}
 
 	/**

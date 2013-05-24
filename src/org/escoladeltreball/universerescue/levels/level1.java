@@ -18,7 +18,6 @@ import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
-import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
@@ -103,10 +102,10 @@ public class level1 extends GameScene {
 					if (player.getY() - player.getHeight() > platform.getY()
 							+ platform.getHeight()) {
 						contact.setEnabled(true);
-					}else{
+					} else {
 						contact.setEnabled(false);
 					}
-				}else if(areBodiesContacted("teraEnemy", "platform", contact)){
+				} else if (areBodiesContacted("teraEnemy", "platform", contact)) {
 					contact.setEnabled(false);
 				}
 				if (areBodiesContacted("player", "movePlatform", contact)) {
@@ -115,7 +114,7 @@ public class level1 extends GameScene {
 							|| player.getY() - player.getHeight() > platform3
 									.getY() + platform.getHeight()) {
 						contact.setEnabled(true);
-					}else{
+					} else {
 						contact.setEnabled(false);
 					}
 				}
@@ -155,16 +154,18 @@ public class level1 extends GameScene {
 						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
 								false, teraEnemy);
 					}
-					player.setHp(player.getHp() - teraEnemy.getAt());
-//					healstate.setWidth(player.getHp());
+					if (player.getHp() > 0) {
+						player.setHp(player.getHp() - teraEnemy.getAt());
+					}
 					player.setAttack(true);
 					player.attacked();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					player.setHp(player.getHp() + 20);
-//					healstate.setWidth(player.getHp());
+					if (player.getHp() > 240) {
+						player.setHp(player.getHp() + 20);
+					}
 					item.removeItem();
 				}
 				if (areBodiesContacted("player", "wall", contact)) {
@@ -195,17 +196,16 @@ public class level1 extends GameScene {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
-			this.createItem(800,camera.getHeight() - 30,manager.item);
+			this.createItem(800, camera.getHeight() - 30, manager.item);
 			GameActivity.writeIntToSharedPreferences(
 					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
 		}
 		if (enemiesKilled == 1 && !addItemArmour) {
 			addItemArmour = true;
-			this.createItem(800,camera.getHeight() - 30,manager.itemArmour);
+			this.createItem(800, camera.getHeight() - 30, manager.itemArmour);
 		}
-		if (player.getHp() == 0){
-			GameOverLayer gameOverLayer = new GameOverLayer(this);
-			SceneManager.getInstance().showLoseLayer(false,gameOverLayer);
+		if (player.getHp() <= 0) {
+			SceneManager.getInstance().showLoseLayer(false);
 		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
@@ -237,9 +237,8 @@ public class level1 extends GameScene {
 	}
 
 	@Override
-	public void createItem(float pX,float pY,ITextureRegion sprite) {
-		item = new Item(pX, pY, sprite, this.vbom,
-				camera, physics);
+	public void createItem(float pX, float pY, ITextureRegion sprite) {
+		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
 		this.attachChild(item);
 
 	}

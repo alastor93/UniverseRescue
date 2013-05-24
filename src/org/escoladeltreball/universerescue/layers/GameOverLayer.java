@@ -9,7 +9,6 @@ import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
-import org.escoladeltreball.universerescue.scenes.GameScene;
 
 public class GameOverLayer extends Layer implements OnClickListener {
 
@@ -17,15 +16,16 @@ public class GameOverLayer extends Layer implements OnClickListener {
 	private Sprite background;
 	private ButtonSprite continueSprite;
 	private ButtonSprite exitSprite;
-	private GameScene currentScene;
+	
+	private static GameOverLayer obj = null;
 
 	// Animates the layer to slide in from the top.
 	IUpdateHandler SlideIn = new IUpdateHandler() {
 		@Override
 		public void onUpdate(float pSecondsElapsed) {
-			if (getY() > GameActivity.getHeight() / 2f) {
-				setPosition(
-						getX(),
+			if (GameOverLayer.getInstance().getY() > GameActivity.getHeight() / 2f) {
+				GameOverLayer.getInstance().setPosition(
+						GameOverLayer.getInstance().getX(),
 						Math.max(OptionsLayer.getInstance().getY()
 								- (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f));
@@ -45,10 +45,10 @@ public class GameOverLayer extends Layer implements OnClickListener {
 	IUpdateHandler SlideOut = new IUpdateHandler() {
 		@Override
 		public void onUpdate(float pSecondsElapsed) {
-			if (getY() < GameActivity.getHeight() / 2f + 480f) {
-				setPosition(
-						getX(),
-						Math.min(getY()
+			if (GameOverLayer.getInstance().getY() < GameActivity.getHeight() / 2f + 480f) {
+				GameOverLayer.getInstance().setPosition(
+						GameOverLayer.getInstance().getX(),
+						Math.min(GameOverLayer.getInstance().getY()
 								+ (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f + 480f));
 			} else {
@@ -62,12 +62,14 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		public void reset() {
 		}
 	};
-
-
-	public GameOverLayer(GameScene scene) {
-		super();
-		this.currentScene = scene;
-	}
+	
+	// Singleton
+		public static GameOverLayer getInstance() {
+			if (obj == null) {
+				obj = new GameOverLayer();
+			}
+			return obj;
+		}
 
 	@Override
 	public void onLoadLayer() {
@@ -144,14 +146,15 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		if (pButtonSprite.equals(continueSprite)) {
 			createArrow(pButtonSprite.getX() - pButtonSprite.getWidth() * 2,
 					pButtonSprite.getY());
+			ResourcesManager.getInstance().camera.setCenter(ResourcesManager.getInstance().camera.getWidth() / 2, ResourcesManager.getInstance().camera.getHeight() / 2);
+			SceneManager.getInstance().unloadGameScene();
 			SceneManager.getInstance().createTempGameScene(
 					ResourcesManager.getInstance().engine,
 					SceneManager.getInstance().getCurrentlevel());
 		} else {
 			createArrow(pButtonSprite.getX() - pButtonSprite.getWidth() * 2,
 					pButtonSprite.getY());
-			currentScene.disposeScene();
-			SceneManager.getInstance().createMenuScene();
+			SceneManager.getInstance().backToLevelMenu();
 		}
 
 	}
