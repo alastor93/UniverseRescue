@@ -2,8 +2,8 @@ package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -17,6 +17,8 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 
 	private float initX = this.getX();
 	private boolean back;
+	private int limit;
+	private float pX;
 	private PhysicsConnector physicsConnector;
 
 	public TeraEnemy(float pX, float pY,
@@ -27,7 +29,11 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 				physicsWorld);
 		this.setScale(1.3f);
 		this.at = 20;
+		this.pX = pX;
 		this.createPhysics(camera, physicsWorld);
+		if (pX == 20) {
+			this.setFlippedHorizontal(true);
+		}
 		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
 	}
 
@@ -43,14 +49,22 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 	}
+	
+	public void calculateMove() {
+		if (pX == 20) {
+			limit = 1500;
+		} else {
+			limit = 20;
+		}
+	}
 
 	public void move() {
-		if (this.getX() - this.getWidth() > 10 && !back) {
+		if (this.getX() - this.getWidth() > limit && !back) {
 			this.setFlippedHorizontal(false);
 			body.setLinearVelocity(-1.7f, 0);
 		} else if (this.getX() == initX) {
 			back = false;
-		} else if (this.getX() - this.getWidth() <= 10 || back) {
+		} else if (this.getX() - this.getWidth() <= limit || back) {
 			this.setFlippedHorizontal(true);
 			back = true;
 			body.setLinearVelocity(1.7f, 0);
@@ -79,7 +93,6 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 					public void run() {
 						physics.unregisterPhysicsConnector(physicsConnector);
 						takeDamage(20);
-						System.out.println(getHP());
 						body.setActive(false);
 						physics.destroyBody(body);
 						detachSelf();
