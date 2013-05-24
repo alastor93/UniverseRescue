@@ -406,7 +406,7 @@ public class ResourcesManager {
 		if (this.finalBoss == null){
 			this.finalBoss = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(level3Atlas, activity, "finalboss.png",
-							5, 3);
+							4, 3);
 		}
 		if (this.platformSprite == null) {
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
