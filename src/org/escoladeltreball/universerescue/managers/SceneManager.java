@@ -4,10 +4,13 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.scene.CameraScene;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
@@ -116,6 +119,22 @@ public class SceneManager {
 	public void unloadLevelScene() {
 		levelScene.detachSelf();
 		levelScene.dispose();
+	}
+	
+	public void pauseScene(){
+		CameraScene pauseScene = new CameraScene(ResourcesManager.getInstance().camera);
+		final float centerX = (GameActivity.getWidth() * 0.5f);
+		final float centerY = (GameActivity.getHeight() * 0.5f);
+		final Sprite pausedSprite = new Sprite(centerX, centerY, ResourcesManager.getInstance().continueGame,ResourcesManager.getInstance().vbom );
+		pauseScene.attachChild(pausedSprite);
+		pauseScene.setBackgroundEnabled(false);
+		gameScene.setChildScene(pauseScene, false, true,
+				true);
+	}
+	
+	public void clearPause(){
+		gameScene.clearChildScene();
+		gameScene.createControls();
 	}
 
 	public void backToMenu() {

@@ -21,6 +21,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.Html;
+import android.view.KeyEvent;
 
 public class GameActivity extends BaseGameActivity {
 
@@ -111,10 +112,10 @@ public class GameActivity extends BaseGameActivity {
 		}
 	}
 
-	 @Override
-	 protected void onDestroy() {
-	 super.onDestroy();
-	 }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
 
 	@Override
 	protected synchronized void onResume() {
@@ -141,7 +142,24 @@ public class GameActivity extends BaseGameActivity {
 			}
 		}
 	}
-	
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU
+				&& event.getAction() == KeyEvent.ACTION_DOWN && isGameScene()) {
+			if (this.mEngine.isRunning()) {
+				SceneManager.getInstance().pauseScene();
+				this.mEngine.stop();
+			} else {
+				SceneManager.getInstance().clearPause();
+				this.mEngine.start();
+			}
+			return true;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
+	}
+
 	public void showMessageExit() {
 		this.runOnUiThread(new Runnable() {
 
@@ -175,9 +193,10 @@ public class GameActivity extends BaseGameActivity {
 			}
 		});
 	}
-	
+
 	/**
 	 * Getter with the width of the camera
+	 * 
 	 * @return the width of the camera
 	 */
 	public static int getWidth() {
@@ -186,6 +205,7 @@ public class GameActivity extends BaseGameActivity {
 
 	/**
 	 * Getter with the HEIGHT of the camera
+	 * 
 	 * @return the HEIGHT of the camera
 	 */
 	public static int getHeight() {
@@ -194,11 +214,21 @@ public class GameActivity extends BaseGameActivity {
 
 	/**
 	 * Getter with the level stars
+	 * 
 	 * @param maxLevelNumber
 	 * @return the max number of stars
 	 */
 	public static int getLevelStars(int maxLevelNumber) {
 		return getIntFromSharedPreferences(SHARED_PREFS_LEVEL_STARS
 				+ String.valueOf(maxLevelNumber));
+	}
+
+	public boolean isGameScene() {
+		if (SceneManager.getInstance().getCurrentSceneType()
+				.equals(SceneType.SCENE_GAME)
+				&& !SceneManager.getInstance().isLayerShown) {
+			return true;
+		}
+		return false;
 	}
 }
