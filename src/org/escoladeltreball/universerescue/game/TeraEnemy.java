@@ -126,4 +126,11 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		this.killed = killed;
 	}
 
+//	@Override
+//	public void run() {
+//		while (true) {
+//			this.move();
+//		}
+//	}
+
 }

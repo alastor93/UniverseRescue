@@ -56,6 +56,7 @@ public abstract class GameScene extends BaseScene implements
 	protected BulletPool PLAYER_BULLET_POOL;
 	/** LinkedList for available bullet sprites */
 	public LinkedList playerBulletList;
+	protected static final float[] POSX = { 20, 1500 };
 
 	// Heal parts
 	protected Rectangle healstate;

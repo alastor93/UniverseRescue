@@ -1,6 +1,7 @@
 package org.escoladeltreball.universerescue.levels;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
@@ -31,13 +32,13 @@ public class level2 extends GameScene {
 	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
 	private boolean back,createNewStalactite = true;
+	private int countEnemies;
 
 	@Override
 	public void createScene() {
 		super.createScene();
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
-		createEnemy();
 		createPlayer();
 		createStalactite();
 
@@ -73,7 +74,7 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createPlayer() {
-		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
+		this.player = new Player(camera.getWidth() * 0.5f, 10, manager.playerSprite, this.vbom,
 				camera, physics);
 		this.attachChild(player);
 
@@ -89,24 +90,9 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createEnemy() {
-		final float  initX = 1500;
-		teraEnemy = new TeraEnemy(1500, 10, manager.enemySprite2, this.vbom,
+		Random random = new Random();
+		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 10, manager.enemySprite2, this.vbom,
 				camera, physics);
-//			@Override
-//			public void move(){
-//				if (this.getX() - this.getWidth() > 100 && !back) {
-//					this.setFlippedHorizontal(false);
-//					body.setLinearVelocity(-1.7f, 0);
-//				} else if (this.getX() == initX) {
-//					back = false;
-//				} else if (this.getX() - this.getWidth() <= 100 || back) {
-//					this.setFlippedHorizontal(true);
-//					back = true;
-//					body.setLinearVelocity(1.7f, 0);
-//				}
-//				
-//			}
-//		};
 		this.attachChild(teraEnemy);
 
 	}
@@ -120,6 +106,11 @@ public class level2 extends GameScene {
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
+				if (areBodiesContacted("teraEnemy", "wall", contact)) {
+					contact.setEnabled(true);
+				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
+					contact.setEnabled(false);
+				}
 			}
 
 			@Override
@@ -138,6 +129,7 @@ public class level2 extends GameScene {
 					getBody(physics, teraEnemy).setActive(false);
 					teraEnemy.animate(new long[] {700}, new int[]{7}, false,teraEnemy);
 					addEnemiesKilled(1);
+					countEnemies--;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					player.setHp(player.getHp() - teraEnemy.getAt());
@@ -184,6 +176,10 @@ public class level2 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
+		if (countEnemies < 2) {
+			createEnemy();
+			countEnemies++;
+		}
 		if (stalactite.getY() <= 77) {
 			stalactite.removeStalac();
 			this.createStalactite();

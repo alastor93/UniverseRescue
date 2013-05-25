@@ -41,7 +41,6 @@ public class level1 extends GameScene {
 	private LinkedList flyEnemyBulletList;
 	private int countEnemies;
 	private int countFlyEnemies;
-	private static final float[] POSX = { 20, 1500 };
 
 	public level1() {
 		super();
