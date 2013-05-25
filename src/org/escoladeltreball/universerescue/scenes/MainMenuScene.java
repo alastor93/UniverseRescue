@@ -31,7 +31,9 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_OPTIONS = 1;
 	/** An int associated with Menu's option 'exit' */
 	private final int MENU_EXIT = 2;
-	private IMenuItem playMenuItem,optionMenuItem,exitMenuItem;
+	/** An int associated with Menu's option 'controls' */
+	private final int MENU_CONTROLS = 3;
+	private IMenuItem playMenuItem,optionMenuItem,exitMenuItem,controlMenuItem;
 
 	// Methods
 
@@ -95,6 +97,11 @@ public class MainMenuScene extends BaseScene implements
 				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 2.2f,
 				2);
 		
+		//CONTROLS
+		controlMenuItem = new ScaleMenuItemDecorator(
+				new SpriteMenuItem(MENU_CONTROLS, manager.controls_region, vbom), 2.2f,
+				2);
+		
 		// MUSIC
 				final GrowToggleButton MusicToggleButton = new GrowToggleButton((ResourcesManager.music_region.getWidth() / 2f)*2, (ResourcesManager.music_region.getHeight() / 2f)*2, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
 					@Override
@@ -111,6 +118,7 @@ public class MainMenuScene extends BaseScene implements
 		// Add menu items to the MenuScene
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(optionMenuItem);
+		menuChildScene.addMenuItem(controlMenuItem);
 		menuChildScene.addMenuItem(exitMenuItem);
 		menuChildScene.attachChild(MusicToggleButton);
 		menuChildScene.registerTouchArea(MusicToggleButton);
@@ -123,11 +131,13 @@ public class MainMenuScene extends BaseScene implements
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY());
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				playMenuItem.getY() - 70);
-		exitMenuItem.setPosition(exitMenuItem.getX(), optionMenuItem.getY() - 70);
+		controlMenuItem.setPosition(controlMenuItem.getX(), optionMenuItem.getY()-70);
+		exitMenuItem.setPosition(exitMenuItem.getX(), controlMenuItem.getY() - 70);
 		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY());
 
 		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
 		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
+		controlMenuItem.registerEntityModifier(new MoveModifier(1, 0, controlMenuItem.getY(), camera.getWidth()/2, controlMenuItem.getY()));
 		exitMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
 
 		// Finally, put the MenuScene
@@ -143,6 +153,9 @@ public class MainMenuScene extends BaseScene implements
 			return true;
 		case MENU_OPTIONS:
 			SceneManager.getInstance().showOptionsLayer(false);
+			return true;
+		case MENU_CONTROLS:
+			SceneManager.getInstance().showControlsLayer(false);
 			return true;
 		case MENU_EXIT:
 			ResourcesManager.getActivity().showMessageExit();
