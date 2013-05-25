@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.debugdraw.DebugRenderer;
@@ -57,6 +58,8 @@ public class level3 extends GameScene{
 				(this.camera.getHeight() / 2f) * 1.8f, manager.bossFont,
 				"FINAL BOSS", manager.vbom);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
+		SceneManager.getInstance().showIntroFinalBLayer(false);
+
 	}
 
 	@Override
@@ -231,6 +234,7 @@ public class level3 extends GameScene{
 			
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
+				
 				if (finalBoss.getHP() > 160) {
 					healstateEnemy.setColor(Color.GREEN);
 				}else if(finalBoss.getHP() <= 160 && finalBoss.getHP() > 80){

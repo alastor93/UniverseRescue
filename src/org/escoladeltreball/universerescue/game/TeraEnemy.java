@@ -90,10 +90,8 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 					@Override
 					public void run() {
 						physics.unregisterPhysicsConnector(physicsConnector);
-						takeDamage(20);
 						physics.destroyBody(body);
 						detachSelf();
-						System.gc();
 					}
 				});
 	}

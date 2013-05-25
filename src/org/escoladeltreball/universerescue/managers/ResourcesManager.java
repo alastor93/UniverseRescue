@@ -84,12 +84,14 @@ public class ResourcesManager {
 	public ITextureRegion exitGame;
 	public ITextureRegion arrow;
 	public ITextureRegion pause;
+	public ITextureRegion introFinalBoss;
 	// ITextureRegion for load the character sprite
 	public TiledTextureRegion playerSprite;
 	public TiledTextureRegion enemySprite;
 	public TiledTextureRegion enemySprite2;
 	public TiledTextureRegion flyEnemySprite;
 	public TiledTextureRegion finalBoss;
+	
 
 
 	// Texture for load the platform sprite
@@ -434,6 +436,10 @@ public class ResourcesManager {
 		if (this.platformSprite == null) {
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(level3Atlas, activity, "platform.png");
+		}
+		if(introFinalBoss == null){
+			this.introFinalBoss = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(level3Atlas, activity, "finalbossopening.png"); 
 		}
 		
 		try {

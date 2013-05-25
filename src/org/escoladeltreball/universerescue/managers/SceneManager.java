@@ -13,6 +13,7 @@ import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.layers.ControlsLayer;
 import org.escoladeltreball.universerescue.layers.GameOverLayer;
+import org.escoladeltreball.universerescue.layers.IntroFB;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.layers.WinLayer;
@@ -223,6 +224,11 @@ public class SceneManager {
 	}
 	public void showControlsLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(ControlsLayer.getInstance(), false,
+				pSuspendCurrentSceneUpdates, true);
+	}
+	
+	public void showIntroFinalBLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(IntroFB.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
 
