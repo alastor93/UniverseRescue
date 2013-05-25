@@ -2,9 +2,7 @@ package org.escoladeltreball.universerescue.layers;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
