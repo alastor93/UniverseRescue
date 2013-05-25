@@ -12,12 +12,10 @@ public class BulletPool extends GenericPool<Sprite> {
 
 	private ITextureRegion bullet;
 	private GameScene scene;
-	private int damage = 20;
-	private LinkedList list;
-	
+	private LinkedList<Sprite> list;
 
-	public BulletPool(final ITextureRegion pTextureRegion, final LinkedList bulletList,
-			final GameScene pScene) {
+	public BulletPool(final ITextureRegion pTextureRegion,
+			final LinkedList<Sprite> bulletList, final GameScene pScene) {
 		super();
 		bullet = pTextureRegion;
 		list = bulletList;
@@ -26,20 +24,11 @@ public class BulletPool extends GenericPool<Sprite> {
 	}
 
 	/**
-	 * attack
-	 * 
-	 * @return damage of the attack
-	 */
-	public int shoot() {
-		return damage;
-	}
-
-	/**
 	 * Called if there is not a Bullet to shot
 	 */
 	@Override
 	protected Sprite onAllocatePoolItem() {
-		Sprite newSprite = new Sprite(10, 10, bullet,
+		Sprite newSprite = new Sprite(10, 10, bullet.deepCopy(),
 				ResourcesManager.getInstance().vbom);
 		scene.attachChild(newSprite);
 		list.add(newSprite);
@@ -51,15 +40,7 @@ public class BulletPool extends GenericPool<Sprite> {
 	 */
 	@Override
 	protected void onHandleRecycleItem(final Sprite pBullet) {
-		pBullet.setVisible(true);
-		pBullet.setIgnoreUpdate(true);
-	}
-
-	/**
-	 * Called just before a Bullet is returned to the caller, this is where you
-	 */
-	@Override
-	protected void onHandleObtainItem(final Sprite pBullet) {
+		pBullet.setVisible(false);
 		pBullet.reset();
 	}
 }
