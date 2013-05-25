@@ -62,6 +62,8 @@ public class ResourcesManager {
 
 	/** GameScene count enemies Font */
 	public Font gameFont;
+	/** Font for final Boss */
+	public Font bossFont;
 
 	/** TextureRegion for load image for level icon */
 	public ITextureRegion menuLevelIcon;
@@ -159,6 +161,13 @@ public class ResourcesManager {
 					254, getActivity().getAssets(), "fonts/ecliptic.ttf", 48f,
 					true, Color.WHITE_ARGB_PACKED_INT);
 			this.gameFont.load();
+		}
+		if (bossFont == null) {
+			this.bossFont = FontFactory.createFromAsset(
+					engine.getFontManager(), engine.getTextureManager(), 254,
+					254, getActivity().getAssets(), "fonts/ecliptic.ttf", 35f,
+					true, Color.RED_ARGB_PACKED_INT);
+			this.bossFont.load();
 		}
 
 	}

@@ -6,6 +6,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -50,6 +51,12 @@ public class level3 extends GameScene{
 		createEnemy();
 		createPlatform();
 		createHealthEnemyBar();
+		//Modify HUD for set Final Boss Text
+		this.camera.getHUD().detachChild(this.enemiesLeftText);
+		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
+				(this.camera.getHeight() / 2f) * 1.8f, manager.bossFont,
+				"FINAL BOSS", manager.vbom);
+		this.camera.getHUD().attachChild(this.enemiesLeftText);
 	}
 
 	@Override

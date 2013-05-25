@@ -43,7 +43,7 @@ public abstract class GameScene extends BaseScene implements
 	/** Our game HUD */
 	private HUD gameHUD;
 	/** Displays the enemies remaining */
-	private Text enemiesLeftText;
+	protected Text enemiesLeftText;
 	/** The player */
 	protected Player player;
 	/** Add Item */
