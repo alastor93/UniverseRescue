@@ -40,7 +40,10 @@ public class BulletPool extends GenericPool<Sprite> {
 	 */
 	@Override
 	protected void onHandleRecycleItem(final Sprite pBullet) {
+		pBullet.clearEntityModifiers();
+		pBullet.clearUpdateHandlers();
 		pBullet.setVisible(false);
+		pBullet.detachSelf();
 		pBullet.reset();
 	}
 }

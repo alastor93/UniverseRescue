@@ -19,7 +19,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
-		IOnMenuItemClickListener,IEntityModifierListener {
+		IOnMenuItemClickListener, IEntityModifierListener {
 
 	// Attributes //
 
@@ -33,7 +33,8 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_EXIT = 2;
 	/** An int associated with Menu's option 'controls' */
 	private final int MENU_CONTROLS = 3;
-	private IMenuItem playMenuItem,optionMenuItem,exitMenuItem,controlMenuItem;
+	private IMenuItem playMenuItem, optionMenuItem, exitMenuItem,
+			controlMenuItem;
 
 	// Methods
 
@@ -80,41 +81,39 @@ public class MainMenuScene extends BaseScene implements
 	 */
 
 	private void createMenuChildScene() {
-		menuChildScene = new MenuScene(this.camera); // Use the constructor of
-														// andEngine for set a
-														// camera
+		menuChildScene = new MenuScene(this.camera);
+		
 		// Build a menu item's
 		// PLAY
-		playMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_PLAY, manager.play_region, vbom), 2.2f,
-				2);
+		playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY,
+				manager.play_region, vbom), 2.2f, 2);
 		// OPTIONS
-		optionMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_OPTIONS, manager.options_region, vbom),
-				2.2f, 2);
+		optionMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
+				MENU_OPTIONS, manager.options_region, vbom), 2.2f, 2);
 		// EXIT
-		exitMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_EXIT, manager.exit_region, vbom), 2.2f,
-				2);
-		
-		//CONTROLS
-		controlMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_CONTROLS, manager.controls_region, vbom), 2.2f,
-				2);
-		
+		exitMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_EXIT,
+				manager.exit_region, vbom), 2.2f, 2);
+
+		// CONTROLS
+		controlMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
+				MENU_CONTROLS, manager.controls_region, vbom), 2.2f, 2);
+
 		// MUSIC
-				final GrowToggleButton MusicToggleButton = new GrowToggleButton((ResourcesManager.music_region.getWidth() / 2f)*2, (ResourcesManager.music_region.getHeight() / 2f)*2, ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
-					@Override
-					public boolean checkState() {
-						return !SFXManager.isMusicMuted();
-					}
-					
-					@Override
-					public void onClick() {
-						SFXManager.toggleMusicMuted();
-					}
-				};
-				
+		final GrowToggleButton MusicToggleButton = new GrowToggleButton(
+				(ResourcesManager.music_region.getWidth() / 2f) * 2,
+				(ResourcesManager.music_region.getHeight() / 2f) * 2,
+				ResourcesManager.music_region, !SFXManager.isMusicMuted()) {
+			@Override
+			public boolean checkState() {
+				return !SFXManager.isMusicMuted();
+			}
+
+			@Override
+			public void onClick() {
+				SFXManager.toggleMusicMuted();
+			}
+		};
+
 		// Add menu items to the MenuScene
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(optionMenuItem);
@@ -127,18 +126,28 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		// Put the menu items on specific position 
+		// Put the menu items on specific position
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				playMenuItem.getY() - 70);
-		controlMenuItem.setPosition(controlMenuItem.getX(), optionMenuItem.getY()-70);
-		exitMenuItem.setPosition(exitMenuItem.getX(), controlMenuItem.getY() - 70);
-		MusicToggleButton.setPosition(MusicToggleButton.getX(), MusicToggleButton.getY());
+		controlMenuItem.setPosition(controlMenuItem.getX(),
+				optionMenuItem.getY() - 70);
+		exitMenuItem.setPosition(exitMenuItem.getX(),
+				controlMenuItem.getY() - 70);
+		MusicToggleButton.setPosition(MusicToggleButton.getX(),
+				MusicToggleButton.getY());
 
-		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
-		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
-		controlMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), controlMenuItem.getY(), camera.getWidth()/2, controlMenuItem.getY()));
-		exitMenuItem.registerEntityModifier(new MoveModifier(1, 0, exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
+		playMenuItem.registerEntityModifier(new MoveModifier(1, camera
+				.getWidth(), playMenuItem.getY(), camera.getWidth() / 2,
+				playMenuItem.getY()));
+		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0,
+				optionMenuItem.getY(), camera.getWidth() / 2, optionMenuItem
+						.getY()));
+		controlMenuItem.registerEntityModifier(new MoveModifier(1, camera
+				.getWidth(), controlMenuItem.getY(), camera.getWidth() / 2,
+				controlMenuItem.getY()));
+		exitMenuItem.registerEntityModifier(new MoveModifier(1, 0, exitMenuItem
+				.getY(), camera.getWidth() / 2, exitMenuItem.getY(), this));
 
 		// Finally, put the MenuScene
 		setChildScene(menuChildScene);
@@ -166,13 +175,11 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
 		// Sets the MainMenuScene as a listener on menu's item click
-		menuChildScene.setOnMenuItemClickListener(this);		
+		menuChildScene.setOnMenuItemClickListener(this);
 	}
 }
