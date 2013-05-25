@@ -40,6 +40,7 @@ public class level1 extends GameScene {
 	private CoolDown coolDownEnemy;
 	private LinkedList flyEnemyBulletList;
 	private int countEnemies;
+	private int countFlyEnemies;
 	private static final float[] POSX = { 20, 1500 };
 
 	public level1() {
@@ -54,7 +55,6 @@ public class level1 extends GameScene {
 		this.attachChild(debug);
 		this.createPlatform();
 		this.createPlayer();
-		this.createFlyEnemy();
 	}
 
 	@Override
@@ -207,9 +207,13 @@ public class level1 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (countEnemies < 2) {
+		if (countEnemies < 4) {
 			createEnemy();
 			countEnemies++;
+		}
+		if (countFlyEnemies < 1) {
+			createFlyEnemy();
+			countFlyEnemies++;
 		}
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
@@ -238,6 +242,7 @@ public class level1 extends GameScene {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
 			if (bullet.collidesWith(fly)) {
 				fly.eliminateEnemy();
+				countFlyEnemies--;
 			}
 
 		}
