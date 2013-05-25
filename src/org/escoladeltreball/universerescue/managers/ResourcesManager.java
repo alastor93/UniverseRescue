@@ -51,6 +51,8 @@ public class ResourcesManager {
 	public ITextureRegion controls_region;
 	/** ITextureRegion for load music option on MainMenuScene */
 	public static TiledTextureRegion music_region;
+	/** ITextureRegion for load controls  on ControlLayer */
+	public ITextureRegion controlinfo;
 
 	/** TextureOption BILINEAR */
 	private final TextureOptions BILINEAR = TextureOptions.BILINEAR;
@@ -199,7 +201,7 @@ public class ResourcesManager {
 				.setAssetBasePath("gfx/mainMenu/");
 		if (menuTextureAtlas == null) {
 			menuTextureAtlas = new BuildableBitmapTextureAtlas(
-					activity.getTextureManager(), 1300, 1200,
+					activity.getTextureManager(), 1700, 1200,
 					TextureOptions.BILINEAR);
 		}
 		if (menu_background_region == null) {
@@ -228,6 +230,12 @@ public class ResourcesManager {
 					.createTiledFromAsset(menuTextureAtlas, activity,
 							"tiledsound.png", 2, 1);
 		}
+		if(controlinfo == null){
+			controlinfo  = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity, "controlsinfo.png");
+		}
+
+		
 		try {
 			this.menuTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(

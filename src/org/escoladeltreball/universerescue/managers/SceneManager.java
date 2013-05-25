@@ -11,6 +11,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 import org.escoladeltreball.universerescue.GameActivity;
+import org.escoladeltreball.universerescue.layers.ControlsLayer;
 import org.escoladeltreball.universerescue.layers.GameOverLayer;
 import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
@@ -218,6 +219,10 @@ public class SceneManager {
 
 	public void showOptionsLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(OptionsLayer.getInstance(), false,
+				pSuspendCurrentSceneUpdates, true);
+	}
+	public void showControlsLayer(final boolean pSuspendCurrentSceneUpdates) {
+		showLayer(ControlsLayer.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
 
