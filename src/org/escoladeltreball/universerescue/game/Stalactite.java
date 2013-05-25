@@ -52,7 +52,6 @@ public class Stalactite extends Sprite {
 						stalactiteBody.setActive(false);
 						physicsWorld.destroyBody(stalactiteBody);
 						detachSelf();
-						System.gc();
 					}
 				});
 	}
