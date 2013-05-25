@@ -156,14 +156,14 @@ public class level1 extends GameScene {
 
 			@Override
 			public void beginContact(Contact contact) {
-				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
-					teraEnemy.setKilled(true);
-					getBody(physics, teraEnemy).setActive(false);
-//					PLAYER_BULLET_POOL.recyclePoolItem(fire);
-					teraEnemy.animate(new long[] {300,400}, new int[]{8,9}, false,teraEnemy);
-					addEnemiesKilled(1);
-					countEnemies--;
-				}
+//				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
+//					teraEnemy.setKilled(true);
+//					getBody(physics, teraEnemy).setActive(false);
+////					PLAYER_BULLET_POOL.recyclePoolItem(fire);
+//					teraEnemy.animate(new long[] {300,400}, new int[]{8,9}, false,teraEnemy);
+//					addEnemiesKilled(1);
+//					countEnemies--;
+//				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					if (!teraEnemy.isFlippedHorizontal()) {
 						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
@@ -243,7 +243,8 @@ public class level1 extends GameScene {
 		for (int i = 0; i < this.playerBulletList.size(); i++) {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
 			if (bullet.collidesWith(fly)) {
-				fly.eliminateEnemy();
+				fly.setKilled(true);
+				fly.animate(new long[] { 300, 600}, 3, 4, false,fly);
 				countFlyEnemies--;
 				addEnemiesKilled(1);
 			}

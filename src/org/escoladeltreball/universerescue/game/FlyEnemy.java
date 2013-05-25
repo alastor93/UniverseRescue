@@ -18,6 +18,8 @@ import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
 import org.andengine.entity.particle.modifier.AlphaParticleModifier;
 import org.andengine.entity.particle.modifier.RotationParticleModifier;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
@@ -26,7 +28,7 @@ import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
-public class FlyEnemy extends Enemy {
+public class FlyEnemy extends Enemy implements IAnimationListener{
 
 	// Attributes //
 
@@ -49,6 +51,8 @@ public class FlyEnemy extends Enemy {
 	// randomPath
 	private Path path;
 
+	private boolean killed;
+
 	// Methods //
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
@@ -59,7 +63,7 @@ public class FlyEnemy extends Enemy {
 		this.canAttack = false;
 		random = new Random();
 		this.setScale(2f);
-		this.animate(new long[] { 200, 200, 200, 200 }, 0, 3, true);
+		this.animate(new long[] { 200, 200, 200 }, 0, 2, true);
 		// body = PhysicsFactory.createBoxBody(physics, this,
 		// BodyType.KinematicBody,
 		// PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -184,8 +188,8 @@ public class FlyEnemy extends Enemy {
 			this.setFlippedHorizontal(false);
 		} else {
 			bulletAttack.setPosition(X, Y);
-			this.setCurrentTileIndex(3);
 		}
+		this.animate(new long[] { 200, 200, 200, 200, 200 }, 5, 9, false,this);
 		float posX = playerX - bullet.getX();
 		float posY = playerY - bullet.getY();
 		// scene.attachChild(bullet);
@@ -214,6 +218,10 @@ public class FlyEnemy extends Enemy {
 
 		bulletAttack.registerEntityModifier(movMByod);
 		canAttack = false;
+	}
+
+	public void setKilled(boolean killed) {
+		this.killed = killed;
 	}
 
 	public void takeDamage(int dmg) {
@@ -269,7 +277,7 @@ public class FlyEnemy extends Enemy {
 										bulletAttack = null;
 									}
 								});
-						
+
 					}
 
 				}));
@@ -288,7 +296,7 @@ public class FlyEnemy extends Enemy {
 					}
 				});
 	}
-	
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (bulletAttack != null) {
@@ -302,6 +310,30 @@ public class FlyEnemy extends Enemy {
 			}
 		}
 		super.onManagedUpdate(pSecondsElapsed);
+	}
+
+	@Override
+	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
+			int pInitialLoopCount) {
+	}
+
+	@Override
+	public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
+			int pOldFrameIndex, int pNewFrameIndex) {
+	}
+
+	@Override
+	public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
+			int pRemainingLoopCount, int pInitialLoopCount) {
+	}
+
+	@Override
+	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+		if (killed) {
+			this.eliminateEnemy();
+		} else {
+			this.animate(new long[] { 200, 200, 200 }, 0, 2, true);
+		}
 	}
 
 }
