@@ -180,7 +180,9 @@ public class level3 extends GameScene{
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)){
 					finalBoss.jump();
-					finalBoss.takeDamage(finalBoss.getHP()/2);
+					PLAYER_BULLET_POOL.recyclePoolItem(fire);
+					getBody(physics, fire).setActive(false);
+					finalBoss.takeDamage(player.shoot());
 					healstateEnemy.setWidth(finalBoss.getHP());
 				}
 
