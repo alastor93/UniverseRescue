@@ -60,7 +60,7 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createWalls() {
-		new Wall(GameActivity.getWidth(), 50, GameActivity.getWidth() * 2, 1,
+		new Wall(GameActivity.getWidth(), 0, GameActivity.getWidth() * 2, 1,
 				this.vbom, physics);
 		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
 				GameActivity.getWidth() * 2, 1, this.vbom, physics);
