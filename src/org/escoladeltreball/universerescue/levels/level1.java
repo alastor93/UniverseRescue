@@ -230,6 +230,9 @@ public class level1 extends GameScene {
 		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
 		}
+		if (enemiesKilled == 30) {
+			SceneManager.getInstance().showWinLayer(false);
+		}
 		if (fly.canAttack()) {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attack(player, fireEnemy);
