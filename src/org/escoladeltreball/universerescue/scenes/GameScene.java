@@ -57,6 +57,7 @@ public abstract class GameScene extends BaseScene implements
 	/** LinkedList for available bullet sprites */
 	public LinkedList playerBulletList;
 	protected static final float[] POSX = { 20, 1500 };
+	protected Sprite fire;
 
 	// Heal parts
 	protected Rectangle healstate;
@@ -114,7 +115,7 @@ public abstract class GameScene extends BaseScene implements
 		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
-						+ String.valueOf(ENEMIESGOAL), manager.vbom);
+						+ String.valueOf(ENEMIESGOAL),"xxxxx".length(), manager.vbom);
 		this.createHealthBar();
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
@@ -248,7 +249,7 @@ public abstract class GameScene extends BaseScene implements
 			float pTouchAreaLocalY) {
 		// Create a small delay of 1seconds
 		if (coolDownPlayer.timeHasPassed(1000)) {
-			Sprite fire = PLAYER_BULLET_POOL.obtainPoolItem();
+			fire = PLAYER_BULLET_POOL.obtainPoolItem();
 			player.fire(fire);
 		}
 	}
