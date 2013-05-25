@@ -243,6 +243,7 @@ public class level1 extends GameScene {
 			if (bullet.collidesWith(fly)) {
 				fly.eliminateEnemy();
 				countFlyEnemies--;
+				addEnemiesKilled(1);
 			}
 
 		}
