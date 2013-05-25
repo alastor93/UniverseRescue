@@ -158,7 +158,9 @@ public class level1 extends GameScene {
 			@Override
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
-					teraEnemy.eliminateEnemy();
+					teraEnemy.setKilled(true);
+					getBody(physics, teraEnemy).setActive(false);
+					teraEnemy.animate(new long[] {300,400}, new int[]{8,9}, false,teraEnemy);
 					addEnemiesKilled(1);
 					countEnemies--;
 				}
@@ -207,7 +209,7 @@ public class level1 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (countEnemies < 4) {
+		if (countEnemies < 2) {
 			createEnemy();
 			countEnemies++;
 		}

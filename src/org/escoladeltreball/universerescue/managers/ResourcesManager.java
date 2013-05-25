@@ -321,7 +321,7 @@ public class ResourcesManager {
 		if (this.enemySprite == null) {
 			this.enemySprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(level1Atlas, activity, "enemy.png",
-							4, 2);
+							4, 3);
 		}
 		if (this.flyEnemySprite == null) {
 			this.flyEnemySprite = BitmapTextureAtlasTextureRegionFactory

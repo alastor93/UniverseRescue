@@ -52,18 +52,18 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 			limit = 1500;
 		} else {
 			limit = 20;
-			this.setFlippedHorizontal(false);
+			this.setFlippedHorizontal(true);
 		}
 	}
 
 	public void move() {
 		if (this.getX() - this.getWidth() > limit && !back) {
-			this.setFlippedHorizontal(false);
+			this.setFlippedHorizontal(true);
 			body.setLinearVelocity(-1.7f, 0);
 		} else if (this.getX() == initX) {
 			back = false;
 		} else if (this.getX() - this.getWidth() <= limit || back) {
-			this.setFlippedHorizontal(true);
+			this.setFlippedHorizontal(false);
 			back = true;
 			body.setLinearVelocity(1.7f, 0);
 		}
