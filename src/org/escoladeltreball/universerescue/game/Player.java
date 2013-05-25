@@ -28,6 +28,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private double directionY;
 	private int numSteps;
 	private PhysicsWorld physicsWorld;
+	
 
 	public void setDirection(double directionY) {
 		this.directionY = directionY;
@@ -172,5 +173,9 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	public void setHp(int hp) {
 		this.hp = hp;
+	}
+	
+	public int shoot(){
+		return 20;
 	}
 }
