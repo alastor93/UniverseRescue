@@ -18,7 +18,6 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	private float initX = this.getX();
 	private boolean back;
 	private int limit;
-	private float pX;
 	private PhysicsConnector physicsConnector;
 
 	public TeraEnemy(float pX, float pY,
@@ -29,7 +28,6 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 				physicsWorld);
 		this.setScale(1.3f);
 		this.at = 20;
-		this.pX = pX;
 		this.createPhysics(camera, physicsWorld);
 		if (pX == 20) {
 			this.setFlippedHorizontal(true);
@@ -51,7 +49,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	}
 	
 	public void calculateMove() {
-		if (pX == 20) {
+		if (initX == 20) {
 			limit = 1500;
 		} else {
 			limit = 20;

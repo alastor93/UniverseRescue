@@ -40,7 +40,7 @@ public class level1 extends GameScene {
 	private CoolDown coolDownEnemy;
 	private LinkedList flyEnemyBulletList;
 	private int countEnemies;
-	private static final float[] POSX = {20,1500};
+	private static final float[] POSX = { 20, 1500 };
 
 	public level1() {
 		super();
@@ -90,9 +90,11 @@ public class level1 extends GameScene {
 	public void createBulletPool() {
 		playerBulletList = new LinkedList();
 		flyEnemyBulletList = new LinkedList();
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,playerBulletList, this);
-		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet,flyEnemyBulletList, this);
-		
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
+				playerBulletList, this);
+		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet,
+				flyEnemyBulletList, this);
+
 	}
 
 	public void createPhysics() {
@@ -111,6 +113,11 @@ public class level1 extends GameScene {
 						contact.setEnabled(false);
 					}
 				} else if (areBodiesContacted("teraEnemy", "platform", contact)) {
+					contact.setEnabled(false);
+				}
+				if (areBodiesContacted("teraEnemy", "wall", contact)) {
+					contact.setEnabled(true);
+				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
 					contact.setEnabled(false);
 				}
 				if (areBodiesContacted("player", "movePlatform", contact)) {
@@ -221,7 +228,8 @@ public class level1 extends GameScene {
 			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
 			fly.attack(player, fireEnemy);
 		} else {
-			//FlyEnemy move after 4 seconds, so we create a small delay between attacks
+			// FlyEnemy move after 4 seconds, so we create a small delay between
+			// attacks
 			if (coolDownEnemy.timeHasPassed(4000)) {
 				fly.move();
 			}
@@ -231,7 +239,7 @@ public class level1 extends GameScene {
 			if (bullet.collidesWith(fly)) {
 				fly.eliminateEnemy();
 			}
-			
+
 		}
 		healstate.setWidth(player.getHp());
 		platform3.moveLeftToRight(10, 780);
@@ -243,8 +251,8 @@ public class level1 extends GameScene {
 	@Override
 	public void createEnemy() {
 		Random random = new Random();
-		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 100, manager.enemySprite, this.vbom,
-				camera, physics);
+		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 100,
+				manager.enemySprite, this.vbom, camera, physics);
 		this.attachChild(teraEnemy);
 	}
 
@@ -263,8 +271,8 @@ public class level1 extends GameScene {
 
 	@Override
 	public void createPlayer() {
-		this.player = new Player(GameActivity.getWidth() * 0.5f, 100, manager.playerSprite, this.vbom,
-				camera, physics);
+		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
+				manager.playerSprite, this.vbom, camera, physics);
 		this.attachChild(player);
 	}
 
