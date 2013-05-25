@@ -47,6 +47,8 @@ public class ResourcesManager {
 	public ITextureRegion options_region;
 	/** ITextureRegion for load exit option on MainMenuScene */
 	public ITextureRegion exit_region;
+	/** ITextureRegion for load controls option on MainMenuScene */
+	public ITextureRegion controls_region;
 	/** ITextureRegion for load music option on MainMenuScene */
 	public static TiledTextureRegion music_region;
 
@@ -197,7 +199,7 @@ public class ResourcesManager {
 				.setAssetBasePath("gfx/mainMenu/");
 		if (menuTextureAtlas == null) {
 			menuTextureAtlas = new BuildableBitmapTextureAtlas(
-					activity.getTextureManager(), 1200, 1200,
+					activity.getTextureManager(), 1300, 1200,
 					TextureOptions.BILINEAR);
 		}
 		if (menu_background_region == null) {
@@ -212,6 +214,10 @@ public class ResourcesManager {
 		if (options_region == null) {
 			options_region = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(menuTextureAtlas, activity, "options.png");
+		}
+		if (controls_region == null){
+			controls_region = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity, "controls.png");
 		}
 		if (exit_region == null) {
 			exit_region = BitmapTextureAtlasTextureRegionFactory
