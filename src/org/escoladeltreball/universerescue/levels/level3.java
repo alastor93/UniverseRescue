@@ -170,8 +170,8 @@ public class level3 extends GameScene{
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)){
 					finalBoss.jump();
-					finalBoss.eliminateEnemy();
-					healstateEnemy.setWidth(0);
+					finalBoss.setHP(finalBoss.getHP()/2);
+					healstateEnemy.setWidth(finalBoss.getHP());
 				}
 
 			}
@@ -240,7 +240,7 @@ public class level3 extends GameScene{
 	
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		finalBoss.move();
+		finalBoss.moveWithInt(player.getX());
 		if(healstateEnemy.getWidth() == 0){
 			SceneManager.getInstance().showWinLayer(false);
 		}
