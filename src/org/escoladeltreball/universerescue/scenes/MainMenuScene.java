@@ -128,7 +128,7 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.setBackgroundEnabled(false);
 
 		// Put the menu items on specific position 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY());
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				playMenuItem.getY() - 70);
 		controlMenuItem.setPosition(controlMenuItem.getX(), optionMenuItem.getY()-70);
@@ -137,8 +137,8 @@ public class MainMenuScene extends BaseScene implements
 
 		playMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), playMenuItem.getY(), camera.getWidth()/2, playMenuItem.getY()));
 		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0, optionMenuItem.getY(), camera.getWidth()/2, optionMenuItem.getY()));
-		controlMenuItem.registerEntityModifier(new MoveModifier(1, 0, controlMenuItem.getY(), camera.getWidth()/2, controlMenuItem.getY()));
-		exitMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
+		controlMenuItem.registerEntityModifier(new MoveModifier(1, camera.getWidth(), controlMenuItem.getY(), camera.getWidth()/2, controlMenuItem.getY()));
+		exitMenuItem.registerEntityModifier(new MoveModifier(1, 0, exitMenuItem.getY(), camera.getWidth()/2, exitMenuItem.getY(),this));
 
 		// Finally, put the MenuScene
 		setChildScene(menuChildScene);
