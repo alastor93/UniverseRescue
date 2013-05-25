@@ -170,7 +170,7 @@ public class level3 extends GameScene{
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)){
 					finalBoss.jump();
-					finalBoss.setHP(finalBoss.getHP()/2);
+					finalBoss.takeDamage(finalBoss.getHP()/2);
 					healstateEnemy.setWidth(finalBoss.getHP());
 				}
 

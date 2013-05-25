@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class FinalBoss extends Enemy implements IAnimationListener {
 
 	private float initX = this.getX();
+	private int maxHP;
 	private boolean back;
 	private PhysicsConnector physicsConnector;
 
@@ -30,6 +31,7 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
 		this.hp = 200;
+		this.maxHP = hp;
 		this.at = 40;
 		this.createPhysics(camera, physicsWorld);
 		this.animate(new long[] { 50, 50, 50, 50 }, 1, 4, true);
@@ -46,6 +48,7 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 
 	@Override
 	public void move() {
+
 		if (this.getX() - this.getWidth() > 100 && !back) {
 			this.setFlippedHorizontal(false);
 			body.setLinearVelocity(-1.7f, 0);
@@ -96,8 +99,23 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 		body.setLinearVelocity(vector2);
 		Vector2Pool.recycle(vector2);
-		this.animate(new long[] { 200, 200, 200 },9,11,false,this);
+		this.animate(new long[] { 200, 200, 200 }, 9, 11, false, this);
 
+	}
+
+	public void moveWithInt(float playerX) {
+		if (this.getHP() <= this.maxHP / 2) {
+			if (this.getX() -10 >= playerX) {
+				this.setFlippedHorizontal(false);
+				body.setLinearVelocity(-1.7f, 0);
+			} else if ( this.getX()+10 <= playerX){
+				this.setFlippedHorizontal(true);
+				body.setLinearVelocity(1.7f, 0);
+			}
+
+		} else {
+			this.move();
+		}
 	}
 
 	@Override
