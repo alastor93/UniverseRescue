@@ -178,8 +178,11 @@ public abstract class GameScene extends BaseScene implements
 						} else if (pValueX < 0) {
 							player.setFlippedHorizontal(true);
 						}
-						player.run(pValueX);
-						player.setDirection(pValueY);
+						if (!player.isAttacked()) {
+							player.run(pValueX);
+							player.setDirection(pValueY);	
+						}
+
 					}
 
 					@Override

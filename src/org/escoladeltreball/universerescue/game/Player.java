@@ -71,7 +71,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 
 	public void attacked() {
-		Vector2 vector2 = Vector2Pool.obtain(-50, 6);
+		Vector2 vector2 = Vector2Pool.obtain(-10, 6);
 		dynamicBody.setLinearVelocity(vector2);
 		Vector2Pool.recycle(vector2);
 	}
@@ -128,9 +128,13 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		if (!isFire) {
 			dynamicBody.setLinearVelocity(velocity);
 			Vector2Pool.recycle(velocity);
-		}else{
-			dynamicBody.setLinearVelocity(0,0);
+		} else {
+			dynamicBody.setLinearVelocity(0, 0);
 		}
+	}
+
+	public boolean isAttacked() {
+		return isAttacked;
 	}
 
 	@Override
