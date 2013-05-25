@@ -8,6 +8,7 @@ import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnS
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -15,6 +16,7 @@ import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.color.Color;
@@ -26,6 +28,7 @@ import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 public abstract class GameScene extends BaseScene implements
@@ -44,7 +47,7 @@ public abstract class GameScene extends BaseScene implements
 	/** The player */
 	protected Player player;
 	/** Add Item */
-	protected boolean addItem,addItemArmour;
+	protected boolean addItem, addItemArmour;
 	/** Item */
 	protected Item item;
 	/** Check if scene is touched */
@@ -137,16 +140,16 @@ public abstract class GameScene extends BaseScene implements
 		healstate = new Rectangle(30, (this.camera.getHeight() / 2f) * 1.83f,
 				240, 22, vbom);
 		healstate.registerUpdateHandler(new IUpdateHandler() {
-			
+
 			@Override
 			public void reset() {
 			}
-			
+
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
 				if (player.getHp() > 160) {
 					healstate.setColor(Color.GREEN);
-				}else if(player.getHp() <= 160 && player.getHp() > 80){
+				} else if (player.getHp() <= 160 && player.getHp() > 80) {
 					healstate.setColor(Color.YELLOW);
 				} else {
 					healstate.setColor(Color.RED);
@@ -160,9 +163,9 @@ public abstract class GameScene extends BaseScene implements
 
 	public void createControls() {
 		manager.loadControls();
-		DigitalOnScreenControl control = new DigitalOnScreenControl(0, 0, camera,
-				manager.controlBaseRegion, manager.controlKnobRegion, 0.1f,
-				 vbom, new IAnalogOnScreenControlListener() {
+		DigitalOnScreenControl control = new DigitalOnScreenControl(0, 0,
+				camera, manager.controlBaseRegion, manager.controlKnobRegion,
+				0.1f, vbom, new IAnalogOnScreenControlListener() {
 
 					@Override
 					public void onControlChange(
@@ -221,7 +224,7 @@ public abstract class GameScene extends BaseScene implements
 	 * Create Item
 	 */
 
-	public abstract void createItem(float pX,float pY,ITextureRegion sprite);
+	public abstract void createItem(float pX, float pY, ITextureRegion sprite);
 
 	/**
 	 * Do an action depends the kind of touch
@@ -242,7 +245,7 @@ public abstract class GameScene extends BaseScene implements
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		//Create a small delay of 1seconds
+		// Create a small delay of 1seconds
 		if (coolDownPlayer.timeHasPassed(1000)) {
 			Sprite fire = PLAYER_BULLET_POOL.obtainPoolItem();
 			player.fire(fire);
@@ -292,6 +295,12 @@ public abstract class GameScene extends BaseScene implements
 							.equals(pBody2))
 				return true;
 		return false;
+	}
+
+	public Body getBody(PhysicsWorld physicsWorld, Entity entity) {
+		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape(
+				entity);
+		return body;
 	}
 
 }

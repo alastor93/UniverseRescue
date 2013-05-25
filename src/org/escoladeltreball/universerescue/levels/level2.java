@@ -90,23 +90,23 @@ public class level2 extends GameScene {
 	@Override
 	public void createEnemy() {
 		final float  initX = 1500;
-		teraEnemy = new TeraEnemy(1500, 100, manager.enemySprite2, this.vbom,
-				camera, physics){
-			@Override
-			public void move(){
-				if (this.getX() - this.getWidth() > 100 && !back) {
-					this.setFlippedHorizontal(false);
-					body.setLinearVelocity(-1.7f, 0);
-				} else if (this.getX() == initX) {
-					back = false;
-				} else if (this.getX() - this.getWidth() <= 100 || back) {
-					this.setFlippedHorizontal(true);
-					back = true;
-					body.setLinearVelocity(1.7f, 0);
-				}
-				
-			}
-		};
+		teraEnemy = new TeraEnemy(1500, 10, manager.enemySprite2, this.vbom,
+				camera, physics);
+//			@Override
+//			public void move(){
+//				if (this.getX() - this.getWidth() > 100 && !back) {
+//					this.setFlippedHorizontal(false);
+//					body.setLinearVelocity(-1.7f, 0);
+//				} else if (this.getX() == initX) {
+//					back = false;
+//				} else if (this.getX() - this.getWidth() <= 100 || back) {
+//					this.setFlippedHorizontal(true);
+//					back = true;
+//					body.setLinearVelocity(1.7f, 0);
+//				}
+//				
+//			}
+//		};
 		this.attachChild(teraEnemy);
 
 	}
@@ -134,13 +134,15 @@ public class level2 extends GameScene {
 			@Override
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
-					teraEnemy.eliminateEnemy();
+					teraEnemy.setKilled(true);
+					getBody(physics, teraEnemy).setActive(false);
+					teraEnemy.animate(new long[] {700}, new int[]{7}, false,teraEnemy);
 					addEnemiesKilled(1);
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					player.setHp(player.getHp() - teraEnemy.getAt());
 					if (!teraEnemy.isFlippedHorizontal()) {
-						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
+						teraEnemy.animate(new long[] { 50, 50, 50 }, 4, 6,
 								false,teraEnemy);
 					}
 					healstate.setWidth(player.getHp());

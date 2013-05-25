@@ -18,6 +18,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	private float initX = this.getX();
 	private boolean back;
 	private int limit;
+	private boolean killed;
 	private PhysicsConnector physicsConnector;
 
 	public TeraEnemy(float pX, float pY,
@@ -29,9 +30,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		this.setScale(1.3f);
 		this.at = 20;
 		this.createPhysics(camera, physicsWorld);
-		if (pX == 20) {
-			this.setFlippedHorizontal(true);
-		}
+		this.calculateMove();
 		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
 	}
 
@@ -53,6 +52,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 			limit = 1500;
 		} else {
 			limit = 20;
+			this.setFlippedHorizontal(false);
 		}
 	}
 
@@ -91,7 +91,6 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 					public void run() {
 						physics.unregisterPhysicsConnector(physicsConnector);
 						takeDamage(20);
-						body.setActive(false);
 						physics.destroyBody(body);
 						detachSelf();
 						System.gc();
@@ -116,8 +115,15 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 
 	@Override
 	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
-		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
-		
+		if (killed) {
+			this.eliminateEnemy();
+		} else {
+			this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
+		}
+	}
+	
+	public void setKilled(boolean killed) {
+		this.killed = killed;
 	}
 
 }
