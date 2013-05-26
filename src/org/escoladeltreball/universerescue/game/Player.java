@@ -24,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Player extends AnimatedSprite implements IAnimationListener {
-	
+
 	// Attributes
 	private Body dynamicBody;
 	private Body bulletBody;
@@ -261,20 +261,22 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 * Detach the bullet
 	 */
 	public void detachAttack(final Body currentBody) {
-		ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
+		if (currentBody != null) {
+			ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
 
-			@Override
-			public void run() {
-				physicsWorld.unregisterPhysicsConnector(physicsWorld
-						.getPhysicsConnectorManager()
-						.findPhysicsConnectorByShape(
-								(IShape) scene.getPlayerAttack()));
-				bulletBody.setActive(false);
-				physicsWorld.destroyBody(currentBody);
+				@Override
+				public void run() {
+					physicsWorld.unregisterPhysicsConnector(physicsWorld
+							.getPhysicsConnectorManager()
+							.findPhysicsConnectorByShape(
+									(IShape) scene.getPlayerAttack()));
+					bulletBody.setActive(false);
+					physicsWorld.destroyBody(currentBody);
 
-			}
+				}
 
-		});
+			});
+		}
 	}
 
 	@Override
