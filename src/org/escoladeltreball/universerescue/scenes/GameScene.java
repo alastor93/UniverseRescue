@@ -34,29 +34,30 @@ import com.badlogic.gdx.physics.box2d.Contact;
 public abstract class GameScene extends BaseScene implements
 		IOnSceneTouchListener, OnClickListener {
 
-	// VARIABLES //
+	// Attributes
 
-	/** Counter for enemies killed */
+	// Counter for enemies killed 
 	protected int enemiesKilled;
-	/** Counter for goal enemies */
+	// Counter for goal enemies 
 	private static final int ENEMIESGOAL = 30;
-	/** Our game HUD */
+	// Our game HUD 
 	private HUD gameHUD;
-	/** Displays the enemies remaining */
+	// Displays the enemies remaining 
 	protected Text enemiesLeftText;
-	/** The player */
+	// The player 
 	protected Player player;
-	/** Add Item */
+	// Add Item and addArmour
 	protected boolean addItem, addItemArmour;
-	/** Item */
+	// Item 
 	protected Item item;
-	/** Check if scene is touched */
+	// Check if scene is touched 
 	private boolean isTouched;
-	/** A bulletPool for manage bullet sprites */
+	// A bulletPool for manage bullet sprites 
 	protected BulletPool PLAYER_BULLET_POOL;
-	/** LinkedList for available bullet sprites */
+	// LinkedList for available bullet sprites 
 	public LinkedList playerBulletList;
 	protected static final float[] POSX = { 20, 1500 };
+	//Fire sprite
 	protected Sprite fire;
 
 	// Heal parts
@@ -66,6 +67,7 @@ public abstract class GameScene extends BaseScene implements
 	// CoolDowns
 	private CoolDown coolDownPlayer;
 
+	//Contructor
 	public GameScene() {
 		super();
 		this.coolDownPlayer = new CoolDown();
@@ -132,10 +134,20 @@ public abstract class GameScene extends BaseScene implements
 	 */
 	public abstract void createPlayer();
 
+	/**
+	 * Create the BulletPool
+	 */
 	public abstract void createBulletPool();
 
+	/**
+	 * Create the enemy of the level
+	 */
 	public abstract void createEnemy();
 
+	/**
+	 * Create the healBar of the player
+	 * Change the color of the bar if have more or less life
+	 */
 	public void createHealthBar() {
 		heal = new Sprite(this.camera.getXMin() + 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
@@ -162,9 +174,14 @@ public abstract class GameScene extends BaseScene implements
 		this.camera.getHUD().attachChild(heal);
 		this.camera.getHUD().attachChild(healstate);
 	}
-
+	
+	
+	/**
+	 * Create the controls of the game 
+	 */
 	public void createControls() {
 		manager.loadControls();
+		//Create the control
 		DigitalOnScreenControl control = new DigitalOnScreenControl(0, 0,
 				camera, manager.controlBaseRegion, manager.controlKnobRegion,
 				0.1f, vbom, new IAnalogOnScreenControlListener() {
@@ -173,11 +190,13 @@ public abstract class GameScene extends BaseScene implements
 					public void onControlChange(
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
+						//Depends the position of the direction flip or no the sprite
 						if (pValueX > 0) {
 							player.setFlippedHorizontal(false);
 						} else if (pValueX < 0) {
 							player.setFlippedHorizontal(true);
 						}
+						
 						if (!player.isAttacked()) {
 							player.run(pValueX);
 							player.setDirection(pValueY);	
@@ -190,6 +209,7 @@ public abstract class GameScene extends BaseScene implements
 							AnalogOnScreenControl pAnalogOnScreenControl) {
 					}
 				});
+		
 		Sprite controlBase = control.getControlBase();
 		ButtonSprite button = new ButtonSprite(GameActivity.getWidth() - 60,
 				60, manager.buttonA, vbom, this);
@@ -206,8 +226,7 @@ public abstract class GameScene extends BaseScene implements
 	/**
 	 * Plus i in the counter of enemies killed
 	 * 
-	 * @param i
-	 *            the number of enemies killed
+	 * @param i the number of enemies killed
 	 */
 	public void addEnemiesKilled(int i) {
 		if (this.enemiesKilled + i > GameScene.ENEMIESGOAL) {
@@ -257,39 +276,14 @@ public abstract class GameScene extends BaseScene implements
 		}
 	}
 
+	
 	/**
-	 * UpdateHandler for check everymoment if the bullet goes out of screen (X
-	 * and Y), then recycle it.
+	 *  See if the bodies in the params are in contact 
+	 * @param pBody1
+	 * @param pBody2
+	 * @param pContact
+	 * @return True if they are in contact false otherwhise
 	 */
-
-	// IUpdateHandler detect = new IUpdateHandler() {
-	// @Override
-	// public void reset() {
-	// }
-	//
-	// @Override
-	// public void onUpdate(float pSecondsElapsed) {
-	// // iterating the targets
-	// Iterator it = playerBulletList.iterator();
-	// while (it.hasNext()) {
-	// Sprite b = (Sprite) it.next();
-	// if (b.getX() >= b.getWidth()
-	// || b.getY() >= b.getHeight() + b.getHeight()
-	// || b.getY() <= -b.getHeight()) {
-	// if (b.getParent().equals(PLAYER_BULLET_POOL)) {
-	// PLAYER_BULLET_POOL.recyclePoolItem(b);
-	// it.remove();
-	// continue;
-	// } else {
-	// FLYENEMY_BULLET_POOL.recyclePoolItem(b);
-	// it.remove();
-	// continue;
-	// }
-	// }
-	// }
-	// }
-	// };
-
 	public boolean areBodiesContacted(String pBody1, String pBody2,
 			Contact pContact) {
 		if (pContact.getFixtureA().getBody().getUserData().equals(pBody1)
@@ -302,6 +296,12 @@ public abstract class GameScene extends BaseScene implements
 		return false;
 	}
 
+	/**
+	 * Get the body of the Entity
+	 * @param physicsWorld
+	 * @param entity
+	 * @return the body
+	 */
 	public Body getBody(PhysicsWorld physicsWorld, Entity entity) {
 		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape(
 				entity);
