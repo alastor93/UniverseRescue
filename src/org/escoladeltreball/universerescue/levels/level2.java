@@ -16,6 +16,7 @@ import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.Stalactite;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
+import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import android.hardware.SensorManager;
@@ -185,6 +186,9 @@ public class level2 extends GameScene {
 		}else if (!createNewStalactite){
 			this.createStalactite();
 			createNewStalactite = true;
+		}
+		if (enemiesKilled == 30) {
+			SceneManager.getInstance().showWinLayer(false);
 		}
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
