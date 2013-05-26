@@ -106,11 +106,11 @@ public class level2 extends GameScene {
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
-				if (areBodiesContacted("teraEnemy", "wall", contact)) {
-					contact.setEnabled(true);
-				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
-					contact.setEnabled(false);
-				}
+//				if (areBodiesContacted("teraEnemy", "wall", contact)) {
+//					contact.setEnabled(true);
+//				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
+//					contact.setEnabled(false);
+//				}
 			}
 
 			@Override
@@ -153,7 +153,7 @@ public class level2 extends GameScene {
 					player.setHp(player.getHp() - stalactite.getAt());
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
-					player.attacked();
+					player.stop();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
 				}

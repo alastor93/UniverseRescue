@@ -157,6 +157,10 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		isFire = false;
 		isAttacked = false;
 	}
+	
+	public void stop() {
+		dynamicBody.setLinearVelocity(0, 0);
+	}
 
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;

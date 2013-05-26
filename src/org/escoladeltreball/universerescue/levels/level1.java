@@ -269,7 +269,8 @@ public class level1 extends GameScene {
 	}
 
 	public void createFlyEnemy() {
-		fly = new FlyEnemy(camera.getCenterX(), (camera.getHeight() / 4f) * 3,
+		Random random = new Random();
+		fly = new FlyEnemy(POSX[random.nextInt(2)], (camera.getHeight() / 4f) * 3,
 				manager.flyEnemySprite.deepCopy(), vbom, camera, physics);
 		this.attachChild(fly);
 	}
