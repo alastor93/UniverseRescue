@@ -72,7 +72,12 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 
 	public void attacked() {
-		Vector2 vector2 = Vector2Pool.obtain(-10, 6);
+		float pX = -10;
+		float py = 3;
+		if (this.isFlippedHorizontal()) {
+			pX = 10;
+		}
+		Vector2 vector2 = Vector2Pool.obtain(pX, py);
 		dynamicBody.setLinearVelocity(vector2);
 		Vector2Pool.recycle(vector2);
 	}

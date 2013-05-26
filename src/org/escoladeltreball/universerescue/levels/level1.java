@@ -179,8 +179,11 @@ public class level1 extends GameScene {
 							new int[] { 14, 9 }, false, player);
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					if (player.getHp() < 240) {
+					if (player.getHp() < 240 && player.getHp() + 20 <= 240) {
 						player.setHp(player.getHp() + 20);
+					}else if (player.getHp() + 20 > 240) {
+						int subtraction = 240 - player.getHp();
+						player.setHp(player.getHp() + subtraction);
 					}
 					item.removeItem();
 				}

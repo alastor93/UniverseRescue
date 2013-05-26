@@ -18,6 +18,7 @@ public class WinLayer extends Layer implements OnClickListener {
 	private ButtonSprite exitSprite;
 	private boolean pressedContinue;
 	private boolean pressedExit;
+	private int currentlevel;
 
 	private static WinLayer obj = null;
 
@@ -48,6 +49,10 @@ public class WinLayer extends Layer implements OnClickListener {
 			obj = new WinLayer();
 		}
 		return obj;
+	}
+	
+	private WinLayer(){
+		this.currentlevel = SceneManager.getInstance().getCurrentlevel();
 	}
 
 	@Override
@@ -102,6 +107,8 @@ public class WinLayer extends Layer implements OnClickListener {
 	@Override
 	public void onShowLayer() {
 		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideIn);
+		GameActivity.writeIntToSharedPreferences(
+				GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,currentlevel);
 	}
 
 	private void createArrow(float pX, float pY) {
@@ -136,7 +143,7 @@ public class WinLayer extends Layer implements OnClickListener {
 				SceneManager.getInstance().unloadGameScene();
 				SceneManager.getInstance().createTempGameScene(
 						ResourcesManager.getInstance().engine,
-						SceneManager.getInstance().getCurrentlevel() + 1);
+						this.currentlevel + 1);
 				pressedContinue = false;
 			}
 		} else {

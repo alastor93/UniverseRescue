@@ -106,11 +106,11 @@ public class level2 extends GameScene {
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
-//				if (areBodiesContacted("teraEnemy", "wall", contact)) {
-//					contact.setEnabled(true);
-//				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
-//					contact.setEnabled(false);
-//				}
+				if (areBodiesContacted("teraEnemy", "wall", contact)) {
+					contact.setEnabled(true);
+				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
+					contact.setEnabled(false);
+				}
 			}
 
 			@Override
@@ -188,8 +188,6 @@ public class level2 extends GameScene {
 			createNewStalactite = true;
 		}
 		teraEnemy.move();
-		GameActivity.writeIntToSharedPreferences(
-				GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 2);
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 

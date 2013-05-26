@@ -1,6 +1,6 @@
 package org.escoladeltreball.universerescue.game;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.Sprite;
@@ -15,26 +15,27 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class TeraEnemy extends Enemy implements IAnimationListener {
 
-	private float initX = this.getX();
+	private float initX;
 	private boolean back;
-	private int limit;
+	private final float LIMIT_LEFT = camera.getBoundsWidth() - 20;
+	private final float LIMIT_RIGHT = 20;
 	private boolean killed;
 	private PhysicsConnector physicsConnector;
 
 	public TeraEnemy(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
-			VertexBufferObjectManager VertexBufferObject, Camera camera,
+			VertexBufferObjectManager VertexBufferObject, BoundCamera camera,
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject, camera,
 				physicsWorld);
 		this.setScale(1.3f);
 		this.at = 20;
-		this.createPhysics(camera, physicsWorld);
-		this.calculateMove();
+		this.initX = this.getX();
+		this.createPhysics(physicsWorld);
 		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
 	}
 
-	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
+	private void createPhysics(PhysicsWorld physicsWorld) {
 		body = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 1));
 		body.setUserData("teraEnemy");
@@ -46,28 +47,39 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 	}
-	
-	public void calculateMove() {
-		if (initX == 20) {
-			limit = 1500;
+
+	public void move() {
+		if (initX == LIMIT_RIGHT) {
+			this.moveLeftToRight(LIMIT_LEFT);
 		} else {
-			limit = 20;
-			this.setFlippedHorizontal(true);
+			this.moveRightToLeft(LIMIT_RIGHT);
 		}
 	}
 
-	public void move() {
-		if (this.getX() - this.getWidth() > limit && !back) {
+	public void moveRightToLeft(float limit) {
+		if (this.getX() - this.getWidth() * 0.5f > limit && !back) {
 			this.setFlippedHorizontal(true);
 			body.setLinearVelocity(-1.7f, 0);
 		} else if (this.getX() == initX) {
 			back = false;
-		} else if (this.getX() - this.getWidth() <= limit || back) {
+		} else if (this.getX() - this.getWidth() * 0.5f <= limit || back) {
 			this.setFlippedHorizontal(false);
 			back = true;
 			body.setLinearVelocity(1.7f, 0);
 		}
+	}
 
+	public void moveLeftToRight(float limit) {
+		if (this.getX() + this.getWidth() * 0.5f < limit && !back) {
+			this.setFlippedHorizontal(false);
+			body.setLinearVelocity(1.7f, 0);
+		} else if (this.getX() == initX) {
+			back = false;
+		} else if (this.getX() + this.getWidth() * 0.5f >= limit || back) {
+			this.setFlippedHorizontal(true);
+			back = true;
+			body.setLinearVelocity(-1.7f, 0);
+		}
 	}
 
 	public void attack(Player p, Sprite bullet) {
@@ -90,6 +102,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 					@Override
 					public void run() {
 						physics.unregisterPhysicsConnector(physicsConnector);
+						body.setActive(false);
 						physics.destroyBody(body);
 						detachSelf();
 					}
@@ -119,16 +132,16 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 			this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
 		}
 	}
-	
+
 	public void setKilled(boolean killed) {
 		this.killed = killed;
 	}
 
-//	@Override
-//	public void run() {
-//		while (true) {
-//			this.move();
-//		}
-//	}
+	// @Override
+	// public void run() {
+	// while (true) {
+	// this.move();
+	// }
+	// }
 
 }

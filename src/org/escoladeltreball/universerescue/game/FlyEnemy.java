@@ -2,7 +2,7 @@ package org.escoladeltreball.universerescue.game;
 
 import java.util.Random;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
@@ -56,7 +56,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 	// Methods //
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
-			VertexBufferObjectManager pVertexBufferObject, Camera cam,
+			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
