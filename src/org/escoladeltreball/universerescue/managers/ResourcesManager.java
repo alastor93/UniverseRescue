@@ -37,81 +37,96 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas level1Atlas, level2Atlas, level3Atlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
-	public Font defaultFont;
 
-	/** ITextureRegion for load background on MainMenuScene */
-	public ITextureRegion menu_background_region;
-	/** ITextureRegion for load play option on MainMenuScene */
-	public ITextureRegion play_region;
-	/** ITextureRegion for load options option on MainMenuScene */
-	public ITextureRegion options_region;
-	/** ITextureRegion for load exit option on MainMenuScene */
-	public ITextureRegion exit_region;
-	/** ITextureRegion for load controls option on MainMenuScene */
-	public ITextureRegion controls_region;
-	/** ITextureRegion for load music option on MainMenuScene */
-	public static TiledTextureRegion music_region;
-	/** ITextureRegion for load controls on ControlLayer */
-	public ITextureRegion controlinfo;
-
-	/** TextureOption BILINEAR */
+	// TextureOption BILINEAR
 	private final TextureOptions BILINEAR = TextureOptions.BILINEAR;
 
-	/** LevelButton's Font */
-	public Font levelsFont;
+	// Fonts
 
-	/** GameScene count enemies Font */
+	// Default Font
+	public Font defaultFont;
+	// LevelButton's Font
+	public Font levelsFont;
+	// GameScene count enemies Font
 	public Font gameFont;
-	/** Font for final Boss */
+	// Font for final Boss
 	public Font bossFont;
 
-	/** TextureRegion for load image for level icon */
-	public ITextureRegion menuLevelIcon;
-	/** TextureRegion for load image for level locked */
-	public ITextureRegion menuLevelLocked;
-	/** TiledTextureRegion for load level's star */
-	public ITiledTextureRegion menuLevelStar;
-	/** TextureRegion for load backArrow image */
-	public ITextureRegion backarrow;
+	// ITextureRegion
 
-	/** ITextureRegion for load game background */
+	// ITextureRegion for load background on MainMenuScene
+	public ITextureRegion menu_background_region;
+	// ITextureRegion for load play option on MainMenuScene
+	public ITextureRegion play_region;
+	// ITextureRegion for load options option on MainMenuScene
+	public ITextureRegion options_region;
+	// ITextureRegion for load exit option on MainMenuScene
+	public ITextureRegion exit_region;
+	// ITextureRegion for load controls option on MainMenuScene
+	public ITextureRegion controls_region;
+	// ITextureRegion for load controls on ControlLayer
+	public ITextureRegion controlinfo;
+	// TextureRegion for load image for level icon
+	public ITextureRegion menuLevelIcon;
+	// TextureRegion for load image for level locked
+	public ITextureRegion menuLevelLocked;
+	// TextureRegion for load backArrow image
+	public ITextureRegion backarrow;
+	// ITextureRegion for load game background
 	public ITextureRegion game_background;
 	public ITextureRegion game_background2;
-
 	// ITextureRegions for load layer game over
 	public ITextureRegion gameOver;
+	// ITextureRegions for load layer win
 	public ITextureRegion youWin;
+	// ITextureRegions for load the sprite continue
 	public ITextureRegion continueGame;
+	// ITextureRegions for load the sprite exit
 	public ITextureRegion exitGame;
+	// ITextureRegions for load the sprite arrow
 	public ITextureRegion arrow;
+	// ITextureRegions for load the sprite pause
 	public ITextureRegion pause;
+	// ITextureRegions for load the intro of the finalBoss
 	public ITextureRegion introFinalBoss;
-	// ITextureRegion for load the character sprite
-	public TiledTextureRegion playerSprite;
-	public TiledTextureRegion enemySprite;
-	public TiledTextureRegion enemySprite2;
-	public TiledTextureRegion flyEnemySprite;
-	public TiledTextureRegion finalBoss;
-
 	// Texture for load the platform sprite
 	public ITextureRegion platformSprite;
-
 	// Itexture for load the life of the player
 	public ITextureRegion life;
-
-	// Itexture for load the item
+	// Itexture for load the items
 	public ITextureRegion item;
 	public ITextureRegion itemArmour;
-
 	// Itexture for load the stalactite
 	public ITextureRegion stalactite;
-
 	// ITextureRegion for load game controls
 	public ITextureRegion controlBaseRegion;
 	public ITextureRegion controlKnobRegion;
+	// ITexture for load the botton fire
 	public ITextureRegion buttonA;
+	// ITexture for load the bullet
 	public ITextureRegion bulletSprite;
+	// ITexture for load the flyenemy bullet
 	public ITextureRegion flyEnemyBullet;
+
+	// ITiledTexture
+
+	// TiledTextureRegion for load level's star
+	public ITiledTextureRegion menuLevelStar;
+
+	// TiledTexture
+
+	// TiledTexture for load the player sprite
+	public TiledTextureRegion playerSprite;
+	// TiledTexture for load the enemy sprite
+	public TiledTextureRegion enemySprite;
+	// TiledTexture for load the enemy2 sprite
+	public TiledTextureRegion enemySprite2;
+	// TiledTexture for load the flyenemy sprite
+	public TiledTextureRegion flyEnemySprite;
+	// TiledTexture for load the finalboss sprite
+	public TiledTextureRegion finalBoss;
+	// ITextureRegion for load music option on MainMenuScene
+	public static TiledTextureRegion music_region;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -124,6 +139,7 @@ public class ResourcesManager {
 	// Methods
 
 	/**
+	 * Set the params to the instance
 	 * 
 	 * @param engine
 	 * @param camera
@@ -139,6 +155,9 @@ public class ResourcesManager {
 		getInstance().vbom = vbom;
 	}
 
+	/**
+	 * Load all the fonts we need in the game
+	 */
 	public void loadFonts() {
 		if (defaultFont == null) {
 			defaultFont = FontFactory.create(engine.getFontManager(),
@@ -173,6 +192,10 @@ public class ResourcesManager {
 
 	}
 
+	/**
+	 * Load the graphics of the SplashScene
+	 */
+
 	public void loadSplashScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(
@@ -182,6 +205,9 @@ public class ResourcesManager {
 		splashTextureAtlas.load();
 	}
 
+	/**
+	 * Load the graphics of the LoadingScene
+	 */
 	public void loadLoadingScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		loadingTextureAtlas = new BitmapTextureAtlas(
@@ -192,11 +218,17 @@ public class ResourcesManager {
 		loadingTextureAtlas.load();
 	}
 
+	/**
+	 * UnLoad the graphics of the LoadingScene
+	 */
 	public void unloadLoadingScreen() {
 		loadingTextureAtlas.unload();
 		loading_region = null;
 	}
 
+	/**
+	 * UnLoad the graphics of the SplashScene
+	 */
 	public void unloadSplashScreen() {
 		splashTextureAtlas.unload();
 		splash_region = null;
@@ -255,13 +287,16 @@ public class ResourcesManager {
 		}
 	}
 
+	/**
+	 * UnLoad the graphics of the Menu
+	 */
 	public void unloadMenuTextures() {
 		this.menuTextureAtlas.unload();
 	}
 
 	/**
-	 * Load Game's graphics
-	 * 
+	 * Load the common graphics of the game 
+	 * 	  
 	 */
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
@@ -322,6 +357,9 @@ public class ResourcesManager {
 		}
 	}
 
+	/**
+	 * Load the graphics of the level1
+	 */
 	public void loadLevel1Graphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		level1Atlas = new BuildableBitmapTextureAtlas(
@@ -360,38 +398,10 @@ public class ResourcesManager {
 		}
 	}
 
-	public void loadLevelSelectorGraphics() {
-		BitmapTextureAtlasTextureRegionFactory
-				.setAssetBasePath("gfx/levelSelector/");
-		BuildableBitmapTextureAtlas levelAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 300, 160, BILINEAR);
-		if (menuLevelIcon == null) {
-			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "LevelIcon.png");
-		}
-		if (this.menuLevelLocked == null) {
-			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "Lock.png");
-		}
-		if (this.menuLevelStar == null) {
-			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 4,
-							1);
-		}
-		if (this.backarrow == null) {
-			this.backarrow = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(levelAtlas, activity, "arrowback.png");
-		}
-		try {
-			levelAtlas
-					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-							1, 1, 1));
-			levelAtlas.load();
-		} catch (final TextureAtlasBuilderException e) {
-			Debug.e(e);
-		}
-	}
-
+	
+	/**
+	 * Load the graphics of the level2
+	 */
 	public void loadLevel2Graphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		level2Atlas = new BuildableBitmapTextureAtlas(
@@ -419,7 +429,9 @@ public class ResourcesManager {
 			Debug.e(e);
 		}
 	}
-
+	/**
+	 * Load the graphics of the level3
+	 */
 	public void loadLevel3Graphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		level3Atlas = new BuildableBitmapTextureAtlas(
@@ -454,7 +466,44 @@ public class ResourcesManager {
 		}
 
 	}
-
+	
+	/**
+	 * Load the graphics of the levelSelector
+	 */
+	public void loadLevelSelectorGraphics() {
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/levelSelector/");
+		BuildableBitmapTextureAtlas levelAtlas = new BuildableBitmapTextureAtlas(
+				this.engine.getTextureManager(), 300, 160, BILINEAR);
+		if (menuLevelIcon == null) {
+			menuLevelIcon = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(levelAtlas, activity, "LevelIcon.png");
+		}
+		if (this.menuLevelLocked == null) {
+			this.menuLevelLocked = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(levelAtlas, activity, "Lock.png");
+		}
+		if (this.menuLevelStar == null) {
+			menuLevelStar = BitmapTextureAtlasTextureRegionFactory
+					.createTiledFromAsset(levelAtlas, activity, "Stars.png", 4,
+							1);
+		}
+		if (this.backarrow == null) {
+			this.backarrow = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(levelAtlas, activity, "arrowback.png");
+		}
+		try {
+			levelAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							1, 1, 1));
+			levelAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+	/**
+	 * Load the graphics of the controls
+	 */
 	public void loadControls() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BuildableBitmapTextureAtlas controlAtlas = new BuildableBitmapTextureAtlas(
@@ -482,7 +531,11 @@ public class ResourcesManager {
 			Debug.e(e);
 		}
 	}
-
+	
+	/**
+	 * Get the Activity
+	 * @return activity
+	 */
 	public static GameActivity getActivity() {
 		return getInstance().activity;
 	}
