@@ -37,28 +37,28 @@ public abstract class GameScene extends BaseScene implements
 
 	// Attributes
 
-	// Counter for enemies killed 
+	// Counter for enemies killed
 	protected int enemiesKilled;
-	// Counter for goal enemies 
+	// Counter for goal enemies
 	private static final int ENEMIESGOAL = 30;
-	// Our game HUD 
+	// Our game HUD
 	private HUD gameHUD;
-	// Displays the enemies remaining 
+	// Displays the enemies remaining
 	protected Text enemiesLeftText;
-	// The player 
+	// The player
 	protected Player player;
 	// Add Item and addArmour
 	protected boolean addItem, addItemArmour;
-	// Item 
+	// Item
 	protected Item item;
-	// Check if scene is touched 
+	// Check if scene is touched
 	private boolean isTouched;
-	// A bulletPool for manage bullet sprites 
+	// A bulletPool for manage bullet sprites
 	protected BulletPool PLAYER_BULLET_POOL;
-	// LinkedList for available bullet sprites 
+	// LinkedList for available bullet sprites
 	public LinkedList playerBulletList;
 	protected static final float[] POSX = { 20, 1500 };
-	//Fire sprite
+	// Fire sprite
 	protected Sprite fire;
 	// LinkedList for keep player's Sprites to be recycled
 	protected LinkedList<Sprite> bulletToBeRecycled;
@@ -70,7 +70,7 @@ public abstract class GameScene extends BaseScene implements
 	// CoolDowns
 	private CoolDown coolDownPlayer;
 
-	//Contructor
+	// Constructor
 	public GameScene() {
 		super();
 		this.coolDownPlayer = new CoolDown();
@@ -120,7 +120,8 @@ public abstract class GameScene extends BaseScene implements
 		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.gameFont,
 				String.valueOf(this.enemiesKilled) + "/"
-						+ String.valueOf(ENEMIESGOAL),"xxxxx".length(), manager.vbom);
+						+ String.valueOf(ENEMIESGOAL), "xxxxx".length(),
+				manager.vbom);
 		this.createHealthBar();
 		// Put the Text to HUD
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
@@ -148,8 +149,8 @@ public abstract class GameScene extends BaseScene implements
 	public abstract void createEnemy();
 
 	/**
-	 * Create the healBar of the player
-	 * Change the color of the bar if have more or less life
+	 * Create the healBar of the player Change the color of the bar if have more
+	 * or less life
 	 */
 	public void createHealthBar() {
 		heal = new Sprite(this.camera.getXMin() + 150,
@@ -177,14 +178,13 @@ public abstract class GameScene extends BaseScene implements
 		this.camera.getHUD().attachChild(heal);
 		this.camera.getHUD().attachChild(healstate);
 	}
-	
-	
+
 	/**
-	 * Create the controls of the game 
+	 * Create the controls of the game
 	 */
 	public void createControls() {
 		manager.loadControls();
-		//Create the control
+		// Create the control
 		DigitalOnScreenControl control = new DigitalOnScreenControl(0, 0,
 				camera, manager.controlBaseRegion, manager.controlKnobRegion,
 				0.1f, vbom, new IAnalogOnScreenControlListener() {
@@ -193,16 +193,17 @@ public abstract class GameScene extends BaseScene implements
 					public void onControlChange(
 							BaseOnScreenControl pBaseOnScreenControl,
 							float pValueX, float pValueY) {
-						//Depends the position of the direction flip or no the sprite
+						// Depends the position of the direction flip or no the
+						// sprite
 						if (pValueX > 0) {
 							player.setFlippedHorizontal(false);
 						} else if (pValueX < 0) {
 							player.setFlippedHorizontal(true);
 						}
-						
+
 						if (!player.isAttacked()) {
 							player.run(pValueX);
-							player.setDirection(pValueY);	
+							player.setDirection(pValueY);
 						}
 
 					}
@@ -212,7 +213,7 @@ public abstract class GameScene extends BaseScene implements
 							AnalogOnScreenControl pAnalogOnScreenControl) {
 					}
 				});
-		
+
 		Sprite controlBase = control.getControlBase();
 		ButtonSprite button = new ButtonSprite(GameActivity.getWidth() - 60,
 				60, manager.buttonA, vbom, this);
@@ -229,7 +230,8 @@ public abstract class GameScene extends BaseScene implements
 	/**
 	 * Plus i in the counter of enemies killed
 	 * 
-	 * @param i the number of enemies killed
+	 * @param i
+	 *            the number of enemies killed
 	 */
 	public void addEnemiesKilled(int i) {
 		if (this.enemiesKilled + i > GameScene.ENEMIESGOAL) {
@@ -244,14 +246,16 @@ public abstract class GameScene extends BaseScene implements
 	/**
 	 * Create our physics for the level
 	 */
-
 	public abstract void createPhysics();
 
 	/**
 	 * Create Item
 	 */
-
-	public abstract void createItem(float pX, float pY, ITextureRegion sprite);
+	public void createItem(float pX, float pY, ITextureRegion sprite,
+			PhysicsWorld physics) {
+		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
+		this.attachChild(item);
+	}
 
 	/**
 	 * Do an action depends the kind of touch
@@ -279,9 +283,9 @@ public abstract class GameScene extends BaseScene implements
 		}
 	}
 
-	
 	/**
-	 *  See if the bodies in the params are in contact 
+	 * See if the bodies in the params are in contact
+	 * 
 	 * @param pBody1
 	 * @param pBody2
 	 * @param pContact
@@ -301,12 +305,14 @@ public abstract class GameScene extends BaseScene implements
 
 	/**
 	 * Get the body of the Entity
+	 * 
 	 * @param physicsWorld
 	 * @param entity
 	 * @return the body
 	 */
 	public Body getBody(PhysicsWorld physicsWorld, Entity entity) {
-		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape((IShape)entity);
+		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape(
+				(IShape) entity);
 		return body;
 	}
 

@@ -10,13 +10,11 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.CoolDown;
 import org.escoladeltreball.universerescue.game.FlyEnemy;
-import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
@@ -110,6 +108,13 @@ public class level1 extends GameScene {
 		this.attachChild(platform);
 		this.attachChild(platform2);
 		this.attachChild(platform3);
+	}
+	
+	@Override
+	public void createPlayer() {
+		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
+				manager.playerSprite, this.vbom, camera, physics, this);
+		this.attachChild(player);
 	}
 
 	public void createBulletPool() {
@@ -254,13 +259,13 @@ public class level1 extends GameScene {
 		}
 		if (player.getHp() <= 100 && !addItem) {
 			addItem = true;
-			this.createItem(800, camera.getHeight() - 30, manager.item);
+			this.createItem(800, camera.getHeight() - 30, manager.item,physics);
 			GameActivity.writeIntToSharedPreferences(
 					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
 		}
 		if (enemiesKilled == 1 && !addItemArmour) {
 			addItemArmour = true;
-			this.createItem(800, camera.getHeight() - 30, manager.itemArmour);
+			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,physics);
 		}
 		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
@@ -309,19 +314,6 @@ public class level1 extends GameScene {
 				(camera.getHeight() / 4f) * 3,
 				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this);
 		this.attachChild(fly);
-	}
-
-	@Override
-	public void createItem(float pX, float pY, ITextureRegion sprite) {
-		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
-		this.attachChild(item);
-	}
-
-	@Override
-	public void createPlayer() {
-		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
-				manager.playerSprite, this.vbom, camera, physics, this);
-		this.attachChild(player);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class level2 extends GameScene {
 	private PhysicsWorld physics;
 	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
-	private boolean back,createNewStalactite = true;
+	private boolean createNewStalactite = true;
 	private int countEnemies;
 
 	@Override
@@ -193,11 +193,4 @@ public class level2 extends GameScene {
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
-
-	@Override
-	public void createItem(float pX, float pY, ITextureRegion sprite) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
