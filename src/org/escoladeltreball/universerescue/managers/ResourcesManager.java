@@ -126,6 +126,7 @@ public class ResourcesManager {
 	// TiledTexture for load the finalboss sprite
 	public TiledTextureRegion finalBoss;
 	public ITextureRegion shield;
+	public ITextureRegion nextLevel;
 	// ITextureRegion for load music option on MainMenuScene
 	public static TiledTextureRegion music_region;
 
@@ -302,7 +303,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 1419, 836, BILINEAR);
+				this.engine.getTextureManager(), 1529, 865, BILINEAR);
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
@@ -351,6 +352,10 @@ public class ResourcesManager {
 		if (this.shield == null) {
 			this.shield = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "shield.png");
+		}
+		if (this.nextLevel == null) {
+			this.nextLevel = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "nextLevel.png");
 		}
 		try {
 			this.gameAtlas

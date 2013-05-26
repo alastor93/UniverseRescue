@@ -14,7 +14,7 @@ public class WinLayer extends Layer implements OnClickListener {
 
 	private Sprite arrow;
 	private Sprite background;
-	private ButtonSprite continueSprite;
+	private ButtonSprite nextLevel;
 	private ButtonSprite exitSprite;
 	private boolean pressedContinue;
 	private boolean pressedExit;
@@ -62,17 +62,17 @@ public class WinLayer extends Layer implements OnClickListener {
 				ResourcesManager.getInstance().vbom);
 		background.setHeight(440f);
 		background.setWidth(760f);
-		continueSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
+		nextLevel = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				GameActivity.getHeight() * 0.5f - 80,
-				ResourcesManager.getInstance().continueGame,
+				ResourcesManager.getInstance().nextLevel,
 				ResourcesManager.getInstance().vbom, this);
-		continueSprite.setScale(3f);
+		nextLevel.setScale(3f);
 		exitSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
-				continueSprite.getY() - 80,
+				nextLevel.getY() - 80,
 				ResourcesManager.getInstance().exitGame,
 				ResourcesManager.getInstance().vbom, this);
 		exitSprite.setScale(3f);
-		this.registerTouchArea(continueSprite);
+		this.registerTouchArea(nextLevel);
 		this.registerTouchArea(exitSprite);
 		this.setTouchAreaBindingOnActionDownEnabled(true);
 		final float BackgroundX = 0f, BackgroundY = 0f;
@@ -97,7 +97,7 @@ public class WinLayer extends Layer implements OnClickListener {
 		smth.setColor(0f, 0f, 0f, 0.85f);
 		this.attachChild(smth);
 		this.registerTouchArea(smth);
-		background.attachChild(continueSprite);
+		background.attachChild(nextLevel);
 		background.attachChild(exitSprite);
 		this.attachChild(background);
 		this.setPosition(GameActivity.getWidth() / 2f,
@@ -129,7 +129,7 @@ public class WinLayer extends Layer implements OnClickListener {
 	@Override
 	public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,
 			float pTouchAreaLocalY) {
-		if (pButtonSprite.equals(continueSprite)) {
+		if (pButtonSprite.equals(nextLevel)) {
 			if (!pressedContinue) {
 				background.detachChild(arrow);
 				createArrow(
@@ -149,7 +149,7 @@ public class WinLayer extends Layer implements OnClickListener {
 		} else {
 			if (!pressedExit) {
 				background.detachChild(arrow);
-				createArrow(continueSprite.getX() - continueSprite.getWidth()
+				createArrow(nextLevel.getX() - nextLevel.getWidth()
 						* 2, pButtonSprite.getY());
 				pressedExit = true;
 				pressedContinue = false;
