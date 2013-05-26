@@ -48,6 +48,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
+	@Override
 	public void move() {
 		if (initX == LIMIT_RIGHT) {
 			this.moveLeftToRight(LIMIT_LEFT);

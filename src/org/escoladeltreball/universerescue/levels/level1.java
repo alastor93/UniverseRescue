@@ -184,14 +184,10 @@ public class level1 extends GameScene {
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
 					teraEnemy.setKilled(true);
-
-					// getBody(physics, fire).setActive(false);
-					// fire.setVisible(false);
 					player.detachAttack(getBody(physics, fire));
 					bulletToBeRecycled.add(fire);
 					teraEnemy.animate(new long[] { 300, 400 },
 							new int[] { 8, 9 }, false, teraEnemy);
-					// getBody(physics, teraEnemy).setAwake(true);
 					addEnemiesKilled(1);
 					countEnemies--;
 					;
@@ -280,10 +276,11 @@ public class level1 extends GameScene {
 		}
 		for (int i = 0; i < this.playerBulletList.size(); i++) {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
-			if (bullet.collidesWith(fly)) {
+			if (bullet.collidesWith(fly) && !fly.isContact()) {
 				fly.setKilled(true);
 				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
 				addEnemiesKilled(1);
+				fly.setContact(true);
 			}
 
 		}

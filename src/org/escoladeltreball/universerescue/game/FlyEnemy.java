@@ -54,6 +54,8 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 	private level1 scene;
 
 	private boolean killed;
+	private boolean contact;
+	
 
 	// Methods //
 
@@ -278,6 +280,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 										particleSystem.detachSelf();
 										scene.flyEnemyBulletList.add((Sprite) target);
 										bulletAttack = null;
+										contact = false;
 									}
 								});
 
@@ -299,20 +302,29 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 					}
 				});
 	}
-
+	
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (bulletAttack != null) {
 			if (bulletAttack.isVisible()) {
 				if (bulletAttack.collidesWith(player)) {
 					createExplosion(bulletAttack);
-					if (player.getHp() > 0) {
-						player.setHp(player.getHp() - 1);
+					if (player.getHp() > 0 && !contact) {
+						player.setHp(player.getHp() - 5);
+						contact = true;
 					}
 				}
 			}
 		}
 		super.onManagedUpdate(pSecondsElapsed);
+	}
+
+	public boolean isContact() {
+		return contact;
+	}
+
+	public void setContact(boolean contact) {
+		this.contact = contact;
 	}
 
 	@Override
