@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Player extends AnimatedSprite implements IAnimationListener {
+	//Attributes
 	private Body dynamicBody;
 	private Body bulletBody;
 	private int hp;
@@ -34,10 +35,8 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private GameScene scene;
 	
 
-	public void setDirection(double directionY) {
-		this.directionY = directionY;
-	}
-
+	
+	//Constructor
 	public Player(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, Camera camera,
 			PhysicsWorld physicsWorld, GameScene s) {
@@ -56,6 +55,11 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		pGLState.enableDither();
 	}
 
+	/**
+	 * Create the physics of the player
+	 * @param camera
+	 * @param physicsWorld
+	 */
 	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
 		dynamicBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 1));
@@ -65,6 +69,9 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 				dynamicBody, true, false));
 	}
 
+	/**
+	 * make the player jump and use a new animation
+	 */
 	public void jump() {
 		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 		if (!isJump) {
@@ -76,6 +83,9 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * Move the player when he is attacked
+	 */
 	public void attacked() {
 		float pX = -10;
 		float py = 3;
@@ -87,6 +97,10 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		Vector2Pool.recycle(vector2);
 	}
 
+	/**
+	 * Make the player fire a bullet from his weapon
+	 * @param sprite
+	 */
 	public synchronized void fire(Sprite sprite) {
 		isFire = true;
 		SFXManager.playShoot(1f, 0.5f);
@@ -127,9 +141,15 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * this method make the player can move 
+	 * @param pValueX
+	 */
 	public void run(float pValueX) {
+		//set the velocity
 		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
+		
 		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
@@ -137,14 +157,20 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		} else if (pValueX == 0 && !isJump && !isFire && !isAttacked) {
 			this.setCurrentTileIndex(9);
 		}
+		// put the velocity depend if the player use the weapon or no
 		if (!isFire) {
 			dynamicBody.setLinearVelocity(velocity);
 			Vector2Pool.recycle(velocity);
 		} else {
+			//the player can't move when is using the weapon
 			dynamicBody.setLinearVelocity(0, 0);
 		}
 	}
 
+	/**
+	 * get if the player is attacked
+	 * @return true if is attacked false otherwhise
+	 */
 	public boolean isAttacked() {
 		return isAttacked;
 	}
@@ -170,30 +196,56 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		isAttacked = false;
 	}
 	
+	/**
+	 * put the velocity of the player to 0
+	 */
 	public void stop() {
 		dynamicBody.setLinearVelocity(0, 0);
 	}
 
+	/**
+	 * set the jump for make the player can jump
+	 * @param isJump
+	 */
 	public void setJump(boolean isJump) {
 		this.isJump = isJump;
 	}
 
+	/**
+	 * set the attack for make the player can attack
+	 * @param isAttacked
+	 */
 	public void setAttack(boolean isAttacked) {
 		this.isAttacked = isAttacked;
 	}
 
+	/**
+	 * Get the hp of the player
+	 * @return hp
+	 */
 	public int getHp() {
 		return hp;
 	}
 
+	/**
+	 * Set the hp of the player
+	 * @param hp
+	 */
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
 	
+	/**
+	 * Get the damage of the weapon
+	 * @return damage
+	 */
 	public int shoot(){
 		return 20;
 	}
 	
+	/**
+	 * Deteach the bullet
+	 */
 	public void detachAttack(final Body currentBody) {
 		ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
 
@@ -208,7 +260,19 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		});
 	}
 	
+	/**
+	 * Get the body of the bullet
+	 * @return bullet body
+	 */
 	public Body getBulletBody() {
 		return this.bulletBody;
+	}
+	
+	/**
+	 * Set the direction
+	 * @param directionY
+	 */
+	public void setDirection(double directionY) {
+		this.directionY = directionY;
 	}
 }

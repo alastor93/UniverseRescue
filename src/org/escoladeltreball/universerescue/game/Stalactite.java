@@ -14,12 +14,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Stalactite extends Sprite {
-
+	//Attributes
 	private Body stalactiteBody;
 	private PhysicsWorld physicsWorld;
 	private PhysicsConnector physicsConnector;
 	private int at = 10;
 
+	//Constructor
 	public Stalactite(float pX, float pY, ITextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -28,6 +29,10 @@ public class Stalactite extends Sprite {
 		this.createPhysics(camera);
 	}
 
+	/**
+	 * Create the physics of the stalactite
+	 * @param camera
+	 */
 	private void createPhysics(Camera camera) {
 		stalactiteBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -37,10 +42,17 @@ public class Stalactite extends Sprite {
 		physicsWorld.registerPhysicsConnector(physicsConnector);
 	}
 	
+	/**
+	 * Get the attack of the stalactite
+	 * @return dmg of the stalactite
+	 */
 	public int getAt(){
 		return at;
 	}
 
+	/**
+	 * Remove the stalactite
+	 */
 	public void removeStalac() {
 		ResourcesManager.getInstance().activity
 				.runOnUpdateThread(new Runnable() {
