@@ -91,7 +91,7 @@ public class level3 extends GameScene{
 	@Override
 	public void createPlayer() {
 		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
-				camera, physics);
+				camera, physics,this);
 		this.attachChild(player);
 	}
 
