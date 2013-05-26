@@ -56,6 +56,5 @@ public class BulletPool extends GenericPool<Sprite> {
 		pItem.setIgnoreUpdate(true);
 		pItem.clearEntityModifiers();
 		pItem.clearUpdateHandlers();
-		pItem.setIgnoreUpdate(true);
 	}
 }
