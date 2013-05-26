@@ -59,7 +59,7 @@ public class level3 extends GameScene{
 
 	@Override
 	public void createBackground() {
-		Sprite sprite = new Sprite(0, 0, manager.game_background2, vbom) {
+		Sprite sprite = new Sprite(0, 0, manager.game_background3, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
