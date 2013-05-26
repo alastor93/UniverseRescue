@@ -75,6 +75,7 @@ public class ResourcesManager {
 	// ITextureRegion for load game background
 	public ITextureRegion game_background;
 	public ITextureRegion game_background2;
+	public ITextureRegion game_background3;
 	// ITextureRegions for load layer game over
 	public ITextureRegion gameOver;
 	// ITextureRegions for load layer win
@@ -446,10 +447,10 @@ public class ResourcesManager {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		level3Atlas = new BuildableBitmapTextureAtlas(
 				this.engine.getTextureManager(), 1600, 1000, BILINEAR);
-		if (this.game_background2 == null) {
-			this.game_background2 = BitmapTextureAtlasTextureRegionFactory
+		if (this.game_background3 == null) {
+			this.game_background3 = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(level3Atlas, activity,
-							"gameBackground2.png");
+							"gameBackground3.png");
 		}
 		if (this.finalBoss == null) {
 			this.finalBoss = BitmapTextureAtlasTextureRegionFactory
