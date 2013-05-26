@@ -96,10 +96,6 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		}
 	}
 
-	public void attack(Player p, Sprite bullet) {
-		// TODO
-	}
-
 	/**
 	 * the enemy take damage 
 	 * @param dmg (the life he lose)
@@ -160,6 +156,12 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	 */
 	public void setKilled(boolean killed) {
 		this.killed = killed;
+	}
+
+	@Override
+	public void attack(Player p) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -51,9 +51,7 @@ public abstract class Enemy extends AnimatedSprite {
 	 */
 	public abstract void move();
 
-	public abstract void attack(Player p, Sprite bullet);
-
-	public abstract void takeDamage(int dmg);
+	public abstract void attack(Player p);
 
 	public boolean canAttack() {
 		return this.canAttack;

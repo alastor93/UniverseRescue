@@ -68,12 +68,11 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 	}
 
 	@Override
-	public void attack(Player p, Sprite bullet) {
+	public void attack(Player p) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void takeDamage(int dmg) {
 		if ((hp - dmg) <= 0) {
 			hp = 0;

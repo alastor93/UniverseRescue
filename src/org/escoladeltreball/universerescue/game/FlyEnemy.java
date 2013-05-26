@@ -22,14 +22,15 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
-import org.escoladeltreball.universerescue.levels.level1;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.scenes.GameScene;
 
-public class FlyEnemy extends Enemy implements IAnimationListener{
+public class FlyEnemy extends Enemy implements IAnimationListener {
 
 	// Attributes //
 
@@ -51,20 +52,21 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 
 	// randomPath
 	private Path path;
-	private level1 scene;
+	private GameScene scene;
 
 	private boolean killed;
 	private boolean contact;
-	
 
 	// Methods //
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
-			PhysicsWorld physicsWorld, level1 s) {
+			PhysicsWorld physicsWorld, GameScene s, ITextureRegion texture) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
 		this.canAttack = false;
+		bulletAttack = new Sprite(0, 0, texture.deepCopy(), pVertexBufferObject);
+		bulletAttack.setVisible(false);
 		scene = s;
 		random = new Random();
 		this.setScale(2f);
@@ -77,6 +79,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 		// physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
 		// body,
 		// true, false));
+		scene.attachChild(bulletAttack);
 	}
 
 	public void move() {
@@ -178,11 +181,11 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 		this.registerEntityModifier(modifier);
 	}
 
-	public void attack(Player p, Sprite bullet) {
+	public void attack(Player p) {
+		canAttack = false;
 		player = p;
 		playerX = p.getX();
 		playerY = p.getY() - p.getHeight() / 2f;
-		bulletAttack = bullet;
 
 		if (playerX < X) {
 			bulletAttack.setPosition(X - this.getWidth() / 2f, Y);
@@ -194,9 +197,9 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 		} else {
 			bulletAttack.setPosition(X, Y);
 		}
-		this.animate(new long[] { 200, 200, 200, 200, 200 }, 5, 9, false,this);
-		float posX = playerX - bullet.getX();
-		float posY = playerY - bullet.getY();
+		this.animate(new long[] { 200, 200, 200, 200, 200 }, 5, 9, false, this);
+		float posX = playerX - bulletAttack.getX();
+		float posY = playerY - bulletAttack.getY();
 		// scene.attachChild(bullet);
 
 		MoveByModifier movMByod = new MoveByModifier(1f, posX, posY,
@@ -205,7 +208,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 					@Override
 					public void onModifierStarted(IModifier<IEntity> pModifier,
 							IEntity pItem) {
-						// TODO Auto-generated method stub
+						pItem.setVisible(true);
 
 					}
 
@@ -222,7 +225,6 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 				});
 
 		bulletAttack.registerEntityModifier(movMByod);
-		canAttack = false;
 	}
 
 	public void setKilled(boolean killed) {
@@ -278,8 +280,6 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 										// Detach partycle system and bullet
 										// from our scene
 										particleSystem.detachSelf();
-										scene.flyEnemyBulletList.add((Sprite) target);
-										bulletAttack = null;
 										contact = false;
 									}
 								});
@@ -302,7 +302,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 					}
 				});
 	}
-	
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (bulletAttack != null) {
@@ -319,6 +319,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
+	
 	public boolean isContact() {
 		return contact;
 	}
