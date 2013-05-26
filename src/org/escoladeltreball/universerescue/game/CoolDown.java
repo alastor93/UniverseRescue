@@ -6,14 +6,6 @@ import java.util.TimerTask;
 public class CoolDown {
 	private boolean valid;
 	private Timer timer;
-//	private static CoolDown instance = null;
-
-//	public static CoolDown getInstance() {
-//		if (instance == null) {
-//			instance = new CoolDown();
-//		}
-//		return instance;
-//	}
 
 	public CoolDown() {
 		timer = new Timer();

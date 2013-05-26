@@ -76,8 +76,8 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 * make the player jump and use a new animation
 	 */
 	public void jump() {
-		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 		if (!isJump) {
+			Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 			dynamicBody.setLinearVelocity(vector2);
 			Vector2Pool.recycle(vector2);
 			this.animate(new long[] { 200, 200, 200 }, new int[] { 6, 7, 8 },
@@ -109,15 +109,15 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		SFXManager.playShoot(1f, 0.5f);
 		sprite.setScale(3f);
 		sprite.setPosition(this.getX() + 95, this.getY());
-		Vector2 velocity = Vector2Pool.obtain(10, 0);
+		Vector2 velocity = new Vector2(10, 0);
 		if (isFlippedHorizontal() && directionY <= 0) {
 			sprite.setFlippedHorizontal(true);
 			sprite.setPosition(this.getX() - 95, this.getY());
-			velocity = Vector2Pool.obtain(-10, 0);
+			velocity.set(-10, 0);
 		} else if (directionY > 0) {
 			sprite.setPosition(this.getX(), this.getY() + 95);
 			sprite.setRotation(-90);
-			velocity = Vector2Pool.obtain(0, 10);
+			velocity.set(0, 10);
 		}
 		final FixtureDef bulletFixtureDef1 = PhysicsFactory.createFixtureDef(0,
 				0, 0);
@@ -150,7 +150,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 */
 	public void run(float pValueX) {
 		//set the velocity
-		Vector2 velocity = Vector2Pool.obtain(pValueX * 10,
+		Vector2 velocity = new Vector2(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
 		
 		if (pValueX != 0 && !isJump && !isFire) {
@@ -160,13 +160,15 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		} else if (pValueX == 0 && !isJump && !isFire && !isAttacked) {
 			this.setCurrentTileIndex(9);
 		}
-		// put the velocity depend if the player use the weapon or no
+		//put the velocity depend if the player use the weapon or no
 		if (!isFire) {
 			dynamicBody.setLinearVelocity(velocity);
 			Vector2Pool.recycle(velocity);
 		} else {
 			//the player can't move when is using the weapon
-			dynamicBody.setLinearVelocity(0, 0);
+			velocity.set(0, 0);
+			dynamicBody.setLinearVelocity(velocity);
+			Vector2Pool.recycle(velocity);
 		}
 	}
 
@@ -289,6 +291,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	
 	/**
 	 * Set the direction
+	 * 
 	 * @param directionY
 	 */
 	public void setDirection(double directionY) {
