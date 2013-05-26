@@ -204,7 +204,7 @@ public class level1 extends GameScene {
 					}
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					if (item.getTextureRegion().equals(manager.life)) {
+					if (item.getTextureRegion().equals(manager.item)) {
 						item.healt(player);
 					} else {
 						item.setShield(player);
@@ -247,7 +247,6 @@ public class level1 extends GameScene {
 		}
 		if (player.getHp() <= Player.MAXHP * 0.25 && !addItem
 				&& enemiesKilled >= 15) {
-			System.out.println("hola");
 			addItem = true;
 			this.createItem(800, camera.getHeight() - 30, manager.item, physics);
 		}
