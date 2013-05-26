@@ -174,8 +174,8 @@ public class GameActivity extends BaseGameActivity {
 						ResourcesManager.getActivity())
 						.setTitle("Universe Rescue")
 						.setMessage(
-								Html.fromHtml("Estas seguro que desea salir?"))
-						.setPositiveButton("Si",
+								Html.fromHtml("Are you sure you want to exit?"))
+						.setPositiveButton("Yes",
 								new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(
