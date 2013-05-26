@@ -206,7 +206,7 @@ public class level1 extends GameScene {
 						player.animate(new long[] { 600, 200 }, new int[] { 14,
 								9 }, false, player);
 					} else {
-						player.animate(new long[] { 200 }, new int[] { 8 },
+						player.animate(new long[] { 800 }, new int[] { 8 },
 								false, player);
 					}
 				}

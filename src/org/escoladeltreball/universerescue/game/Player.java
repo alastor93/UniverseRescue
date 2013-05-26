@@ -104,7 +104,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 * Make the player fire a bullet from his weapon
 	 * @param sprite
 	 */
-	public synchronized void fire(Sprite sprite) {
+	public void fire(Sprite sprite) {
 		isFire = true;
 		SFXManager.playShoot(1f, 0.5f);
 		sprite.setScale(3f);
