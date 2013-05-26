@@ -34,16 +34,28 @@ public class BulletPool extends GenericPool<Sprite> {
 		list.add(newSprite);
 		return newSprite;
 	}
+	
+	/**
+	 * Get a recycled Sprite from the pool
+	 */
+	@Override
+	public synchronized Sprite obtainPoolItem() {
+		Sprite bulletItem = super.obtainPoolItem();
+		bulletItem.setIgnoreUpdate(false);
+		bulletItem.setVisible(true);
+		return bulletItem;
+	}
 
 	/**
 	 * Called when a Bullet is sent to the pool
 	 */
 	@Override
-	protected void onHandleRecycleItem(final Sprite pBullet) {
-		pBullet.clearEntityModifiers();
-		pBullet.clearUpdateHandlers();
-		pBullet.setVisible(false);
-		pBullet.detachSelf();
-		pBullet.reset();
+	protected void onHandleRecycleItem(Sprite pItem) {
+		super.onHandleRecycleItem(pItem);
+		pItem.setVisible(false);
+		pItem.setIgnoreUpdate(true);
+		pItem.clearEntityModifiers();
+		pItem.clearUpdateHandlers();
+		pItem.setIgnoreUpdate(true);
 	}
 }

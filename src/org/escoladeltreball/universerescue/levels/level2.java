@@ -75,7 +75,7 @@ public class level2 extends GameScene {
 	@Override
 	public void createPlayer() {
 		this.player = new Player(camera.getWidth() * 0.5f, 10, manager.playerSprite, this.vbom,
-				camera, physics);
+				camera, physics,this);
 		this.attachChild(player);
 
 	}

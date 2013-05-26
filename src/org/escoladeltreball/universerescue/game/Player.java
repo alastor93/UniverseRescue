@@ -1,6 +1,7 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.Sprite;
@@ -11,7 +12,9 @@ import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
+import org.escoladeltreball.universerescue.scenes.GameScene;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,6 +31,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private double directionY;
 	private int numSteps;
 	private PhysicsWorld physicsWorld;
+	private GameScene scene;
 	
 
 	public void setDirection(double directionY) {
@@ -36,8 +40,9 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	public Player(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, Camera camera,
-			PhysicsWorld physicsWorld) {
+			PhysicsWorld physicsWorld, GameScene s) {
 		super(pX, pY, pTiledTextureRegion, VertexBufferObject);
+		scene = s;
 		this.setScale(2);
 		this.setHp(240);
 		this.physicsWorld = physicsWorld;
@@ -187,5 +192,23 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	
 	public int shoot(){
 		return 20;
+	}
+	
+	public void detachAttack(final Body currentBody) {
+		ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
+
+			@Override
+			public void run() {
+				physicsWorld.unregisterPhysicsConnector(physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape((IShape) scene.getPlayerAttack()));
+				bulletBody.setActive(false);
+				physicsWorld.destroyBody(currentBody);
+
+			}
+
+		});
+	}
+	
+	public Body getBulletBody() {
+		return this.bulletBody;
 	}
 }

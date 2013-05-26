@@ -26,6 +26,7 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.modifier.IModifier;
+import org.escoladeltreball.universerescue.levels.level1;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
 
 public class FlyEnemy extends Enemy implements IAnimationListener{
@@ -50,6 +51,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 
 	// randomPath
 	private Path path;
+	private level1 scene;
 
 	private boolean killed;
 
@@ -57,10 +59,11 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 
 	public FlyEnemy(float pX, float pY, TiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
-			PhysicsWorld physicsWorld) {
+			PhysicsWorld physicsWorld, level1 s) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
 		this.canAttack = false;
+		scene = s;
 		random = new Random();
 		this.setScale(2f);
 		this.animate(new long[] { 200, 200, 200 }, 0, 2, true);
@@ -273,7 +276,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 										// Detach partycle system and bullet
 										// from our scene
 										particleSystem.detachSelf();
-										target.detachSelf();
+										scene.flyEnemyBulletList.add((Sprite) target);
 										bulletAttack = null;
 									}
 								});
