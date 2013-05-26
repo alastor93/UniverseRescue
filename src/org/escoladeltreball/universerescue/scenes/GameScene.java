@@ -12,6 +12,7 @@ import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
@@ -303,9 +304,11 @@ public abstract class GameScene extends BaseScene implements
 	 * @return the body
 	 */
 	public Body getBody(PhysicsWorld physicsWorld, Entity entity) {
-		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape(
-				entity);
+		Body body = physicsWorld.getPhysicsConnectorManager().findBodyByShape((IShape)entity);
 		return body;
 	}
 
+	public Sprite getPlayerAttack() {
+		return this.fire;
+	}
 }
