@@ -14,12 +14,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Item extends Sprite {
 
-	//Attributes
+	// Attributes
 	private Body itemBody;
 	private PhysicsWorld physicsWorld;
 	private PhysicsConnector physicsConnector;
 
-	//Constructor
+	// Constructor
 	public Item(float pX, float pY, ITextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -30,6 +30,7 @@ public class Item extends Sprite {
 
 	/**
 	 * Create the physics of the item
+	 * 
 	 * @param camera
 	 */
 	private void createPhysics(Camera camera) {
@@ -39,21 +40,38 @@ public class Item extends Sprite {
 		physicsConnector = new PhysicsConnector(this, itemBody, true, false);
 		physicsWorld.registerPhysicsConnector(physicsConnector);
 	}
-	
+
 	/**
 	 * Remove the item
 	 */
-	public void removeItem(){
-		ResourcesManager.getInstance().activity.runOnUpdateThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				physicsWorld.unregisterPhysicsConnector(physicsConnector);
-				itemBody.setActive(false);
-				physicsWorld.destroyBody(itemBody);
-				detachSelf();
-				System.gc();
-			}
-		});
+	public void removeItem() {
+		ResourcesManager.getInstance().activity
+				.runOnUpdateThread(new Runnable() {
+
+					@Override
+					public void run() {
+						physicsWorld
+								.unregisterPhysicsConnector(physicsConnector);
+						itemBody.setActive(false);
+						physicsWorld.destroyBody(itemBody);
+						detachSelf();
+						System.gc();
+					}
+				});
+	}
+
+	public void healt(Player player) {
+		if (player.getHp() < 240 && player.getHp() + 20 <= 240) {
+			player.setHp(player.getHp() + 20);
+		} else if (player.getHp() + 20 > 240) {
+			int subtraction = 240 - player.getHp();
+			player.setHp(player.getHp() + subtraction);
+		}
+	}
+	
+	public void setShield(Player player) {
+		Sprite sprite = new Sprite(20, 20,ResourcesManager.getInstance().shield, ResourcesManager.getInstance().vbom);
+		player.attachChild(sprite);
+		player.setShield(true);
 	}
 }

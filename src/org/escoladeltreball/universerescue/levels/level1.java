@@ -67,7 +67,7 @@ public class level1 extends GameScene {
 					it.remove();
 				}
 				it = flyEnemyBulletList.iterator();
-				while(it.hasNext()) {
+				while (it.hasNext()) {
 					Sprite attack = (Sprite) it.next();
 					FLYENEMY_BULLET_POOL.recyclePoolItem(attack);
 					it.remove();
@@ -197,20 +197,24 @@ public class level1 extends GameScene {
 						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
 								false, teraEnemy);
 					}
-					if (player.getHp() > 0) {
+					if (player.getHp() > 0 && !player.isSetShield()) {
 						player.setHp(player.getHp() - teraEnemy.getAt());
 					}
 					player.setAttack(true);
 					player.attacked();
-					player.animate(new long[] { 600, 200 },
-							new int[] { 14, 9 }, false, player);
+					if (!player.isSetShield()) {
+						player.animate(new long[] { 600, 200 }, new int[] { 14,
+								9 }, false, player);
+					} else {
+						player.animate(new long[] { 200 }, new int[] { 8 },
+								false, player);
+					}
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					if (player.getHp() < 240 && player.getHp() + 20 <= 240) {
-						player.setHp(player.getHp() + 20);
-					} else if (player.getHp() + 20 > 240) {
-						int subtraction = 240 - player.getHp();
-						player.setHp(player.getHp() + subtraction);
+					if (item.getTextureRegion().equals(manager.life)) {
+						item.healt(player);
+					} else {
+						item.setShield(player);
 					}
 					item.removeItem();
 				}
@@ -303,7 +307,7 @@ public class level1 extends GameScene {
 		Random random = new Random();
 		fly = new FlyEnemy(POSX[random.nextInt(2)],
 				(camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite.deepCopy(), vbom, camera, physics,this);
+				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this);
 		this.attachChild(fly);
 	}
 
@@ -311,13 +315,12 @@ public class level1 extends GameScene {
 	public void createItem(float pX, float pY, ITextureRegion sprite) {
 		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
 		this.attachChild(item);
-
 	}
 
 	@Override
 	public void createPlayer() {
 		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
-				manager.playerSprite, this.vbom, camera, physics,this);
+				manager.playerSprite, this.vbom, camera, physics, this);
 		this.attachChild(player);
 	}
 

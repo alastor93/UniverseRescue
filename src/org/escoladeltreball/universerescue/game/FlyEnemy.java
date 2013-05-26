@@ -309,7 +309,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener{
 			if (bulletAttack.isVisible()) {
 				if (bulletAttack.collidesWith(player)) {
 					createExplosion(bulletAttack);
-					if (player.getHp() > 0 && !contact) {
+					if (player.getHp() > 0 && !contact && !player.isSetShield()) {
 						player.setHp(player.getHp() - 5);
 						contact = true;
 					}

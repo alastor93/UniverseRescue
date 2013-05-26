@@ -1,6 +1,8 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
@@ -29,6 +31,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private boolean isJump;
 	private boolean isFire;
 	private boolean isAttacked;
+	private boolean isSetShield;
 	private double directionY;
 	private int numSteps;
 	private PhysicsWorld physicsWorld;
@@ -244,7 +247,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 	
 	/**
-	 * Deteach the bullet
+	 * Detach the bullet
 	 */
 	public void detachAttack(final Body currentBody) {
 		ResourcesManager.getActivity().runOnUpdateThread(new Runnable() {
@@ -258,6 +261,22 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 			}
 
 		});
+	}
+
+	
+	@Override
+	protected void onManagedUpdate(float pSecondsElapsed) {
+		if (isSetShield) {
+			this.registerUpdateHandler(new TimerHandler(30, true,new ITimerCallback() {
+				
+				@Override
+				public void onTimePassed(TimerHandler pTimerHandler) {
+					detachChildren();
+					isSetShield = false;
+				}
+			}));
+		}
+		super.onManagedUpdate(pSecondsElapsed);
 	}
 	
 	/**
@@ -274,5 +293,13 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 */
 	public void setDirection(double directionY) {
 		this.directionY = directionY;
+	}
+
+	public boolean isSetShield() {
+		return isSetShield;
+	}
+
+	public void setShield(boolean isSetShield) {
+		this.isSetShield = isSetShield;
 	}
 }
