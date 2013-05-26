@@ -37,10 +37,8 @@ public class level1 extends GameScene {
 	private PhysicsWorld physics;
 	private Platform platform, platform2, platform3;
 	private TeraEnemy teraEnemy;
-	private BulletPool FLYENEMY_BULLET_POOL;
 	private FlyEnemy fly;
 	private CoolDown coolDownEnemy;
-	public LinkedList<Sprite> flyEnemyBulletList;
 	private int countEnemies;
 	private int countFlyEnemies;
 
@@ -60,16 +58,10 @@ public class level1 extends GameScene {
 		registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				Iterator it = bulletToBeRecycled.iterator();
+				Iterator<Sprite> it = bulletToBeRecycled.iterator();
 				while (it.hasNext()) {
 					Sprite attack = (Sprite) it.next();
 					PLAYER_BULLET_POOL.recyclePoolItem(attack);
-					it.remove();
-				}
-				it = flyEnemyBulletList.iterator();
-				while (it.hasNext()) {
-					Sprite attack = (Sprite) it.next();
-					FLYENEMY_BULLET_POOL.recyclePoolItem(attack);
 					it.remove();
 				}
 			}
@@ -114,11 +106,8 @@ public class level1 extends GameScene {
 
 	public void createBulletPool() {
 		playerBulletList = new LinkedList<Sprite>();
-		flyEnemyBulletList = new LinkedList<Sprite>();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
 				playerBulletList, this);
-		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet,
-				flyEnemyBulletList, this);
 
 	}
 
@@ -269,8 +258,7 @@ public class level1 extends GameScene {
 			SceneManager.getInstance().showWinLayer(false);
 		}
 		if (fly.canAttack()) {
-			Sprite fireEnemy = FLYENEMY_BULLET_POOL.obtainPoolItem();
-			fly.attack(player, fireEnemy);
+			fly.attack(player);
 		} else {
 			// FlyEnemy move after 4 seconds, so we create a small delay between
 			// attacks
@@ -307,7 +295,7 @@ public class level1 extends GameScene {
 		Random random = new Random();
 		fly = new FlyEnemy(POSX[random.nextInt(2)],
 				(camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this);
+				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this, manager.flyEnemyBullet);
 		this.attachChild(fly);
 	}
 
