@@ -45,6 +45,10 @@ public abstract class Enemy extends AnimatedSprite {
 		pGLState.enableDither();
 	}
 
+	/**
+	 * the enemy move to the limits declarated in the vars
+	 * using the methods movelefttoright and moverighttoleft
+	 */
 	public abstract void move();
 
 	public abstract void attack(Player p, Sprite bullet);

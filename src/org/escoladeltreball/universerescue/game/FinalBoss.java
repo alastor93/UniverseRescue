@@ -17,12 +17,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class FinalBoss extends Enemy implements IAnimationListener {
-
+	//Attributes
 	private float initX = this.getX();
 	private int maxHP;
 	private boolean back;
 	private PhysicsConnector physicsConnector;
 
+	//Constructor
 	public FinalBoss(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
@@ -37,6 +38,11 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Create the physics of the finalBoss
+	 * @param camera
+	 * @param physicsWorld
+	 */
 	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
 		body = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 1));
@@ -76,7 +82,9 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 			hp = hp - dmg;
 		}
 	}
-
+	/**
+	 * Remove the finalboss
+	 */
 	public void eliminateEnemy() {
 		ResourcesManager.getInstance().activity
 				.runOnUpdateThread(new Runnable() {
@@ -94,6 +102,9 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 				});
 	}
 
+	/**
+	 * the finalboss jump and have a diff animation
+	 */
 	public void jump() {
 		Vector2 vector2 = Vector2Pool.obtain(0, 7.5f);
 		body.setLinearVelocity(vector2);
@@ -102,6 +113,12 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 
 	}
 
+	/**
+	 * If the finalboss have the half or less life 
+	 * the fb go to try to attack the player all the time
+	 * otherwhise move normal
+	 * @param playerX
+	 */
 	public void moveWithInt(float playerX) {
 		if (this.getHP() <= this.maxHP / 2) {
 			if (this.getX() -10 >= playerX) {
