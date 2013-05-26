@@ -24,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Player extends AnimatedSprite implements IAnimationListener {
-	//Attributes
+	// Attributes
 	private Body dynamicBody;
 	private Body bulletBody;
 	private int hp;
@@ -36,10 +36,8 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	private int numSteps;
 	private PhysicsWorld physicsWorld;
 	private GameScene scene;
-	
 
-	
-	//Constructor
+	// Constructor
 	public Player(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, Camera camera,
 			PhysicsWorld physicsWorld, GameScene s) {
@@ -60,6 +58,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * Create the physics of the player
+	 * 
 	 * @param camera
 	 * @param physicsWorld
 	 */
@@ -102,20 +101,21 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * Make the player fire a bullet from his weapon
+	 * 
 	 * @param sprite
 	 */
 	public void fire(Sprite sprite) {
 		isFire = true;
 		SFXManager.playShoot(1f, 0.5f);
 		sprite.setScale(3f);
-		sprite.setPosition(this.getX() + 95, this.getY());
+		sprite.setPosition(this.getX() + 55, this.getY());
 		Vector2 velocity = new Vector2(10, 0);
 		if (isFlippedHorizontal() && directionY <= 0) {
 			sprite.setFlippedHorizontal(true);
-			sprite.setPosition(this.getX() - 95, this.getY());
+			sprite.setPosition(this.getX() - 55, this.getY());
 			velocity.set(-10, 0);
 		} else if (directionY > 0) {
-			sprite.setPosition(this.getX(), this.getY() + 95);
+			sprite.setPosition(this.getX(), this.getY() + 55);
 			sprite.setRotation(-90);
 			velocity.set(0, 10);
 		}
@@ -145,14 +145,15 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	}
 
 	/**
-	 * this method make the player can move 
+	 * this method make the player can move
+	 * 
 	 * @param pValueX
 	 */
 	public void run(float pValueX) {
-		//set the velocity
+		// set the velocity
 		Vector2 velocity = new Vector2(pValueX * 10,
 				dynamicBody.getLinearVelocity().y);
-		
+
 		if (pValueX != 0 && !isJump && !isFire) {
 			numSteps = numSteps > 5 ? 0 : numSteps;
 			this.setCurrentTileIndex(numSteps);
@@ -160,12 +161,12 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		} else if (pValueX == 0 && !isJump && !isFire && !isAttacked) {
 			this.setCurrentTileIndex(9);
 		}
-		//put the velocity depend if the player use the weapon or no
+		// put the velocity depend if the player use the weapon or no
 		if (!isFire) {
 			dynamicBody.setLinearVelocity(velocity);
 			Vector2Pool.recycle(velocity);
 		} else {
-			//the player can't move when is using the weapon
+			// the player can't move when is using the weapon
 			velocity.set(0, 0);
 			dynamicBody.setLinearVelocity(velocity);
 			Vector2Pool.recycle(velocity);
@@ -174,6 +175,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * get if the player is attacked
+	 * 
 	 * @return true if is attacked false otherwhise
 	 */
 	public boolean isAttacked() {
@@ -200,7 +202,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		isFire = false;
 		isAttacked = false;
 	}
-	
+
 	/**
 	 * put the velocity of the player to 0
 	 */
@@ -210,6 +212,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * set the jump for make the player can jump
+	 * 
 	 * @param isJump
 	 */
 	public void setJump(boolean isJump) {
@@ -218,6 +221,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * set the attack for make the player can attack
+	 * 
 	 * @param isAttacked
 	 */
 	public void setAttack(boolean isAttacked) {
@@ -226,6 +230,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * Get the hp of the player
+	 * 
 	 * @return hp
 	 */
 	public int getHp() {
@@ -234,20 +239,22 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 	/**
 	 * Set the hp of the player
+	 * 
 	 * @param hp
 	 */
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	
+
 	/**
 	 * Get the damage of the weapon
+	 * 
 	 * @return damage
 	 */
-	public int shoot(){
+	public int shoot() {
 		return 20;
 	}
-	
+
 	/**
 	 * Detach the bullet
 	 */
@@ -256,7 +263,10 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 
 			@Override
 			public void run() {
-				physicsWorld.unregisterPhysicsConnector(physicsWorld.getPhysicsConnectorManager().findPhysicsConnectorByShape((IShape) scene.getPlayerAttack()));
+				physicsWorld.unregisterPhysicsConnector(physicsWorld
+						.getPhysicsConnectorManager()
+						.findPhysicsConnectorByShape(
+								(IShape) scene.getPlayerAttack()));
 				bulletBody.setActive(false);
 				physicsWorld.destroyBody(currentBody);
 
@@ -265,30 +275,31 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 		});
 	}
 
-	
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if (isSetShield) {
-			this.registerUpdateHandler(new TimerHandler(30, true,new ITimerCallback() {
-				
-				@Override
-				public void onTimePassed(TimerHandler pTimerHandler) {
-					detachChildren();
-					isSetShield = false;
-				}
-			}));
+			this.registerUpdateHandler(new TimerHandler(30, true,
+					new ITimerCallback() {
+
+						@Override
+						public void onTimePassed(TimerHandler pTimerHandler) {
+							detachChildren();
+							isSetShield = false;
+						}
+					}));
 		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
-	
+
 	/**
 	 * Get the body of the bullet
+	 * 
 	 * @return bullet body
 	 */
 	public Body getBulletBody() {
 		return this.bulletBody;
 	}
-	
+
 	/**
 	 * Set the direction
 	 * 
