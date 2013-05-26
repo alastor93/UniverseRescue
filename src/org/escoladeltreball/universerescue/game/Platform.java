@@ -15,12 +15,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Platform extends Sprite {
+	//Attributes
 	private Body bdBody;
 	private float finX = this.getX();
 	private boolean back;
 	private final float width;
 	private final float height;
 
+	//Constructor
 	public Platform(float pX, float pY, ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -33,6 +35,11 @@ public class Platform extends Sprite {
 		this.createPhysics(camera, physicsWorld);
 	}
 
+	/**
+	 * Create the physics of the platform
+	 * @param camera
+	 * @param physicsWorld
+	 */
 	private void createPhysics(Camera camera, PhysicsWorld physicsWorld) {
 		Vector2[] vector2s = {
 				new Vector2(+0.50000f * width, +0.52941f * height),
@@ -45,6 +52,11 @@ public class Platform extends Sprite {
 				bdBody, true, false));
 	}
 
+	/**
+	 * Make the platform move right to left
+	 * @param init
+	 * @param limit
+	 */
 	public void moveRightToLeft(int init, int limit) {
 		bdBody.setUserData("movePlatform");
 		if (finX > limit && !back) {
@@ -59,6 +71,11 @@ public class Platform extends Sprite {
 		}
 	}
 
+	/**
+	 * Make the platform move left to right
+	 * @param init
+	 * @param limit
+	 */
 	public void moveLeftToRight(int init, int limit) {
 		bdBody.setUserData("movePlatform");
 		if (finX < limit && !back) {
