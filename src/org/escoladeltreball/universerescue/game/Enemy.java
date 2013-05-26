@@ -1,6 +1,6 @@
 package org.escoladeltreball.universerescue.game;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public abstract class Enemy extends AnimatedSprite {
 
 	// Scene reference
-	protected Camera camera;
+	protected BoundCamera camera;
 	protected PhysicsWorld physics;
 
 	// Enemy attributes
@@ -28,7 +28,7 @@ public abstract class Enemy extends AnimatedSprite {
 	protected int at;
 
 	public Enemy(float pX, float pY, ITiledTextureRegion pTiledTextureRegion,
-			VertexBufferObjectManager pVertexBufferObject, Camera cam,
+			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject);
 		X = pX;

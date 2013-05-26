@@ -1,15 +1,14 @@
 package org.escoladeltreball.universerescue.game;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
-import org.andengine.entity.sprite.vbo.ITiledSpriteVertexBufferObject;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
-import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
@@ -26,7 +25,7 @@ public class FinalBoss extends Enemy implements IAnimationListener {
 
 	public FinalBoss(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
-			VertexBufferObjectManager pVertexBufferObject, Camera cam,
+			VertexBufferObjectManager pVertexBufferObject, BoundCamera cam,
 			PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObject, cam,
 				physicsWorld);
