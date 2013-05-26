@@ -1,9 +1,11 @@
 package org.escoladeltreball.universerescue.levels;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -38,7 +40,8 @@ public class level1 extends GameScene {
 	private BulletPool FLYENEMY_BULLET_POOL;
 	private FlyEnemy fly;
 	private CoolDown coolDownEnemy;
-	private LinkedList flyEnemyBulletList;
+	public LinkedList<Sprite> flyEnemyBulletList;
+	private LinkedList<Sprite> bulletToBeRecycled;
 	private int countEnemies;
 	private int countFlyEnemies;
 
@@ -54,6 +57,30 @@ public class level1 extends GameScene {
 		this.attachChild(debug);
 		this.createPlatform();
 		this.createPlayer();
+		bulletToBeRecycled = new LinkedList<Sprite>();
+		registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				Iterator it = bulletToBeRecycled.iterator();
+				while (it.hasNext()) {
+					Sprite attack = (Sprite) it.next();
+					PLAYER_BULLET_POOL.recyclePoolItem(attack);
+					it.remove();
+				}
+				it = flyEnemyBulletList.iterator();
+				while(it.hasNext()) {
+					Sprite attack = (Sprite) it.next();
+					FLYENEMY_BULLET_POOL.recyclePoolItem(attack);
+					it.remove();
+				}
+			}
+
+			@Override
+			public void reset() {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override
@@ -87,8 +114,8 @@ public class level1 extends GameScene {
 	}
 
 	public void createBulletPool() {
-		playerBulletList = new LinkedList();
-		flyEnemyBulletList = new LinkedList();
+		playerBulletList = new LinkedList<Sprite>();
+		flyEnemyBulletList = new LinkedList<Sprite>();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
 				playerBulletList, this);
 		FLYENEMY_BULLET_POOL = new BulletPool(manager.flyEnemyBullet,
@@ -158,12 +185,17 @@ public class level1 extends GameScene {
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
 					teraEnemy.setKilled(true);
-					getBody(physics, teraEnemy).setActive(false);
-					PLAYER_BULLET_POOL.recyclePoolItem(fire);
-					getBody(physics, fire).setActive(false);
-					teraEnemy.animate(new long[] {300,400}, new int[]{8,9}, false,teraEnemy);
+
+					// getBody(physics, fire).setActive(false);
+					// fire.setVisible(false);
+					player.detachAttack(getBody(physics, fire));
+					bulletToBeRecycled.add(fire);
+					teraEnemy.animate(new long[] { 300, 400 },
+							new int[] { 8, 9 }, false, teraEnemy);
+					// getBody(physics, teraEnemy).setAwake(true);
 					addEnemiesKilled(1);
 					countEnemies--;
+					;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					if (!teraEnemy.isFlippedHorizontal()) {
@@ -181,7 +213,7 @@ public class level1 extends GameScene {
 				if (areBodiesContacted("player", "item", contact)) {
 					if (player.getHp() < 240 && player.getHp() + 20 <= 240) {
 						player.setHp(player.getHp() + 20);
-					}else if (player.getHp() + 20 > 240) {
+					} else if (player.getHp() + 20 > 240) {
 						int subtraction = 240 - player.getHp();
 						player.setHp(player.getHp() + subtraction);
 					}
@@ -251,7 +283,7 @@ public class level1 extends GameScene {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
 			if (bullet.collidesWith(fly)) {
 				fly.setKilled(true);
-				fly.animate(new long[] { 300, 600}, 3, 4, false,fly);
+				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
 				addEnemiesKilled(1);
 			}
 
@@ -273,8 +305,9 @@ public class level1 extends GameScene {
 
 	public void createFlyEnemy() {
 		Random random = new Random();
-		fly = new FlyEnemy(POSX[random.nextInt(2)], (camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite.deepCopy(), vbom, camera, physics);
+		fly = new FlyEnemy(POSX[random.nextInt(2)],
+				(camera.getHeight() / 4f) * 3,
+				manager.flyEnemySprite.deepCopy(), vbom, camera, physics,this);
 		this.attachChild(fly);
 	}
 
@@ -288,7 +321,7 @@ public class level1 extends GameScene {
 	@Override
 	public void createPlayer() {
 		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
-				manager.playerSprite, this.vbom, camera, physics);
+				manager.playerSprite, this.vbom, camera, physics,this);
 		this.attachChild(player);
 	}
 
