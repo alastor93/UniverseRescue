@@ -14,10 +14,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Item extends Sprite {
 
+	//Attributes
 	private Body itemBody;
 	private PhysicsWorld physicsWorld;
 	private PhysicsConnector physicsConnector;
 
+	//Constructor
 	public Item(float pX, float pY, ITextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -26,6 +28,10 @@ public class Item extends Sprite {
 		this.createPhysics(camera);
 	}
 
+	/**
+	 * Create the physics of the item
+	 * @param camera
+	 */
 	private void createPhysics(Camera camera) {
 		itemBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
@@ -34,6 +40,9 @@ public class Item extends Sprite {
 		physicsWorld.registerPhysicsConnector(physicsConnector);
 	}
 	
+	/**
+	 * Remove the item
+	 */
 	public void removeItem(){
 		ResourcesManager.getInstance().activity.runOnUpdateThread(new Runnable() {
 			
