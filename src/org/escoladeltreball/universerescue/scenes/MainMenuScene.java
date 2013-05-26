@@ -21,18 +21,19 @@ import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener, IEntityModifierListener {
 
-	// Attributes //
+	// Attributes 
 
-	/** A MainMenuScene, class from andEngine library */
+	//A MainMenuScene, class from andEngine library 
 	private MenuScene menuChildScene;
-	/** An int associated with Menu's play option */
+	// An int associated with Menu's play option 
 	private final int MENU_PLAY = 0;
-	/** An int associated with Menu's option 'option' */
+	// An int associated with Menu's option 'option' 
 	private final int MENU_OPTIONS = 1;
-	/** An int associated with Menu's option 'exit' */
+	// An int associated with Menu's option 'exit' 
 	private final int MENU_EXIT = 2;
-	/** An int associated with Menu's option 'controls' */
+	// An int associated with Menu's option 'controls' 
 	private final int MENU_CONTROLS = 3;
+	// Menuitems of the main
 	private IMenuItem playMenuItem, optionMenuItem, exitMenuItem,
 			controlMenuItem;
 
@@ -76,7 +77,7 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	/**
-	 * Create the menu options. play game, options, exit.
+	 * Create the menu options. play , options,controls, exit and music.
 	 * 
 	 */
 
@@ -84,19 +85,22 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene = new MenuScene(this.camera);
 		
 		// Build a menu item's
+		
 		// PLAY
 		playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY,
 				manager.play_region, vbom), 2.2f, 2);
 		// OPTIONS
 		optionMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
 				MENU_OPTIONS, manager.options_region, vbom), 2.2f, 2);
+		
+		// CONTROLS
+		controlMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
+				MENU_CONTROLS, manager.controls_region, vbom), 2.2f, 2);
+		
 		// EXIT
 		exitMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_EXIT,
 				manager.exit_region, vbom), 2.2f, 2);
 
-		// CONTROLS
-		controlMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
-				MENU_CONTROLS, manager.controls_region, vbom), 2.2f, 2);
 
 		// MUSIC
 		final GrowToggleButton MusicToggleButton = new GrowToggleButton(
@@ -128,24 +132,31 @@ public class MainMenuScene extends BaseScene implements
 
 		// Put the menu items on specific position
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
+		
 		optionMenuItem.setPosition(optionMenuItem.getX(),
 				playMenuItem.getY() - 70);
+		
 		controlMenuItem.setPosition(controlMenuItem.getX(),
 				optionMenuItem.getY() - 70);
+		
 		exitMenuItem.setPosition(exitMenuItem.getX(),
 				controlMenuItem.getY() - 70);
+		
 		MusicToggleButton.setPosition(MusicToggleButton.getX(),
 				MusicToggleButton.getY());
 
 		playMenuItem.registerEntityModifier(new MoveModifier(1, camera
 				.getWidth(), playMenuItem.getY(), camera.getWidth() / 2,
 				playMenuItem.getY()));
+		
 		optionMenuItem.registerEntityModifier(new MoveModifier(1, 0,
 				optionMenuItem.getY(), camera.getWidth() / 2, optionMenuItem
 						.getY()));
+		
 		controlMenuItem.registerEntityModifier(new MoveModifier(1, camera
 				.getWidth(), controlMenuItem.getY(), camera.getWidth() / 2,
 				controlMenuItem.getY()));
+		
 		exitMenuItem.registerEntityModifier(new MoveModifier(1, 0, exitMenuItem
 				.getY(), camera.getWidth() / 2, exitMenuItem.getY(), this));
 
@@ -158,15 +169,19 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
+			//Call the levelScene
 			SceneManager.getInstance().createLevelScene();
 			return true;
 		case MENU_OPTIONS:
+			//Call to show the Options Layer
 			SceneManager.getInstance().showOptionsLayer(false);
 			return true;
 		case MENU_CONTROLS:
+			//Call to show the Controls Layer
 			SceneManager.getInstance().showControlsLayer(false);
 			return true;
 		case MENU_EXIT:
+			//Call the method for ask if you want exit the game
 			ResourcesManager.getActivity().showMessageExit();
 		default:
 			return false;
