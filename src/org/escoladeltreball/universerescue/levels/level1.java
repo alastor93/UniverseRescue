@@ -180,6 +180,7 @@ public class level1 extends GameScene {
 					teraEnemy.setKilled(true);
 					player.detachAttack(getBody(physics, fire));
 					bulletToBeRecycled.add(fire);
+					getBody(physics, teraEnemy).setActive(false);
 					teraEnemy.animate(new long[] { 300, 400 },
 							new int[] { 8, 9 }, false, teraEnemy);
 					addEnemiesKilled(1);
