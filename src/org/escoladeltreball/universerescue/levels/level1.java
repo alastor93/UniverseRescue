@@ -41,7 +41,6 @@ public class level1 extends GameScene {
 	private FlyEnemy fly;
 	private CoolDown coolDownEnemy;
 	public LinkedList<Sprite> flyEnemyBulletList;
-	private LinkedList<Sprite> bulletToBeRecycled;
 	private int countEnemies;
 	private int countFlyEnemies;
 

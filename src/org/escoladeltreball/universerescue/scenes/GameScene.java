@@ -60,6 +60,8 @@ public abstract class GameScene extends BaseScene implements
 	protected static final float[] POSX = { 20, 1500 };
 	//Fire sprite
 	protected Sprite fire;
+	// LinkedList for keep player's Sprites to be recycled
+	protected LinkedList<Sprite> bulletToBeRecycled;
 
 	// Heal parts
 	protected Rectangle healstate;
