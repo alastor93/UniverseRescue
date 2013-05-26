@@ -7,11 +7,12 @@ import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
-
+	//Sprite withe the img of the splash menu
 	private Sprite splash;
 
 	@Override
 	public void createScene() {
+		//Create the Splash sprite, set scale and the position
 		splash = new Sprite(0, 0, manager.splash_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
