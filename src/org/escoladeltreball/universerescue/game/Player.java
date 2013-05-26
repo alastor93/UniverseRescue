@@ -85,6 +85,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	public synchronized void fire(Sprite sprite) {
 		isFire = true;
 		SFXManager.playShoot(1f, 0.5f);
+		sprite.setScale(3f);
 		sprite.setPosition(this.getX() + 95, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
 		if (isFlippedHorizontal() && directionY <= 0) {

@@ -1,10 +1,12 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.BoundCamera;
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -35,6 +37,12 @@ public abstract class Enemy extends AnimatedSprite {
 		Y = pY;
 		camera = cam;
 		physics = physicsWorld;
+	}
+	
+	@Override
+	protected void preDraw(GLState pGLState, Camera pCamera) {
+		super.preDraw(pGLState, pCamera);
+		pGLState.enableDither();
 	}
 
 	public abstract void move();
