@@ -9,11 +9,13 @@ import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class LoadingScene extends BaseScene {
-
+	//Sprite with the img of the loading menu 
 	private Sprite loading;
 	@Override
 	public void createScene() {
+		//Set black background
 		setBackground(new Background(Color.BLACK));
+		//create the sprite of loading,scale and set the position
 		loading = new Sprite(0, 0, manager.loading_region, vbom){
     		@Override
             protected void preDraw(GLState pGLState, Camera pCamera) 

@@ -7,7 +7,7 @@ import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
-	//Sprite withe the img of the splash menu
+	//Sprite with the img of the splash menu
 	private Sprite splash;
 
 	@Override
