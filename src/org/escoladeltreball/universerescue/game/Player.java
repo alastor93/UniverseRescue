@@ -104,18 +104,18 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 	 * Make the player fire a bullet from his weapon
 	 * @param sprite
 	 */
-	public synchronized void fire(Sprite sprite) {
+	public void fire(Sprite sprite) {
 		isFire = true;
 		SFXManager.playShoot(1f, 0.5f);
 		sprite.setScale(3f);
-		sprite.setPosition(this.getX() + 95, this.getY());
+		sprite.setPosition(this.getX() + 55, this.getY());
 		Vector2 velocity = Vector2Pool.obtain(10, 0);
 		if (isFlippedHorizontal() && directionY <= 0) {
 			sprite.setFlippedHorizontal(true);
-			sprite.setPosition(this.getX() - 95, this.getY());
+			sprite.setPosition(this.getX() - 55, this.getY());
 			velocity = Vector2Pool.obtain(-10, 0);
 		} else if (directionY > 0) {
-			sprite.setPosition(this.getX(), this.getY() + 95);
+			sprite.setPosition(this.getX(), this.getY() + 55);
 			sprite.setRotation(-90);
 			velocity = Vector2Pool.obtain(0, 10);
 		}
