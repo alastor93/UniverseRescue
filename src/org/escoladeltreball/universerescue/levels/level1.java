@@ -109,7 +109,7 @@ public class level1 extends GameScene {
 		this.attachChild(platform2);
 		this.attachChild(platform3);
 	}
-	
+
 	@Override
 	public void createPlayer() {
 		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
@@ -195,7 +195,6 @@ public class level1 extends GameScene {
 							new int[] { 8, 9 }, false, teraEnemy);
 					addEnemiesKilled(1);
 					countEnemies--;
-					;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
 					if (!teraEnemy.isFlippedHorizontal()) {
@@ -257,15 +256,18 @@ public class level1 extends GameScene {
 			createFlyEnemy();
 			countFlyEnemies++;
 		}
-		if (player.getHp() <= 100 && !addItem) {
+		if (player.getHp() <= Player.MAXHP * 0.25 && !addItem
+				&& enemiesKilled >= 15) {
+			System.out.println("hola");
 			addItem = true;
-			this.createItem(800, camera.getHeight() - 30, manager.item,physics);
-			GameActivity.writeIntToSharedPreferences(
-					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
+			this.createItem(800, camera.getHeight() - 30, manager.item, physics);
 		}
-		if (enemiesKilled == 1 && !addItemArmour) {
+		if (player.getHp() <= Player.MAXHP * 0.5
+				&& player.getHp() > Player.MAXHP * 0.25 && enemiesKilled >= 15
+				&& !addItemArmour) {
 			addItemArmour = true;
-			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,physics);
+			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,
+					physics);
 		}
 		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
@@ -289,6 +291,7 @@ public class level1 extends GameScene {
 				fly.setKilled(true);
 				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
 				addEnemiesKilled(1);
+				countFlyEnemies--;
 				fly.setContact(true);
 			}
 
@@ -310,7 +313,7 @@ public class level1 extends GameScene {
 
 	public void createFlyEnemy() {
 		Random random = new Random();
-		fly = new FlyEnemy(POSX[random.nextInt(2)],
+		fly = new FlyEnemy(random.nextInt((int) camera.getBoundsWidth()),
 				(camera.getHeight() / 4f) * 3,
 				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this);
 		this.attachChild(fly);

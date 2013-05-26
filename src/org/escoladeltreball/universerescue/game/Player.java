@@ -24,9 +24,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Player extends AnimatedSprite implements IAnimationListener {
+	
 	// Attributes
 	private Body dynamicBody;
 	private Body bulletBody;
+	public static final int MAXHP = 240;
 	private int hp;
 	private boolean isJump;
 	private boolean isFire;

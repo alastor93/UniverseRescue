@@ -254,6 +254,7 @@ public abstract class GameScene extends BaseScene implements
 	public void createItem(float pX, float pY, ITextureRegion sprite,
 			PhysicsWorld physics) {
 		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
+		item.eliminateTimePassed();
 		this.attachChild(item);
 	}
 

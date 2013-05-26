@@ -1,6 +1,8 @@
 package org.escoladeltreball.universerescue.game;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
@@ -25,7 +27,7 @@ public class Item extends Sprite {
 			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
 		this.physicsWorld = physicsWorld;
-		this.createPhysics(camera);
+		this.createPhysics();
 	}
 
 	/**
@@ -33,7 +35,7 @@ public class Item extends Sprite {
 	 * 
 	 * @param camera
 	 */
-	private void createPhysics(Camera camera) {
+	private void createPhysics() {
 		itemBody = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
 		itemBody.setUserData("item");
@@ -73,5 +75,16 @@ public class Item extends Sprite {
 		Sprite sprite = new Sprite(20, 20,ResourcesManager.getInstance().shield, ResourcesManager.getInstance().vbom);
 		player.attachChild(sprite);
 		player.setShield(true);
+	}
+	
+	public void eliminateTimePassed() {
+		this.registerUpdateHandler(new TimerHandler(20, true, new ITimerCallback() {
+			
+			@Override
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				removeItem();
+			}
+		}));
+		
 	}
 }

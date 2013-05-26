@@ -5,22 +5,18 @@ import java.util.LinkedList;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.andengine.util.adt.color.Color;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
 import org.escoladeltreball.universerescue.game.FinalBoss;
-import org.escoladeltreball.universerescue.game.Item;
 import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
-import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
@@ -40,7 +36,6 @@ public class level3 extends GameScene{
 	private PhysicsWorld physics;
 	private FinalBoss finalBoss;
 	private Platform platform, platform2, platform3,platform4,platform5,platform6;
-	private boolean back;
 
 	
 	@Override
@@ -216,12 +211,6 @@ public class level3 extends GameScene{
 		this.attachChild(platform6);
 		platform6.setVisible(false);
 	}
-
-	@Override
-	public void createItem(float pX, float pY, ITextureRegion sprite) {
-		item = new Item(pX, pY, sprite, this.vbom, camera, physics);
-		this.attachChild(item);
-	}
 	
 	public void createHealthEnemyBar() {
 		enemyHeal = new Sprite(this.camera.getXMax() - 150,
@@ -265,7 +254,7 @@ public class level3 extends GameScene{
 		}
 		if (player.getHp() <= 150 && !addItem) {
 			addItem = true;
-			this.createItem(900, camera.getHeight() - 30, manager.item);
+			this.createItem(900, camera.getHeight() - 30, manager.item,physics);
 			GameActivity.writeIntToSharedPreferences(
 					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
 		}
