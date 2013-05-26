@@ -24,7 +24,8 @@ import android.text.Html;
 import android.view.KeyEvent;
 
 public class GameActivity extends BaseGameActivity {
-
+	
+	//Attributes
 	private BoundCamera camera;
 	private ResourcesManager manager;
 	private static final int WIDTH = 800;
@@ -159,7 +160,11 @@ public class GameActivity extends BaseGameActivity {
 			return super.onKeyDown(keyCode, event);
 		}
 	}
-
+	
+	/**
+	 * Show an ask if you want exit the game
+	 * if you select "no" continue the game, exit the game otherwhise
+	 */
 	public void showMessageExit() {
 		this.runOnUiThread(new Runnable() {
 
@@ -223,6 +228,10 @@ public class GameActivity extends BaseGameActivity {
 				+ String.valueOf(maxLevelNumber));
 	}
 
+	/**
+	 * Check if is the gameScene
+	 * @return true if the Scene is the gameScene false otherwhise
+	 */
 	public boolean isGameScene() {
 		if (SceneManager.getInstance().getCurrentSceneType()
 				.equals(SceneType.SCENE_GAME)
