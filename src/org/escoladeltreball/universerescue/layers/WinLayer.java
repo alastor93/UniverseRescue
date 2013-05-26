@@ -53,7 +53,7 @@ public class WinLayer extends Layer implements OnClickListener {
 	@Override
 	public void onLoadLayer() {
 		// Create and attach a background that hides the Layer when touched.
-		background = new Sprite(0, 0, ResourcesManager.getInstance().win,
+		background = new Sprite(0, 0, ResourcesManager.getInstance().youWin,
 				ResourcesManager.getInstance().vbom);
 		background.setHeight(440f);
 		background.setWidth(760f);

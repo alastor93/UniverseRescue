@@ -80,6 +80,7 @@ public class ResourcesManager {
 
 	// ITextureRegions for load layer game over
 	public ITextureRegion gameOver;
+	public ITextureRegion youWin;
 	public ITextureRegion continueGame;
 	public ITextureRegion exitGame;
 	public ITextureRegion arrow;
@@ -111,7 +112,6 @@ public class ResourcesManager {
 	public ITextureRegion buttonA;
 	public ITextureRegion bulletSprite;
 	public ITextureRegion flyEnemyBullet;
-	public ITextureRegion win;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -292,6 +292,10 @@ public class ResourcesManager {
 			this.gameOver = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "gameOver.png");
 		}
+		if(this.youWin == null){
+			this.youWin = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+					gameAtlas, activity, "Win.png");
+		}
 		if (this.continueGame == null) {
 			this.continueGame = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "continue.png");
@@ -308,8 +312,8 @@ public class ResourcesManager {
 			this.pause = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "pause.png");
 		}
-		if (this.win == null) {
-			this.win = BitmapTextureAtlasTextureRegionFactory
+		if (this.youWin == null) {
+			this.youWin = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "win.png");
 		}
 		try {
