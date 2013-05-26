@@ -292,10 +292,6 @@ public class ResourcesManager {
 			this.gameOver = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "gameOver.png");
 		}
-		if(this.youWin == null){
-			this.youWin = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "Win.png");
-		}
 		if (this.continueGame == null) {
 			this.continueGame = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(gameAtlas, activity, "continue.png");
