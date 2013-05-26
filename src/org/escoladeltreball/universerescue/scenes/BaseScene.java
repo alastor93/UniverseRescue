@@ -26,10 +26,20 @@ public abstract class BaseScene extends Scene {
 		this.vbom = manager.vbom;
 		createScene();
 	}
-
+	
+	/**
+	 * Create the Scene 
+	 */
 	public abstract void createScene();
 	
+	/**
+	 * Return the type of the Scene
+	 * @return SceneType
+	 */
 	public abstract SceneType getSceneType();
 
+	/**
+	 * Dispose the scene 
+	 */
 	public abstract void disposeScene();
 }
