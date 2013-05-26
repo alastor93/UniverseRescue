@@ -136,7 +136,7 @@ public class WinLayer extends Layer implements OnClickListener {
 				SceneManager.getInstance().unloadGameScene();
 				SceneManager.getInstance().createTempGameScene(
 						ResourcesManager.getInstance().engine,
-						SceneManager.getInstance().getCurrentlevel());
+						SceneManager.getInstance().getCurrentlevel() + 1);
 				pressedContinue = false;
 			}
 		} else {
