@@ -34,7 +34,7 @@ public class ResourcesManager {
 	public BitmapTextureAtlas optionsTextureAtlas;
 	public BuildableBitmapTextureAtlas menuTextureAtlas;
 	public BuildableBitmapTextureAtlas gameAtlas;
-	public BuildableBitmapTextureAtlas level1Atlas,level2Atlas,level3Atlas;
+	public BuildableBitmapTextureAtlas level1Atlas, level2Atlas, level3Atlas;
 	public ITextureRegion splash_region;
 	public ITextureRegion loading_region;
 	public Font defaultFont;
@@ -51,7 +51,7 @@ public class ResourcesManager {
 	public ITextureRegion controls_region;
 	/** ITextureRegion for load music option on MainMenuScene */
 	public static TiledTextureRegion music_region;
-	/** ITextureRegion for load controls  on ControlLayer */
+	/** ITextureRegion for load controls on ControlLayer */
 	public ITextureRegion controlinfo;
 
 	/** TextureOption BILINEAR */
@@ -77,8 +77,8 @@ public class ResourcesManager {
 	/** ITextureRegion for load game background */
 	public ITextureRegion game_background;
 	public ITextureRegion game_background2;
-	
-	// ITextureRegions for load layer game over 
+
+	// ITextureRegions for load layer game over
 	public ITextureRegion gameOver;
 	public ITextureRegion continueGame;
 	public ITextureRegion exitGame;
@@ -91,8 +91,6 @@ public class ResourcesManager {
 	public TiledTextureRegion enemySprite2;
 	public TiledTextureRegion flyEnemySprite;
 	public TiledTextureRegion finalBoss;
-	
-
 
 	// Texture for load the platform sprite
 	public ITextureRegion platformSprite;
@@ -113,6 +111,7 @@ public class ResourcesManager {
 	public ITextureRegion buttonA;
 	public ITextureRegion bulletSprite;
 	public ITextureRegion flyEnemyBullet;
+	public ITextureRegion win;
 
 	// Singleton
 	public static ResourcesManager getInstance() {
@@ -228,7 +227,7 @@ public class ResourcesManager {
 			options_region = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(menuTextureAtlas, activity, "options.png");
 		}
-		if (controls_region == null){
+		if (controls_region == null) {
 			controls_region = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(menuTextureAtlas, activity, "controls.png");
 		}
@@ -241,12 +240,11 @@ public class ResourcesManager {
 					.createTiledFromAsset(menuTextureAtlas, activity,
 							"tiledsound.png", 2, 1);
 		}
-		if(controlinfo == null){
-			controlinfo  = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(menuTextureAtlas, activity, "controlsinfo.png");
+		if (controlinfo == null) {
+			controlinfo = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(menuTextureAtlas, activity,
+							"controlsinfo.png");
 		}
-
-		
 		try {
 			this.menuTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -268,7 +266,7 @@ public class ResourcesManager {
 	public void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameAtlas = new BuildableBitmapTextureAtlas(
-				this.engine.getTextureManager(), 1075, 576, BILINEAR);
+				this.engine.getTextureManager(), 1317, 737, BILINEAR);
 		if (this.playerSprite == null) {
 			this.playerSprite = BitmapTextureAtlasTextureRegionFactory
 					.createTiledFromAsset(gameAtlas, activity, "player.png", 6,
@@ -287,28 +285,32 @@ public class ResourcesManager {
 					gameAtlas, activity, "item.png");
 		}
 		if (this.itemArmour == null) {
-			this.itemArmour = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "armour.png");
+			this.itemArmour = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "armour.png");
 		}
 		if (this.gameOver == null) {
-			this.gameOver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "gameOver.png");
+			this.gameOver = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "gameOver.png");
 		}
 		if (this.continueGame == null) {
-			this.continueGame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "continue.png");
+			this.continueGame = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "continue.png");
 		}
 		if (this.exitGame == null) {
-			this.exitGame = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "exit.png");
+			this.exitGame = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "exit.png");
 		}
 		if (this.arrow == null) {
-			this.arrow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "arrow.png");
+			this.arrow = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "arrow.png");
 		}
 		if (this.pause == null) {
-			this.pause = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-					gameAtlas, activity, "pause.png");
+			this.pause = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "pause.png");
+		}
+		if (this.win == null) {
+			this.win = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(gameAtlas, activity, "win.png");
 		}
 		try {
 			this.gameAtlas
@@ -396,8 +398,7 @@ public class ResourcesManager {
 				this.engine.getTextureManager(), 1238, 611, BILINEAR);
 		if (this.stalactite == null) {
 			this.stalactite = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(level2Atlas, activity,
-							"stalactite.png");
+					.createFromAsset(level2Atlas, activity, "stalactite.png");
 		}
 		if (this.game_background2 == null) {
 			this.game_background2 = BitmapTextureAtlasTextureRegionFactory
@@ -419,7 +420,7 @@ public class ResourcesManager {
 		}
 	}
 
-	public void loadLevel3Graphics(){
+	public void loadLevel3Graphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		level3Atlas = new BuildableBitmapTextureAtlas(
 				this.engine.getTextureManager(), 1600, 1000, BILINEAR);
@@ -428,20 +429,21 @@ public class ResourcesManager {
 					.createFromAsset(level3Atlas, activity,
 							"gameBackground2.png");
 		}
-		if (this.finalBoss == null){
+		if (this.finalBoss == null) {
 			this.finalBoss = BitmapTextureAtlasTextureRegionFactory
-					.createTiledFromAsset(level3Atlas, activity, "finalboss.png",
-							4, 3);
+					.createTiledFromAsset(level3Atlas, activity,
+							"finalboss.png", 4, 3);
 		}
 		if (this.platformSprite == null) {
 			this.platformSprite = BitmapTextureAtlasTextureRegionFactory
 					.createFromAsset(level3Atlas, activity, "platform.png");
 		}
-		if(introFinalBoss == null){
+		if (introFinalBoss == null) {
 			this.introFinalBoss = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(level3Atlas, activity, "finalbossopening.png"); 
+					.createFromAsset(level3Atlas, activity,
+							"finalbossopening.png");
 		}
-		
+
 		try {
 			this.level3Atlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -450,8 +452,9 @@ public class ResourcesManager {
 		} catch (final TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
-		
+
 	}
+
 	public void loadControls() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		BuildableBitmapTextureAtlas controlAtlas = new BuildableBitmapTextureAtlas(
