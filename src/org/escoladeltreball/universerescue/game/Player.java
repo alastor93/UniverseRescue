@@ -270,7 +270,7 @@ public class Player extends AnimatedSprite implements IAnimationListener {
 							.getPhysicsConnectorManager()
 							.findPhysicsConnectorByShape(
 									(IShape) scene.getPlayerAttack()));
-					bulletBody.setActive(false);
+					currentBody.setActive(false);
 					physicsWorld.destroyBody(currentBody);
 
 				}
