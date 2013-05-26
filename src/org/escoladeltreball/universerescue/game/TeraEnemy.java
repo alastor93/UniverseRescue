@@ -14,7 +14,7 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class TeraEnemy extends Enemy implements IAnimationListener {
-
+	//Attributes
 	private float initX;
 	private boolean back;
 	private final float LIMIT_LEFT = camera.getBoundsWidth() - 20;
@@ -22,6 +22,7 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 	private boolean killed;
 	private PhysicsConnector physicsConnector;
 
+	//Constructor
 	public TeraEnemy(float pX, float pY,
 			ITiledTextureRegion pTiledTextureRegion,
 			VertexBufferObjectManager VertexBufferObject, BoundCamera camera,
@@ -35,6 +36,10 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		this.animate(new long[] { 200, 200, 200 }, 1, 3, true);
 	}
 
+	/**
+	 * Create the physics of the enemy
+	 * @param physicsWorld
+	 */
 	private void createPhysics(PhysicsWorld physicsWorld) {
 		body = PhysicsFactory.createBoxBody(physicsWorld, this,
 				BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 1));
@@ -48,6 +53,10 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 
+	/**
+	 * the enemy move to the limits declarated in the vars
+	 * using the methods movelefttoright and moverighttoleft
+	 */
 	public void move() {
 		if (initX == LIMIT_RIGHT) {
 			this.moveLeftToRight(LIMIT_LEFT);
@@ -56,6 +65,10 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * the enemy move right to left 
+	 * @param limit
+	 */
 	public void moveRightToLeft(float limit) {
 		if (this.getX() - this.getWidth() * 0.5f > limit && !back) {
 			this.setFlippedHorizontal(true);
@@ -69,6 +82,10 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * the enemy move left to right 
+	 * @param limit 
+	 */
 	public void moveLeftToRight(float limit) {
 		if (this.getX() + this.getWidth() * 0.5f < limit && !back) {
 			this.setFlippedHorizontal(false);
@@ -86,6 +103,10 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		// TODO
 	}
 
+	/**
+	 * the enemy take damage 
+	 * @param dmg (the life he lose)
+	 */
 	public void takeDamage(int dmg) {
 		if ((hp - dmg) <= 0) {
 			hp = 0;
@@ -95,6 +116,9 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * Remove the enemy
+	 */
 	public void eliminateEnemy() {
 		ResourcesManager.getInstance().activity
 				.runOnUpdateThread(new Runnable() {
@@ -133,15 +157,14 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 		}
 	}
 
+	/**
+	 * Set the content of the param to the var
+	 * @param killed
+	 */
 	public void setKilled(boolean killed) {
 		this.killed = killed;
 	}
 
-	// @Override
-	// public void run() {
-	// while (true) {
-	// this.move();
-	// }
-	// }
+
 
 }
