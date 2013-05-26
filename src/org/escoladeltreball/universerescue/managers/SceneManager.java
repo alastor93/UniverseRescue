@@ -40,7 +40,7 @@ public class SceneManager {
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
 	private BaseScene currentScene;
 	private int currentlevel;
-	
+
 	private final float centerX = (GameActivity.getWidth() * 0.5f);
 	private final float centerY = (GameActivity.getHeight() * 0.5f);
 
@@ -68,6 +68,11 @@ public class SceneManager {
 		SCENE_SPLASH, SCENE_MAINMENU, SCENE_LOADING, SCENE_GAME, SCENE_LEVEL;
 	}
 
+	/**
+	 * Create the Splash Scene
+	 * 
+	 * @param pOnCreateSceneCallback
+	 */
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
 		ResourcesManager.getInstance().loadSplashScreen();
 		splashScene = new SplashScene();
@@ -75,6 +80,9 @@ public class SceneManager {
 		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
 	}
 
+	/**
+	 * Dispose and put the splashscene to null
+	 */
 	private void disposeSplashScene() {
 		ResourcesManager.getInstance().unloadSplashScreen();
 		splashScene.disposeScene();
@@ -93,15 +101,18 @@ public class SceneManager {
 		disposeSplashScene();
 	}
 
+	/**
+	 * Create the LevelScene
+	 */
 	public void createLevelScene() {
+		// load the graphics of the levelSelector
 		ResourcesManager.getInstance().loadLevelSelectorGraphics();
 		this.levelScene = new LevelSelector(100, 100,
 				ResourcesManager.getInstance().menuLevelIcon,
 				ResourcesManager.getInstance().levelsFont);
 		setScene(this.levelScene);
 		mainMenu.detachSelf();
-		// mainMenu.dispose();
-		// Build a back button
+		// back sprite
 		final ButtonSprite backToMenuButton = new ButtonSprite(
 				ResourcesManager.getInstance().backarrow.getWidth() / 2f,
 				ResourcesManager.getInstance().backarrow.getHeight() / 2f,
@@ -116,44 +127,69 @@ public class SceneManager {
 				return true;
 			}
 		};
+		// attach the elements to the scene
 		this.levelScene.attachChild(backToMenuButton);
 		this.levelScene.registerTouchArea(backToMenuButton);
 		backToMenuButton.setScale(1.5f);
 		backToMenuButton.setOffsetCenter(0, 0);
 	}
 
+	/**
+	 * Dispose the levelScene
+	 */
 	public void unloadLevelScene() {
 		levelScene.detachSelf();
 		levelScene.dispose();
 	}
-	
-	public void pauseScene(){
-		CameraScene pauseScene = new CameraScene(ResourcesManager.getInstance().camera);
-		Sprite pausedSprite = new Sprite(centerX, centerY, ResourcesManager.getInstance().pause,ResourcesManager.getInstance().vbom );
+
+	/**
+	 * Pause the game
+	 */
+	public void pauseScene() {
+		CameraScene pauseScene = new CameraScene(
+				ResourcesManager.getInstance().camera);
+		Sprite pausedSprite = new Sprite(centerX, centerY,
+				ResourcesManager.getInstance().pause,
+				ResourcesManager.getInstance().vbom);
 		pausedSprite.setScale(2f);
 		pauseScene.attachChild(pausedSprite);
 		pauseScene.setBackgroundEnabled(false);
-		gameScene.setChildScene(pauseScene, false, true,
-				true);
+		gameScene.setChildScene(pauseScene, false, true, true);
 	}
-	
-	public void clearPause(){
+
+	/**
+	 * If the game stay in pause clear the pause
+	 */
+	public void clearPause() {
 		gameScene.clearChildScene();
 		gameScene.createControls();
 	}
 
+	/**
+	 * return to the mainmenu
+	 */
 	public void backToMenu() {
 		mainMenu = new MainMenuScene();
 		setScene(mainMenu);
 		this.unloadLevelScene();
 	}
 
+	/**
+	 * return to the levelmenu
+	 */
 	public void backToLevelMenu() {
 		this.createLevelScene();
 		gameScene.disposeScene();
 	}
 
+	/**
+	 * Create the gameScene depend of the level you select
+	 * 
+	 * @param engine
+	 * @param level
+	 */
 	public void createTempGameScene(final Engine engine, final int level) {
+		//load and set the loading scene
 		ResourcesManager.getInstance().loadLoadingScreen();
 		this.loadingScene = new LoadingScene();
 		this.setScene(loadingScene);
@@ -164,36 +200,53 @@ public class SceneManager {
 						loadingScene.disposeScene();
 						currentlevel = level;
 						ResourcesManager.getInstance().loadGameGraphics();
+						// load the level 1
 						if (level == 1) {
 							ResourcesManager.getInstance().loadLevel1Graphics();
 							gameScene = new level1();
+							// load the level 2
 						} else if (level == 2) {
 							ResourcesManager.getInstance().loadLevel2Graphics();
 							gameScene = new level2();
+							// load the level 3
 						} else {
 							ResourcesManager.getInstance().loadLevel3Graphics();
 							gameScene = new level3();
 						}
-
+						//set the gameScene
 						setScene(gameScene);
 					}
 				}));
 	}
-
+	/**
+	 * Get the current level you stay
+	 * @return currentlevel
+	 */
 	public int getCurrentlevel() {
 		return currentlevel;
 	}
 
+	/**
+	 * Dispose the GameScene
+	 */
 	public void unloadGameScene() {
 		gameScene.disposeScene();
 	}
-
+	
+	/**
+	 * Set the scene in the param
+	 * @param scene
+	 */
 	public void setScene(BaseScene scene) {
 		engine.setScene(scene);
 		this.currentScene = scene;
 		this.currentSceneType = scene.getSceneType();
 	}
 
+	/**
+	 * set the scene depends of the type you put in the param
+	 * @param sceneType
+	 */
 	public void setScene(SceneType sceneType) {
 		switch (sceneType) {
 		case SCENE_SPLASH:
@@ -209,34 +262,60 @@ public class SceneManager {
 			break;
 		}
 	}
-
+	/**
+	 * Get the current scenetype
+	 * @return currentSceneType
+	 */
 	public SceneType getCurrentSceneType() {
 		return currentSceneType;
 	}
-
+	/**
+	 * Get the current Scene
+	 * @return currentScene
+	 */
 	public BaseScene getCurrentScene() {
 		return currentScene;
 	}
-
+	
+	/**
+	 * Show the layer of the options
+	 * @param pSuspendCurrentSceneUpdates
+	 */
 	public void showOptionsLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(OptionsLayer.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
+	/**
+	 * Show the layer of the Controls
+	 * @param pSuspendCurrentSceneUpdates
+	 */
 	public void showControlsLayer(final boolean pSuspendCurrentSceneUpdates) {
 		showLayer(ControlsLayer.getInstance(), false,
 				pSuspendCurrentSceneUpdates, true);
 	}
-	
+	/**
+	 * Show the layer of the finalBoss
+	 * @param pSuspendCurrentSceneUpdates
+	 */
 	public void showIntroFinalBLayer(final boolean pSuspendCurrentSceneUpdates) {
-		showLayer(IntroFB.getInstance(), false,
-				pSuspendCurrentSceneUpdates, true);
+		showLayer(IntroFB.getInstance(), false, pSuspendCurrentSceneUpdates,
+				true);
 	}
-
+	/**
+	 * Show the layer of the GameOver
+	 * @param pSuspendCurrentSceneUpdates
+	 */
 	public void showLoseLayer(final boolean pSuspendCurrentSceneUpdates) {
-		showLayer(GameOverLayer.getInstance(), false, pSuspendCurrentSceneUpdates, false);
+		showLayer(GameOverLayer.getInstance(), false,
+				pSuspendCurrentSceneUpdates, false);
 	}
+	/**
+	 * Show the layer of the Win Game
+	 * @param pSuspendCurrentSceneUpdates
+	 */
 	public void showWinLayer(final boolean pSuspendCurrentSceneUpdates) {
-		showLayer(WinLayer.getInstance(), false, pSuspendCurrentSceneUpdates, false);
+		showLayer(WinLayer.getInstance(), false, pSuspendCurrentSceneUpdates,
+				false);
 	}
 
 	/**
@@ -279,7 +358,9 @@ public class SceneManager {
 		// Set the current layer to pLayer.
 		currentLayer = pLayer;
 	}
-
+	/**
+	 * Hide the layer
+	 */
 	public void hideLayer() {
 		if (isLayerShown) {
 			// Clear the HUD.

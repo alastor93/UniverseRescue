@@ -70,7 +70,7 @@ public class SFXManager {
 
 	/**
 	 * Check if the music is muted
-	 * @return the vakue of the var musicMuted
+	 * @return the content of the var musicMuted
 	 */
 	public static boolean toggleMusicMuted() {
 		getInstance().musicMuted = !getInstance().musicMuted;
