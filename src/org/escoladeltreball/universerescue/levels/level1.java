@@ -30,7 +30,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class level1 extends GameScene {
-
+	// Attributes
 	private PhysicsWorld physics;
 	private Platform platform, platform2, platform3;
 	private TeraEnemy teraEnemy;
@@ -39,6 +39,7 @@ public class level1 extends GameScene {
 	private int countEnemies;
 	private int countFlyEnemies;
 
+	// Constructor
 	public level1() {
 		super();
 		this.coolDownEnemy = new CoolDown();
@@ -106,6 +107,7 @@ public class level1 extends GameScene {
 		this.attachChild(player);
 	}
 
+	@Override
 	public void createBulletPool() {
 		playerBulletList = new LinkedList<Sprite>();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
@@ -113,6 +115,7 @@ public class level1 extends GameScene {
 
 	}
 
+	@Override
 	public void createPhysics() {
 		this.physics = new FixedStepPhysicsWorld(60, new Vector2(0,
 				-SensorManager.GRAVITY_EARTH), false);
@@ -193,7 +196,8 @@ public class level1 extends GameScene {
 					}
 					if (player.getHp() > 0 && !player.isSetShield()) {
 						player.setHp(player.getHp() - teraEnemy.getAt());
-					}else if(player.getHp() - teraEnemy.getAt() < 0 && !player.isSetShield()){
+					} else if (player.getHp() - teraEnemy.getAt() < 0
+							&& !player.isSetShield()) {
 						player.setHp(player.getHp() - player.getHp());
 					}
 					player.setAttack(true);
@@ -240,6 +244,7 @@ public class level1 extends GameScene {
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
+		//Create enemyes
 		if (countEnemies < 1) {
 			createEnemy();
 			countEnemies++;
@@ -248,11 +253,13 @@ public class level1 extends GameScene {
 			createFlyEnemy();
 			countFlyEnemies++;
 		}
+		//add item potion
 		if (player.getHp() <= Player.MAXHP * 0.25 && !addItem
 				&& enemiesKilled >= 15) {
 			addItem = true;
 			this.createItem(800, camera.getHeight() - 30, manager.item, physics);
 		}
+		//add item armour
 		if (player.getHp() <= Player.MAXHP * 0.5
 				&& player.getHp() > Player.MAXHP * 0.25 && enemiesKilled >= 15
 				&& !addItemArmour) {
@@ -260,12 +267,15 @@ public class level1 extends GameScene {
 			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,
 					physics);
 		}
+		//show lose layer
 		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
 		}
+		//show win layer
 		if (enemiesKilled == 30) {
 			SceneManager.getInstance().showWinLayer(false);
 		}
+		//fly enemy attack player
 		if (fly.canAttack()) {
 			fly.attack(player);
 		} else {
@@ -279,7 +289,7 @@ public class level1 extends GameScene {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
 			if (bullet.collidesWith(fly) && !fly.isContact()) {
 				fly.setKilled(true);
-				player.detachAttack(getBody(physics,fire));
+				player.detachAttack(getBody(physics, fire));
 				bulletToBeRecycled.add(fire);
 				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
 				addEnemiesKilled(1);
@@ -288,6 +298,7 @@ public class level1 extends GameScene {
 			}
 		}
 		healstate.setWidth(player.getHp());
+		//move the elements
 		teraEnemy.move();
 		platform2.move();
 		platform3.move();
@@ -302,6 +313,9 @@ public class level1 extends GameScene {
 		this.attachChild(teraEnemy);
 	}
 
+	/**
+	 * Create a flyEnemy with a random movement
+	 */
 	public void createFlyEnemy() {
 		Random random = new Random();
 		fly = new FlyEnemy(random.nextInt((int) camera.getBoundsWidth()),
