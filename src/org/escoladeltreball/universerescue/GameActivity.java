@@ -33,7 +33,6 @@ public class GameActivity extends BaseGameActivity {
 	public static final String SHARED_PREFS_MUSIC_MUTED = "mute.music";
 	public static final String SHARED_PREFS_MAIN = "UniverseRunnerSettings";
 	public static final String SHARED_PREFS_LEVEL_MAX_REACHED = "levels.reached.";
-	public static final String SHARED_PREFS_LEVEL_STARS = "level.stars.";
 
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
@@ -215,17 +214,6 @@ public class GameActivity extends BaseGameActivity {
 	 */
 	public static int getHeight() {
 		return HEIGHT;
-	}
-
-	/**
-	 * Getter with the level stars
-	 * 
-	 * @param maxLevelNumber
-	 * @return the max number of stars
-	 */
-	public static int getLevelStars(int maxLevelNumber) {
-		return getIntFromSharedPreferences(SHARED_PREFS_LEVEL_STARS
-				+ String.valueOf(maxLevelNumber));
 	}
 
 	/**

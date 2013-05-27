@@ -6,7 +6,11 @@ import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.managers.ResourcesManager;
+import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
+
+import android.content.SharedPreferences;
+import android.view.WindowManager;
 
 public class OptionsLayer extends Layer {
 
@@ -23,7 +27,8 @@ public class OptionsLayer extends Layer {
 								- (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f));
 			} else {
-				ResourcesManager.getInstance().engine.unregisterUpdateHandler(this);
+				ResourcesManager.getInstance().engine
+						.unregisterUpdateHandler(this);
 			}
 		}
 
@@ -44,7 +49,8 @@ public class OptionsLayer extends Layer {
 								+ (3600 * (pSecondsElapsed)),
 								GameActivity.getHeight() / 2f + 480f));
 			} else {
-				ResourcesManager.getInstance().engine.unregisterUpdateHandler(this);
+				ResourcesManager.getInstance().engine
+						.unregisterUpdateHandler(this);
 				SceneManager.getInstance().hideLayer();
 			}
 		}
@@ -70,23 +76,9 @@ public class OptionsLayer extends Layer {
 		Rectangle smth = new Rectangle(BackgroundX, BackgroundY,
 				BackgroundWidth, BackgroundHeight,
 				ResourcesManager.getInstance().engine
-						.getVertexBufferObjectManager()) {
-			@Override
-			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
-					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.isActionUp()
-						&& pTouchAreaLocalX < this.getWidth()
-						&& pTouchAreaLocalX > 0
-						&& pTouchAreaLocalY < this.getHeight()
-						&& pTouchAreaLocalY > 0) {
-					onHideLayer();
-				}
-				return true;
-			}
-		};
+						.getVertexBufferObjectManager());
 		smth.setColor(0f, 0f, 0f, 0.85f);
 		this.attachChild(smth);
-		this.registerTouchArea(smth);
 
 		ResourcesManager.getInstance().loadFonts();
 		// Create the OptionsLayerTitle text for the Layer.
@@ -99,14 +91,65 @@ public class OptionsLayer extends Layer {
 		this.attachChild(OptionsLayerTitle);
 
 		Text OptionsLayerBrightness = new Text(0, 0,
-				ResourcesManager.getInstance().defaultFont, "Brillo",
+				ResourcesManager.getInstance().defaultFont, "Brightness",
 				ResourcesManager.getInstance().engine
-						.getVertexBufferObjectManager());
-		OptionsLayerBrightness.setPosition(-BackgroundWidth / 2
-				+ OptionsLayerBrightness.getWidth(), OptionsLayerTitle.getY()
+						.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.isActionUp()) {
+				}
+				return true;
+			}
+		};
+
+		this.registerTouchArea(OptionsLayerBrightness);
+		OptionsLayerBrightness.setPosition(0, OptionsLayerTitle.getY()
 				- OptionsLayerBrightness.getHeight());
-		
+
+		Text OptionsLayerSound = new Text(0, 0,
+				ResourcesManager.getInstance().defaultFont, "Sound",
+				ResourcesManager.getInstance().engine
+						.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.isActionUp()) {
+					SFXManager.toggleMusicMuted();
+				}
+				return true;
+			}
+		};
+
+		this.registerTouchArea(OptionsLayerSound);
+		OptionsLayerSound.setPosition(0f, OptionsLayerBrightness.getY()
+				- OptionsLayerSound.getHeight());
+
+		Text OptionsLayerReset = new Text(0, 0,
+				ResourcesManager.getInstance().defaultFont, "Reset Data",
+				ResourcesManager.getInstance().engine
+						.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.isActionUp()) {
+					SharedPreferences preferences = ResourcesManager
+							.getActivity()
+							.getSharedPreferences(
+									GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,
+									0);
+					preferences.edit().clear();
+				}
+				return true;
+			}
+		};
+		this.registerTouchArea(OptionsLayerReset);
+		OptionsLayerReset.setPosition(0f, OptionsLayerSound.getY()
+				- OptionsLayerReset.getHeight());
+
 		this.attachChild(OptionsLayerBrightness);
+		this.attachChild(OptionsLayerSound);
+		this.attachChild(OptionsLayerReset);
 
 		this.setPosition(GameActivity.getWidth() / 2f,
 				GameActivity.getHeight() / 2f + 480f);

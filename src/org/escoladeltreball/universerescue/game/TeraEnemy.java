@@ -159,10 +159,5 @@ public class TeraEnemy extends Enemy implements IAnimationListener {
 
 	@Override
 	public void attack(Player p) {
-		// TODO Auto-generated method stub
-		
 	}
-
-
-
 }
