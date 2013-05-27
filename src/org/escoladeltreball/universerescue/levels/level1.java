@@ -177,7 +177,6 @@ public class level1 extends GameScene {
 			@Override
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
-					getBody(physics, teraEnemy).setActive(false); //Ignore future collision
 					teraEnemy.setKilled(true);
 					player.detachAttack(getBody(physics, fire));
 					bulletToBeRecycled.add(fire);
