@@ -7,7 +7,6 @@ import java.util.Random;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
@@ -39,8 +38,6 @@ public class level2 extends GameScene {
 	@Override
 	public void createScene() {
 		super.createScene();
-		DebugRenderer debug = new DebugRenderer(physics, vbom);
-		this.attachChild(debug);
 		createPlayer();
 		createStalactite();
 		bulletToBeRecycled = new LinkedList<Sprite>();

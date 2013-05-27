@@ -7,7 +7,6 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
@@ -41,8 +40,6 @@ public class level3 extends GameScene {
 	@Override
 	public void createScene() {
 		super.createScene();
-		DebugRenderer debug = new DebugRenderer(physics, vbom);
-		this.attachChild(debug);
 		createPlayer();
 		createEnemy();
 		createPlatform();
