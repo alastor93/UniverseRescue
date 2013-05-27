@@ -13,7 +13,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class LevelSelectorButtons extends Sprite {
 
-	// Variables
+	// Attributes
 	private final ResourcesManager MANAGER = ResourcesManager.getInstance();
 	private int levelIndex;
 	private Text mButtonText;
