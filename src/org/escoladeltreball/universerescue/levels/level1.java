@@ -93,9 +93,9 @@ public class level1 extends GameScene {
 		this.platform = new Platform(800f, 120f, manager.platformSprite,
 				this.vbom, camera, physics);
 
-		this.platform2 = new Platform(1500, 210f, manager.platformSprite,
+		this.platform2 = new Platform(1500f, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
-		this.platform3 = new Platform(10, 210f, manager.platformSprite,
+		this.platform3 = new Platform(100f, 210f, manager.platformSprite,
 				this.vbom, camera, physics);
 		this.attachChild(platform);
 		this.attachChild(platform2);
@@ -290,9 +290,9 @@ public class level1 extends GameScene {
 
 		}
 		healstate.setWidth(player.getHp());
-		platform3.moveLeftToRight(10, 780);
-		platform2.moveRightToLeft(1500, 820);
 		teraEnemy.move();
+		platform2.move();
+		platform3.move();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
 

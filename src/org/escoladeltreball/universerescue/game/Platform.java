@@ -17,10 +17,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Platform extends Sprite {
 	//Attributes
 	private Body bdBody;
-	private float finX = this.getX();
+	private float finX;
 	private boolean back;
 	private final float width;
 	private final float height;
+	
+	private final float LIMIT_LEFT = 740;
+	private final float LIMIT_RIGHT = 860;
 
 	//Constructor
 	public Platform(float pX, float pY, ITextureRegion pTextureRegion,
@@ -28,11 +31,20 @@ public class Platform extends Sprite {
 			Camera camera, PhysicsWorld physicsWorld) {
 		super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
 		this.setScale(2);
+		this.finX = this.getX();
 		this.width = this.getWidth() * this.getScaleX()
 				/ PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
 		this.height = this.getHeight() * this.getScaleY()
 				/ PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
 		this.createPhysics(camera, physicsWorld);
+	}
+	
+	public void move() {
+		if (finX == 100) {
+			this.moveLeftToRight(LIMIT_LEFT);
+		} else {
+			this.moveRightToLeft(LIMIT_RIGHT);
+		}
 	}
 
 	/**
@@ -57,34 +69,29 @@ public class Platform extends Sprite {
 	 * @param init
 	 * @param limit
 	 */
-	public void moveRightToLeft(int init, int limit) {
+	public void moveRightToLeft(float limit) {
 		bdBody.setUserData("movePlatform");
-		if (finX > limit && !back) {
-			finX -= 1;
+		if (this.getX() - this.getWidth() * 0.5f > limit && !back) {
 			bdBody.setLinearVelocity(-1.7f, 0);
-		} else if (finX == init) {
+		} else if (this.getX() == finX) {
 			back = false;
-		} else if (finX == limit || back) {
-			finX += 1;
+		} else if (this.getX() - this.getWidth() * 0.5f <= limit || back) {
 			back = true;
 			bdBody.setLinearVelocity(1.7f, 0);
 		}
 	}
-
+	
 	/**
 	 * Make the platform move left to right
 	 * @param init
 	 * @param limit
 	 */
-	public void moveLeftToRight(int init, int limit) {
-		bdBody.setUserData("movePlatform");
-		if (finX < limit && !back) {
-			finX += 1;
+	public void moveLeftToRight(float limit) {
+		if (this.getX() + this.getWidth() * 0.5f < limit && !back) {
 			bdBody.setLinearVelocity(1.7f, 0);
-		} else if (finX == init) {
+		} else if (this.getX() == finX) {
 			back = false;
-		} else if (finX == limit || back) {
-			finX -= 1;
+		} else if (this.getX() + this.getWidth() * 0.5f >= limit || back) {
 			back = true;
 			bdBody.setLinearVelocity(-1.7f, 0);
 		}
