@@ -28,7 +28,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class level2 extends GameScene {
-
+	//Attributes
 	private PhysicsWorld physics;
 	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
@@ -195,6 +195,9 @@ public class level2 extends GameScene {
 		});
 	}
 
+	/**
+	 * Create a stalactite in random positions to try to kill the player
+	 */
 	public void createStalactite() {
 		stalactite = new Stalactite((float) Math.random() * camera.getWidth(),
 				camera.getHeight() - 30, manager.stalactite, this.vbom, camera,
