@@ -10,6 +10,7 @@ import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class ControlsLayer extends Layer {
 	
+	//Attributes
 	private static ControlsLayer obj = null;
 	private Sprite controlinformation;
 
@@ -65,15 +66,12 @@ public class ControlsLayer extends Layer {
 
 		@Override
 		public void onLoadLayer() {
-			// Create and attach a background that hides the Layer when touched.
+			// Create and attach the info of the controls in the game that hides the Layer when touched.
 			controlinformation = new Sprite(0, 0, ResourcesManager.getInstance().controlinfo,
 					ResourcesManager.getInstance().vbom);
-
-			
 			controlinformation.setHeight(440f);
 			controlinformation.setWidth(760f);
 
-			
 			final float BackgroundX = 0f, BackgroundY = 0f;
 			final float BackgroundWidth = 760f, BackgroundHeight = 440f;
 			Rectangle smth = new Rectangle(BackgroundX, BackgroundY,
@@ -93,6 +91,7 @@ public class ControlsLayer extends Layer {
 					return true;
 				}
 			};
+			//Set a semi-black background and attack the intro img
 			smth.setColor(0f, 0f, 0f, 0.85f);
 			this.attachChild(smth);
 			this.registerTouchArea(smth);
