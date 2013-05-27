@@ -11,7 +11,7 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class WinLayer extends Layer implements OnClickListener {
-
+	//Attributes
 	private Sprite arrow;
 	private Sprite background;
 	private ButtonSprite nextLevel;
@@ -19,7 +19,7 @@ public class WinLayer extends Layer implements OnClickListener {
 	private boolean pressedContinue;
 	private boolean pressedExit;
 	private int currentlevel;
-
+	//variable to use in the singleton 
 	private static WinLayer obj = null;
 
 	// Animates the layer to slide in from the top.
@@ -51,6 +51,7 @@ public class WinLayer extends Layer implements OnClickListener {
 		return obj;
 	}
 	
+	//Constructor
 	private WinLayer(){
 		this.currentlevel = SceneManager.getInstance().getCurrentlevel();
 	}
@@ -62,11 +63,13 @@ public class WinLayer extends Layer implements OnClickListener {
 				ResourcesManager.getInstance().vbom);
 		background.setHeight(440f);
 		background.setWidth(760f);
+		//add the next level image
 		nextLevel = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				GameActivity.getHeight() * 0.5f - 80,
 				ResourcesManager.getInstance().nextLevel,
 				ResourcesManager.getInstance().vbom, this);
 		nextLevel.setScale(3f);
+		//add exit in the layer
 		exitSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				nextLevel.getY() - 80,
 				ResourcesManager.getInstance().exitGame,
@@ -111,6 +114,11 @@ public class WinLayer extends Layer implements OnClickListener {
 				GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,currentlevel);
 	}
 
+	/**
+	 * Create the arrow in the selected option
+	 * @param pX
+	 * @param pY
+	 */
 	private void createArrow(float pX, float pY) {
 		arrow = new Sprite(pX, pY, ResourcesManager.getInstance().arrow,
 				ResourcesManager.getInstance().vbom);
