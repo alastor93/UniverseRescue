@@ -22,8 +22,8 @@ public class Platform extends Sprite {
 	private final float width;
 	private final float height;
 	
-	private final float LIMIT_LEFT = 740;
-	private final float LIMIT_RIGHT = 860;
+	private final float LIMIT_LEFT = 720;
+	private final float LIMIT_RIGHT = 880;
 
 	//Constructor
 	public Platform(float pX, float pY, ITextureRegion pTextureRegion,
@@ -73,7 +73,7 @@ public class Platform extends Sprite {
 		bdBody.setUserData("movePlatform");
 		if (this.getX() - this.getWidth() * 0.5f > limit && !back) {
 			bdBody.setLinearVelocity(-1.7f, 0);
-		} else if (this.getX() == finX) {
+		} else if (this.getX() - this.getWidth() * 0.5f >= finX) {
 			back = false;
 		} else if (this.getX() - this.getWidth() * 0.5f <= limit || back) {
 			back = true;
@@ -89,7 +89,7 @@ public class Platform extends Sprite {
 	public void moveLeftToRight(float limit) {
 		if (this.getX() + this.getWidth() * 0.5f < limit && !back) {
 			bdBody.setLinearVelocity(1.7f, 0);
-		} else if (this.getX() == finX) {
+		} else if (this.getX() + this.getWidth() * 0.5f <= finX) {
 			back = false;
 		} else if (this.getX() + this.getWidth() * 0.5f >= limit || back) {
 			back = true;

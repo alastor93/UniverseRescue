@@ -28,7 +28,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class level2 extends GameScene {
-	//Attributes
+	// Attributes
 	private PhysicsWorld physics;
 	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
@@ -158,7 +158,8 @@ public class level2 extends GameScene {
 					}
 					if (player.getHp() > 0 && !player.isSetShield()) {
 						player.setHp(player.getHp() - teraEnemy.getAt());
-					}else if(player.getHp() - teraEnemy.getAt() < 0 && !player.isSetShield()){
+					} else if (player.getHp() - teraEnemy.getAt() < 0
+							&& !player.isSetShield()) {
 						player.setHp(player.getHp() - player.getHp());
 					}
 					player.setAttack(true);
@@ -170,6 +171,14 @@ public class level2 extends GameScene {
 						player.animate(new long[] { 800 }, new int[] { 8 },
 								false, player);
 					}
+				}
+				if (areBodiesContacted("player", "item", contact)) {
+					if (item.getTextureRegion().equals(manager.item)) {
+						item.healt(player);
+					} else {
+						item.setShield(player);
+					}
+					item.removeItem();
 				}
 				if (areBodiesContacted("player", "wall", contact)) {
 					player.setJump(false);
@@ -210,6 +219,20 @@ public class level2 extends GameScene {
 			createEnemy();
 			countEnemies++;
 		}
+		// add item potion
+		if (player.getHp() <= Player.MAXHP * 0.25 && !addItem
+				&& enemiesKilled >= 15) {
+			addItem = true;
+			this.createItem(800, camera.getHeight() - 30, manager.item, physics);
+		}
+		// add item Armour
+		if (player.getHp() <= Player.MAXHP * 0.5
+				&& player.getHp() > Player.MAXHP * 0.25 && enemiesKilled >= 15
+				&& !addItemArmour) {
+			addItemArmour = true;
+			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,
+					physics);
+		}
 		if (stalactite.getY() <= 77) {
 			stalactite.removeStalac();
 			this.createStalactite();
@@ -219,7 +242,7 @@ public class level2 extends GameScene {
 		}
 		if (enemiesKilled == 30) {
 			GameActivity.writeIntToSharedPreferences(
-					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,2);
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 2);
 			SceneManager.getInstance().showWinLayer(false);
 		}
 		if (player.getHp() <= 0) {

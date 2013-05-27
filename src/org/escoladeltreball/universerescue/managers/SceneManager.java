@@ -337,9 +337,6 @@ public class SceneManager {
 			HUD placeholderHud = new HUD();
 			engine.getCamera().setHUD(placeholderHud);
 		}
-		if (SceneManager.getInstance().getCurrentlevel() + 1 == 3) {
-			pLayer.removeNext();
-		}
 		// If the managed layer needs modal properties, set them.
 		if (pModalDraw || pModalUpdate || pModalTouch) {
 			// Apply the layer directly to the Camera's HUD
@@ -356,6 +353,7 @@ public class SceneManager {
 		pLayer.setCamera(engine.getCamera());
 		// Let the layer know that it is being shown.
 		pLayer.onShowManagedLayer();
+		pLayer.removeNext();
 		// Reflect that a layer is shown.
 		isLayerShown = true;
 		// Set the current layer to pLayer.

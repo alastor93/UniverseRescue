@@ -119,7 +119,11 @@ public class WinLayer extends Layer implements OnClickListener {
 	}
 
 	public void removeNext() {
-		background.detachChild(nextLevel);
+		if (SceneManager.getInstance().getCurrentlevel() + 1 == 4) {
+			nextLevel.setVisible(false);
+		}else{
+			nextLevel.setVisible(true);
+		}
 	}
 
 	@Override
