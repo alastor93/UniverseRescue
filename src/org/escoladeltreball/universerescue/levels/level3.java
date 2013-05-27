@@ -29,15 +29,15 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class level3 extends GameScene{
-	
+public class level3 extends GameScene {
+	// Attributes
 	private Sprite enemyHeal;
 	protected Rectangle healstateEnemy;
 	private PhysicsWorld physics;
 	private FinalBoss finalBoss;
-	private Platform platform, platform2, platform3,platform4,platform5,platform6;
+	private Platform platform, platform2, platform3, platform4, platform5,
+			platform6;
 
-	
 	@Override
 	public void createScene() {
 		super.createScene();
@@ -47,7 +47,7 @@ public class level3 extends GameScene{
 		createEnemy();
 		createPlatform();
 		createHealthEnemyBar();
-		//Modify HUD for set Final Boss Text
+		// Modify HUD for set Final Boss Text
 		this.camera.getHUD().detachChild(this.enemiesLeftText);
 		this.enemiesLeftText = new Text(manager.camera.getWidth() / 2f,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.bossFont,
@@ -86,24 +86,25 @@ public class level3 extends GameScene{
 	@Override
 	public void createPlayer() {
 		this.player = new Player(20, 100, manager.playerSprite, this.vbom,
-				camera, physics,this);
+				camera, physics, this);
 		this.attachChild(player);
 	}
 
-@Override
+	@Override
 	public void createBulletPool() {
 		playerBulletList = new LinkedList();
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, playerBulletList, this);
-		
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
+				playerBulletList, this);
+
 	}
 
 	@Override
 	public void createEnemy() {
-		final float  initX = 1500;
+		final float initX = 1500;
 		finalBoss = new FinalBoss(1500, 100, manager.finalBoss, this.vbom,
 				camera, physics);
 		this.attachChild(finalBoss);
-		
+
 	}
 
 	@Override
@@ -119,11 +120,11 @@ public class level3 extends GameScene{
 					if (player.getY() - player.getHeight() > platform.getY()
 							+ platform.getHeight()) {
 						contact.setEnabled(true);
-					}else{
+					} else {
 						contact.setEnabled(false);
 					}
 				}
-				if(areBodiesContacted("finalBoss", "platform", contact)){
+				if (areBodiesContacted("finalBoss", "platform", contact)) {
 					contact.setEnabled(false);
 				}
 			}
@@ -140,12 +141,12 @@ public class level3 extends GameScene{
 						player.setCurrentTileIndex(8);
 					}
 				}
-				
+
 			}
 
 			@Override
 			public void beginContact(Contact contact) {
-				
+
 				if (areBodiesContacted("player", "wall", contact)) {
 					player.setJump(false);
 					player.setCurrentTileIndex(9);
@@ -158,22 +159,23 @@ public class level3 extends GameScene{
 					}
 				}
 				if (areBodiesContacted("player", "item", contact)) {
-					if (player.getHp()+20 < 240) {
+					if (player.getHp() + 20 < 240) {
 						player.setHp(player.getHp() + 20);
 					}
 					item.removeItem();
 				}
-				if (areBodiesContacted("player", "finalBoss", contact)){
+				if (areBodiesContacted("player", "finalBoss", contact)) {
 					player.setHp(player.getHp() - finalBoss.getAt());
 					healstate.setWidth(player.getHp());
 					player.setAttack(true);
 					player.attacked();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
-					finalBoss.animate(new long[] { 100,100,100,100 },5,8, false,finalBoss);
+					finalBoss.animate(new long[] { 100, 100, 100, 100 }, 5, 8,
+							false, finalBoss);
 
 				}
-				if (areBodiesContacted("bullet", "finalBoss", contact)){
+				if (areBodiesContacted("bullet", "finalBoss", contact)) {
 					finalBoss.jump();
 					PLAYER_BULLET_POOL.recyclePoolItem(fire);
 					getBody(physics, fire).setActive(false);
@@ -183,9 +185,9 @@ public class level3 extends GameScene{
 
 			}
 		});
-		
+
 	}
-	
+
 	/**
 	 * Create and add to scene platforms
 	 */
@@ -211,24 +213,27 @@ public class level3 extends GameScene{
 		this.attachChild(platform6);
 		platform6.setVisible(false);
 	}
-	
+
+	/**
+	 * Add the healEnemyBar to the HUD
+	 */
 	public void createHealthEnemyBar() {
 		enemyHeal = new Sprite(this.camera.getXMax() - 150,
 				(this.camera.getHeight() / 2f) * 1.8f, manager.life, vbom);
-		healstateEnemy = new Rectangle(this.camera.getXMax() - 270, (this.camera.getHeight() / 2f) * 1.83f,
-				240, 22, vbom);
+		healstateEnemy = new Rectangle(this.camera.getXMax() - 270,
+				(this.camera.getHeight() / 2f) * 1.83f, 240, 22, vbom);
 		healstateEnemy.registerUpdateHandler(new IUpdateHandler() {
-			
+
 			@Override
 			public void reset() {
 			}
-			
+
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				
+
 				if (finalBoss.getHP() > 160) {
 					healstateEnemy.setColor(Color.GREEN);
-				}else if(finalBoss.getHP() <= 160 && finalBoss.getHP() > 80){
+				} else if (finalBoss.getHP() <= 160 && finalBoss.getHP() > 80) {
 					healstateEnemy.setColor(Color.YELLOW);
 				} else {
 					healstateEnemy.setColor(Color.RED);
@@ -239,24 +244,27 @@ public class level3 extends GameScene{
 		this.camera.getHUD().attachChild(enemyHeal);
 		this.camera.getHUD().attachChild(healstateEnemy);
 	}
-	
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
+		//execute the method for move the finalboss
 		finalBoss.moveWithInt(player.getX());
-		if(healstateEnemy.getWidth() == 0){
+		//Show the Win layer when the healenemybar is 0
+		if (healstateEnemy.getWidth() == 0) {
 			SceneManager.getInstance().showWinLayer(false);
 		}
-		if(player.getHp() <= 0) {
+		//Show the game over layer when the healbar of player is 0
+		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
 		}
-		if(player.collidesWith(platform6)){
+		//Set the platform invisible to visible
+		if (player.collidesWith(platform6)) {
 			platform6.setVisible(true);
 		}
+		//Add the potion item
 		if (player.getHp() <= 150 && !addItem) {
 			addItem = true;
-			this.createItem(900, camera.getHeight() - 30, manager.item,physics);
-			GameActivity.writeIntToSharedPreferences(
-					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 1);
+			this.createItem(900, camera.getHeight() - 30, manager.item, physics);
 		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
