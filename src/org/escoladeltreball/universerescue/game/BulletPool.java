@@ -9,11 +9,12 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 
 public class BulletPool extends GenericPool<Sprite> {
-
+	//Attributes
 	private ITextureRegion bullet;
 	private GameScene scene;
 	private LinkedList<Sprite> list;
 
+	//Constructor
 	public BulletPool(final ITextureRegion pTextureRegion,
 			final LinkedList<Sprite> bulletList, final GameScene pScene) {
 		super();
