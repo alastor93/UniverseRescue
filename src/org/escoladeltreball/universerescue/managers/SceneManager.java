@@ -18,9 +18,9 @@ import org.escoladeltreball.universerescue.layers.Layer;
 import org.escoladeltreball.universerescue.layers.OptionsLayer;
 import org.escoladeltreball.universerescue.layers.WinLayer;
 import org.escoladeltreball.universerescue.levels.LevelSelector;
-import org.escoladeltreball.universerescue.levels.level1;
-import org.escoladeltreball.universerescue.levels.level2;
-import org.escoladeltreball.universerescue.levels.level3;
+import org.escoladeltreball.universerescue.levels.Level1;
+import org.escoladeltreball.universerescue.levels.Level2;
+import org.escoladeltreball.universerescue.levels.Level3;
 import org.escoladeltreball.universerescue.scenes.BaseScene;
 import org.escoladeltreball.universerescue.scenes.GameScene;
 import org.escoladeltreball.universerescue.scenes.LoadingScene;
@@ -203,15 +203,15 @@ public class SceneManager {
 						// load the level 1
 						if (level == 1) {
 							ResourcesManager.getInstance().loadLevel1Graphics();
-							gameScene = new level1();
+							gameScene = new Level1();
 							// load the level 2
 						} else if (level == 2) {
 							ResourcesManager.getInstance().loadLevel2Graphics();
-							gameScene = new level2();
+							gameScene = new Level2();
 							// load the level 3
 						} else {
 							ResourcesManager.getInstance().loadLevel3Graphics();
-							gameScene = new level3();
+							gameScene = new Level3();
 						}
 						//set the gameScene
 						setScene(gameScene);

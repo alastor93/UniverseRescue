@@ -29,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class level3 extends GameScene {
+public class Level3 extends GameScene {
 	// Attributes
 	private Sprite enemyHeal;
 	protected Rectangle healstateEnemy;

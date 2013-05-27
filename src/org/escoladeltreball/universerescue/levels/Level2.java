@@ -12,10 +12,8 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
-import org.escoladeltreball.universerescue.game.CoolDown;
-import org.escoladeltreball.universerescue.game.FlyEnemy;
-import org.escoladeltreball.universerescue.game.Platform;
 import org.escoladeltreball.universerescue.game.Player;
+import org.escoladeltreball.universerescue.game.Stalactite;
 import org.escoladeltreball.universerescue.game.TeraEnemy;
 import org.escoladeltreball.universerescue.game.Wall;
 import org.escoladeltreball.universerescue.managers.SceneManager;
@@ -29,27 +27,19 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class level1 extends GameScene {
+public class Level2 extends GameScene {
 	// Attributes
 	private PhysicsWorld physics;
-	private Platform platform, platform2, platform3;
+	private Stalactite stalactite;
 	private TeraEnemy teraEnemy;
-	private FlyEnemy fly;
-	private CoolDown coolDownEnemy;
+	private boolean createNewStalactite = true;
 	private int countEnemies;
-	private int countFlyEnemies;
-
-	// Constructor
-	public level1() {
-		super();
-		this.coolDownEnemy = new CoolDown();
-	}
 
 	@Override
 	public void createScene() {
 		super.createScene();
-		this.createPlatform();
-		this.createPlayer();
+		createPlayer();
+		createStalactite();
 		bulletToBeRecycled = new LinkedList<Sprite>();
 		registerUpdateHandler(new IUpdateHandler() {
 			@Override
@@ -64,15 +54,14 @@ public class level1 extends GameScene {
 
 			@Override
 			public void reset() {
-				// TODO Auto-generated method stub
-
 			}
 		});
+
 	}
 
 	@Override
 	public void createBackground() {
-		Sprite sprite = new Sprite(0, 0, manager.game_background, vbom) {
+		Sprite sprite = new Sprite(0, 0, manager.game_background2, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
 				super.preDraw(pGLState, pCamera);
@@ -82,29 +71,28 @@ public class level1 extends GameScene {
 		sprite.setWidth(GameActivity.getWidth() * 2);
 		sprite.setOffsetCenter(0, 0);
 		this.attachChild(sprite);
+
 	}
 
-	/**
-	 * Create and add to scene platforms
-	 */
-	public void createPlatform() {
-		this.platform = new Platform(800f, 120f, manager.platformSprite,
-				this.vbom, camera, physics);
+	@Override
+	public void createWalls() {
+		new Wall(GameActivity.getWidth(), 0, GameActivity.getWidth() * 2, 1,
+				this.vbom, physics);
+		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
+				GameActivity.getWidth() * 2, 1, this.vbom, physics);
+		new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
+				this.vbom, physics);
+		new Wall(GameActivity.getWidth() * 2, GameActivity.getHeight() / 2, 1,
+				GameActivity.getHeight(), this.vbom, physics);
 
-		this.platform2 = new Platform(1500f, 210f, manager.platformSprite,
-				this.vbom, camera, physics);
-		this.platform3 = new Platform(100f, 210f, manager.platformSprite,
-				this.vbom, camera, physics);
-		this.attachChild(platform);
-		this.attachChild(platform2);
-		this.attachChild(platform3);
 	}
 
 	@Override
 	public void createPlayer() {
-		this.player = new Player(GameActivity.getWidth() * 0.5f, 100,
+		this.player = new Player(camera.getWidth() * 0.5f, 10,
 				manager.playerSprite, this.vbom, camera, physics, this);
 		this.attachChild(player);
+
 	}
 
 	@Override
@@ -112,6 +100,15 @@ public class level1 extends GameScene {
 		playerBulletList = new LinkedList<Sprite>();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
 				playerBulletList, this);
+
+	}
+
+	@Override
+	public void createEnemy() {
+		Random random = new Random();
+		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 10,
+				manager.enemySprite2, this.vbom, camera, physics);
+		this.attachChild(teraEnemy);
 
 	}
 
@@ -124,30 +121,10 @@ public class level1 extends GameScene {
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
-				if (areBodiesContacted("player", "platform", contact)) {
-					if (player.getY() - player.getHeight() > platform.getY()
-							+ platform.getHeight()) {
-						contact.setEnabled(true);
-					} else {
-						contact.setEnabled(false);
-					}
-				} else if (areBodiesContacted("teraEnemy", "platform", contact)) {
-					contact.setEnabled(false);
-				}
 				if (areBodiesContacted("teraEnemy", "wall", contact)) {
 					contact.setEnabled(true);
 				} else if (areBodiesContacted("teraEnemy", "teraEnemy", contact)) {
 					contact.setEnabled(false);
-				}
-				if (areBodiesContacted("player", "movePlatform", contact)) {
-					if (player.getY() - player.getHeight() > platform2.getY()
-							+ platform.getHeight()
-							|| player.getY() - player.getHeight() > platform3
-									.getY() + platform.getHeight()) {
-						contact.setEnabled(true);
-					} else {
-						contact.setEnabled(false);
-					}
 				}
 			}
 
@@ -157,21 +134,7 @@ public class level1 extends GameScene {
 
 			@Override
 			public void endContact(Contact contact) {
-				if (areBodiesContacted("player", "platform", contact)) {
-					if (player.getY() - player.getHeight() > platform.getY()) {
-						player.setJump(true);
-						player.setCurrentTileIndex(8);
-					}
-				}
-				if (areBodiesContacted("player", "movePlatform", contact)) {
-					if (player.getY() - player.getHeight() > platform2.getY()
-							+ platform.getHeight()
-							|| player.getY() - player.getHeight() > platform3
-									.getY() + platform.getHeight()) {
-						player.setJump(true);
-						player.setCurrentTileIndex(8);
-					}
-				}
+
 			}
 
 			@Override
@@ -180,8 +143,8 @@ public class level1 extends GameScene {
 					teraEnemy.setKilled(true);
 					player.detachAttack(getBody(physics, fire));
 					bulletToBeRecycled.add(fire);
-					teraEnemy.animate(new long[] { 300, 400 },
-							new int[] { 8, 9 }, false, teraEnemy);
+					teraEnemy.animate(new long[] { 700 }, new int[] { 7 },
+							false, teraEnemy);
 					addEnemiesKilled(1);
 					countEnemies--;
 				}
@@ -190,7 +153,7 @@ public class level1 extends GameScene {
 							&& player.isFlippedHorizontal()
 							|| teraEnemy.isFlippedHorizontal()
 							&& !player.isFlippedHorizontal()) {
-						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
+						teraEnemy.animate(new long[] { 50, 50, 50 }, 4, 6,
 								false, teraEnemy);
 					}
 					if (player.getHp() > 0 && !player.isSetShield()) {
@@ -221,44 +184,48 @@ public class level1 extends GameScene {
 					player.setJump(false);
 					player.setCurrentTileIndex(9);
 				}
-				if (areBodiesContacted("player", "platform", contact)) {
-					if (player.getY() - player.getHeight() > platform.getY()
-							+ platform.getHeight()) {
-						player.setJump(false);
-						player.setCurrentTileIndex(9);
-					}
+				if (areBodiesContacted("stalactite", "player", contact)) {
+					stalactite.removeStalac();
+					createNewStalactite = false;
+					player.setHp(player.getHp() - stalactite.getAt());
+					player.setAttack(true);
+					player.stop();
+					player.animate(new long[] { 600, 200 },
+							new int[] { 14, 9 }, false, player);
 				}
-				if (areBodiesContacted("player", "movePlatform", contact)) {
-					if (player.getY() - player.getHeight() > platform2.getY()
-							+ platform.getHeight()
-							|| player.getY() - player.getHeight() > platform3
-									.getY() + platform.getHeight()) {
-						player.setJump(false);
-						player.setCurrentTileIndex(9);
-					}
+
+				if (areBodiesContacted("stalactite", "teraEnemy", contact)) {
+					stalactite.removeStalac();
+					createNewStalactite = false;
 				}
+
 			}
 		});
 	}
 
+	/**
+	 * Create a stalactite in random positions to try to kill the player
+	 */
+	public void createStalactite() {
+		stalactite = new Stalactite((float) Math.random() * camera.getWidth(),
+				camera.getHeight() - 30, manager.stalactite, this.vbom, camera,
+				physics);
+		this.attachChild(stalactite);
+	}
+
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		//Create enemyes
 		if (countEnemies < 1) {
 			createEnemy();
 			countEnemies++;
 		}
-		if (countFlyEnemies < 1) {
-			createFlyEnemy();
-			countFlyEnemies++;
-		}
-		//add item potion
+		// add item potion
 		if (player.getHp() <= Player.MAXHP * 0.25 && !addItem
 				&& enemiesKilled >= 15) {
 			addItem = true;
 			this.createItem(800, camera.getHeight() - 30, manager.item, physics);
 		}
-		//add item armour
+		// add item Armour
 		if (player.getHp() <= Player.MAXHP * 0.5
 				&& player.getHp() > Player.MAXHP * 0.25 && enemiesKilled >= 15
 				&& !addItemArmour) {
@@ -266,76 +233,23 @@ public class level1 extends GameScene {
 			this.createItem(800, camera.getHeight() - 30, manager.itemArmour,
 					physics);
 		}
-		//show lose layer
+		if (stalactite.getY() <= 77) {
+			stalactite.removeStalac();
+			this.createStalactite();
+		} else if (!createNewStalactite) {
+			this.createStalactite();
+			createNewStalactite = true;
+		}
+		if (enemiesKilled == 30) {
+			GameActivity.writeIntToSharedPreferences(
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED, 2);
+			SceneManager.getInstance().showWinLayer(false);
+		}
 		if (player.getHp() <= 0) {
 			SceneManager.getInstance().showLoseLayer(false);
 		}
-		//show win layer
-		if (enemiesKilled == 30) {
-			GameActivity.writeIntToSharedPreferences(
-					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,1);
-			SceneManager.getInstance().showWinLayer(false);
-		}
-		//fly enemy attack player
-		if (fly.canAttack()) {
-			fly.attack(player);
-		} else {
-			// FlyEnemy move after 4 seconds, so we create a small delay between
-			// attacks
-			if (coolDownEnemy.timeHasPassed(4000)) {
-				fly.move();
-			}
-		}
-		for (int i = 0; i < this.playerBulletList.size(); i++) {
-			Sprite bullet = (Sprite) this.playerBulletList.get(i);
-			if (bullet.collidesWith(fly) && !fly.isContact()) {
-				fly.setKilled(true);
-				player.detachAttack(getBody(physics, fire));
-				bulletToBeRecycled.add(fire);
-				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
-				addEnemiesKilled(1);
-				countFlyEnemies--;
-				fly.setContact(true);
-			}
-		}
 		healstate.setWidth(player.getHp());
-		//move the elements
 		teraEnemy.move();
-		platform2.move();
-		platform3.move();
 		super.onManagedUpdate(pSecondsElapsed);
 	}
-
-	@Override
-	public void createEnemy() {
-		Random random = new Random();
-		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 100,
-				manager.enemySprite, this.vbom, camera, physics);
-		this.attachChild(teraEnemy);
-	}
-
-	/**
-	 * Create a flyEnemy with a random movement
-	 */
-	public void createFlyEnemy() {
-		Random random = new Random();
-		fly = new FlyEnemy(random.nextInt((int) camera.getBoundsWidth()),
-				(camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this,
-				manager.flyEnemyBullet);
-		this.attachChild(fly);
-	}
-
-	@Override
-	public void createWalls() {
-		new Wall(GameActivity.getWidth(), 50, GameActivity.getWidth() * 2, 1,
-				this.vbom, physics);
-		new Wall(GameActivity.getWidth(), GameActivity.getHeight(),
-				GameActivity.getWidth() * 2, 1, this.vbom, physics);
-		new Wall(0, GameActivity.getHeight() / 2f, 1, GameActivity.getHeight(),
-				this.vbom, physics);
-		new Wall(GameActivity.getWidth() * 2, GameActivity.getHeight() / 2, 1,
-				GameActivity.getHeight(), this.vbom, physics);
-	}
-
 }
