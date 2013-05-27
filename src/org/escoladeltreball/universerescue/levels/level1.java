@@ -282,12 +282,13 @@ public class level1 extends GameScene {
 			Sprite bullet = (Sprite) this.playerBulletList.get(i);
 			if (bullet.collidesWith(fly) && !fly.isContact()) {
 				fly.setKilled(true);
+				player.detachAttack(getBody(physics,fire));
+				bulletToBeRecycled.add(fire);
 				fly.animate(new long[] { 300, 600 }, 3, 4, false, fly);
 				addEnemiesKilled(1);
 				countFlyEnemies--;
 				fly.setContact(true);
 			}
-
 		}
 		healstate.setWidth(player.getHp());
 		teraEnemy.move();
