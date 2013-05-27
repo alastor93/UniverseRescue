@@ -182,7 +182,7 @@ public class ResourcesManager {
 			this.gameFont = FontFactory.createFromAsset(
 					engine.getFontManager(), engine.getTextureManager(), 254,
 					254, getActivity().getAssets(), "fonts/ecliptic.ttf", 48f,
-					true, Color.WHITE_ARGB_PACKED_INT);
+					true, Color.RED_ARGB_PACKED_INT);
 			this.gameFont.load();
 		}
 		if (bossFont == null) {

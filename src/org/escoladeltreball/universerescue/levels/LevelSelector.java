@@ -105,15 +105,6 @@ public class LevelSelector extends BaseScene {
 		tempY = tempY - mTILE_DIMENSION - mTILE_PADDING;
 	}
 
-	/**
-	 * Method that refresh level's stars
-	 */
-
-	public void refreshAllButtonStars() {
-		for (LevelSelectorButtons levels : mLevelButtons)
-			levels.refreshStars();
-	}
-
 	private void createBackground() {
 		attachChild(new Sprite(CAMERA.getWidth() / 2f, CAMERA.getHeight() / 2f,
 				MANAGER.menu_background_region, VBOM) {

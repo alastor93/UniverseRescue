@@ -18,7 +18,6 @@ public class LevelSelectorButtons extends Sprite {
 	private int levelIndex;
 	private Text mButtonText;
 	private Sprite mLockedSprite;
-	private TiledSprite mStarsEnt;
 	private boolean levelIsLocked = true;
 	private boolean mIsTouched = false;
 	private boolean mIsClicked = false;
@@ -39,13 +38,9 @@ public class LevelSelectorButtons extends Sprite {
 		// Create Sprite for locked levels
 		this.mLockedSprite = new Sprite(this.getWidth() / 2f,
 				this.getHeight() / 2f, MANAGER.menuLevelLocked, MANAGER.vbom);
-		// Set level's stars
-		this.mStarsEnt = new TiledSprite((this.getWidth() / 3f) * 2f,
-				(this.getHeight() / 2f), MANAGER.menuLevelStar, MANAGER.vbom);
 		// Check if level should be locked
 		this.levelIsLocked = (this.levelIndex > (GameActivity
 				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
-//		this.attachChild(this.mButtonText);
 		this.setScale(2f);
 	}
 
@@ -78,8 +73,6 @@ public class LevelSelectorButtons extends Sprite {
 		if(!this.levelIsLocked) {
 			if(!this.mButtonText.hasParent()) {
 				this.attachChild(this.mButtonText);
-				this.attachChild(this.mStarsEnt);
-				this.mStarsEnt.setCurrentTileIndex(GameActivity.getLevelStars(this.levelIndex));
 			}
 			if(this.mLockedSprite.hasParent()) {
 				this.mLockedSprite.detachSelf();
@@ -90,15 +83,7 @@ public class LevelSelectorButtons extends Sprite {
 			}
 			if(this.mButtonText.hasParent()) {
 				this.mButtonText.detachSelf();
-				this.mStarsEnt.detachSelf();
 			}
 		}
-	}
-	
-	public void refreshStars() {
-		this.levelIsLocked = (this.levelIndex > (GameActivity
-				.getIntFromSharedPreferences(GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED) + 1));
-		this.mStarsEnt.setCurrentTileIndex(GameActivity
-				.getLevelStars(this.levelIndex));
 	}
 }
