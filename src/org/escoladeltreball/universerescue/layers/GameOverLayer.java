@@ -11,14 +11,14 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class GameOverLayer extends Layer implements OnClickListener {
-
+	//Attributes
 	private Sprite arrow;
 	private Sprite background;
 	private ButtonSprite continueSprite;
 	private ButtonSprite exitSprite;
 	private boolean pressedContinue;
 	private boolean pressedExit;
-
+	//variable to use in the singleton 
 	private static GameOverLayer obj = null;
 
 	// Animates the layer to slide in from the top.
@@ -57,11 +57,13 @@ public class GameOverLayer extends Layer implements OnClickListener {
 				ResourcesManager.getInstance().vbom);
 		background.setHeight(440f);
 		background.setWidth(760f);
+		//Create the option continue
 		continueSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				GameActivity.getHeight() * 0.5f - 80,
 				ResourcesManager.getInstance().continueGame,
 				ResourcesManager.getInstance().vbom, this);
 		continueSprite.setScale(3f);
+		//create the exit option
 		exitSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				continueSprite.getY() - 80,
 				ResourcesManager.getInstance().exitGame,
@@ -104,6 +106,11 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideIn);
 	}
 
+	/**
+	 * Create the arrow in the selected option
+	 * @param pX
+	 * @param pY
+	 */
 	private void createArrow(float pX, float pY) {
 		arrow = new Sprite(pX, pY, ResourcesManager.getInstance().arrow,
 				ResourcesManager.getInstance().vbom);

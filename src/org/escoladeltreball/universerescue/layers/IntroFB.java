@@ -10,6 +10,7 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class IntroFB  extends Layer{
+	//Attributes
 	private static IntroFB obj = null;
 	private Sprite introfinalboss;
 
@@ -65,11 +66,9 @@ public class IntroFB  extends Layer{
 
 		@Override
 		public void onLoadLayer() {
-			// Create and attach a background that hides the Layer when touched.
+			// Create the intro of the final boss image
 			introfinalboss = new Sprite(0, 0, ResourcesManager.getInstance().introFinalBoss,
-					ResourcesManager.getInstance().vbom);
-
-			
+					ResourcesManager.getInstance().vbom);			
 			introfinalboss.setHeight(146f);
 			introfinalboss.setWidth(760f);
 			
@@ -92,6 +91,7 @@ public class IntroFB  extends Layer{
 					return true;
 				}
 			};
+			//Set a transparent background
 			smth.setColor(Color.TRANSPARENT);
 			this.attachChild(smth);
 			this.registerTouchArea(smth);
