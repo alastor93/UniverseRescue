@@ -42,7 +42,7 @@ public class level2 extends GameScene {
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		createPlayer();
-//		createStalactite();
+		createStalactite();
 		bulletToBeRecycled = new LinkedList<Sprite>();
 		registerUpdateHandler(new IUpdateHandler() {
 			@Override
@@ -211,13 +211,13 @@ public class level2 extends GameScene {
 			createEnemy();
 			countEnemies++;
 		}
-//		if (stalactite.getY() <= 77) {
-//			stalactite.removeStalac();
-//			this.createStalactite();
-//		} else if (!createNewStalactite) {
-//			this.createStalactite();
-//			createNewStalactite = true;
-//		}
+		if (stalactite.getY() <= 77) {
+			stalactite.removeStalac();
+			this.createStalactite();
+		} else if (!createNewStalactite) {
+			this.createStalactite();
+			createNewStalactite = true;
+		}
 		if (enemiesKilled == 30) {
 			SceneManager.getInstance().showWinLayer(false);
 		}
