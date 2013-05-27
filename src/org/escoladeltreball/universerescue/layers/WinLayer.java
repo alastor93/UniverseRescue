@@ -11,15 +11,14 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
 public class WinLayer extends Layer implements OnClickListener {
-	//Attributes
+	// Attributes
 	private Sprite arrow;
 	private Sprite background;
 	private ButtonSprite nextLevel;
 	private ButtonSprite exitSprite;
 	private boolean pressedContinue;
 	private boolean pressedExit;
-	private int currentlevel;
-	//variable to use in the singleton 
+	// variable to use in the singleton
 	private static WinLayer obj = null;
 
 	// Animates the layer to slide in from the top.
@@ -50,11 +49,6 @@ public class WinLayer extends Layer implements OnClickListener {
 		}
 		return obj;
 	}
-	
-	//Constructor
-	private WinLayer(){
-		this.currentlevel = SceneManager.getInstance().getCurrentlevel();
-	}
 
 	@Override
 	public void onLoadLayer() {
@@ -63,16 +57,15 @@ public class WinLayer extends Layer implements OnClickListener {
 				ResourcesManager.getInstance().vbom);
 		background.setHeight(440f);
 		background.setWidth(760f);
-		//add the next level image
+		// add the next level image
 		nextLevel = new ButtonSprite(GameActivity.getWidth() * 0.5f,
 				GameActivity.getHeight() * 0.5f - 80,
 				ResourcesManager.getInstance().nextLevel,
 				ResourcesManager.getInstance().vbom, this);
 		nextLevel.setScale(3f);
-		//add exit in the layer
+		// add exit in the layer
 		exitSprite = new ButtonSprite(GameActivity.getWidth() * 0.5f,
-				nextLevel.getY() - 80,
-				ResourcesManager.getInstance().exitGame,
+				nextLevel.getY() - 80, ResourcesManager.getInstance().exitGame,
 				ResourcesManager.getInstance().vbom, this);
 		exitSprite.setScale(3f);
 		this.registerTouchArea(nextLevel);
@@ -110,12 +103,11 @@ public class WinLayer extends Layer implements OnClickListener {
 	@Override
 	public void onShowLayer() {
 		ResourcesManager.getInstance().engine.registerUpdateHandler(SlideIn);
-		GameActivity.writeIntToSharedPreferences(
-				GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,currentlevel);
 	}
 
 	/**
 	 * Create the arrow in the selected option
+	 * 
 	 * @param pX
 	 * @param pY
 	 */
@@ -124,6 +116,10 @@ public class WinLayer extends Layer implements OnClickListener {
 				ResourcesManager.getInstance().vbom);
 		arrow.setScale(3f);
 		background.attachChild(arrow);
+	}
+
+	public void removeNext() {
+		background.detachChild(nextLevel);
 	}
 
 	@Override
@@ -151,14 +147,14 @@ public class WinLayer extends Layer implements OnClickListener {
 				SceneManager.getInstance().unloadGameScene();
 				SceneManager.getInstance().createTempGameScene(
 						ResourcesManager.getInstance().engine,
-						this.currentlevel + 1);
+						SceneManager.getInstance().getCurrentlevel() + 1);
 				pressedContinue = false;
 			}
 		} else {
 			if (!pressedExit) {
 				background.detachChild(arrow);
-				createArrow(nextLevel.getX() - nextLevel.getWidth()
-						* 2, pButtonSprite.getY());
+				createArrow(nextLevel.getX() - nextLevel.getWidth() * 2,
+						pButtonSprite.getY());
 				pressedExit = true;
 				pressedContinue = false;
 			} else {

@@ -218,6 +218,8 @@ public class level2 extends GameScene {
 			createNewStalactite = true;
 		}
 		if (enemiesKilled == 30) {
+			GameActivity.writeIntToSharedPreferences(
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,2);
 			SceneManager.getInstance().showWinLayer(false);
 		}
 		if (player.getHp() <= 0) {

@@ -272,6 +272,8 @@ public class level1 extends GameScene {
 		}
 		//show win layer
 		if (enemiesKilled == 30) {
+			GameActivity.writeIntToSharedPreferences(
+					GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,1);
 			SceneManager.getInstance().showWinLayer(false);
 		}
 		//fly enemy attack player

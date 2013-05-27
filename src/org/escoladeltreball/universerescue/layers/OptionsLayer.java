@@ -2,6 +2,7 @@ package org.escoladeltreball.universerescue.layers;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.escoladeltreball.universerescue.GameActivity;
@@ -9,8 +10,9 @@ import org.escoladeltreball.universerescue.managers.ResourcesManager;
 import org.escoladeltreball.universerescue.managers.SFXManager;
 import org.escoladeltreball.universerescue.managers.SceneManager;
 
-import android.content.SharedPreferences;
-import android.view.WindowManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.Html;
 
 public class OptionsLayer extends Layer {
 
@@ -82,10 +84,11 @@ public class OptionsLayer extends Layer {
 
 		ResourcesManager.getInstance().loadFonts();
 		// Create the OptionsLayerTitle text for the Layer.
-		Text OptionsLayerTitle = new Text(0, 0,
-				ResourcesManager.getInstance().defaultFont, "OPCIONES",
+		Sprite OptionsLayerTitle = new Sprite(0, 0,
+				ResourcesManager.getInstance().options_region,
 				ResourcesManager.getInstance().engine
 						.getVertexBufferObjectManager());
+		OptionsLayerTitle.setScale(2f);
 		OptionsLayerTitle.setPosition(0f, BackgroundHeight / 2f
 				- OptionsLayerTitle.getHeight());
 		this.attachChild(OptionsLayerTitle);
@@ -105,7 +108,7 @@ public class OptionsLayer extends Layer {
 
 		this.registerTouchArea(OptionsLayerBrightness);
 		OptionsLayerBrightness.setPosition(0, OptionsLayerTitle.getY()
-				- OptionsLayerBrightness.getHeight());
+				- OptionsLayerBrightness.getHeight() - 20);
 
 		Text OptionsLayerSound = new Text(0, 0,
 				ResourcesManager.getInstance().defaultFont, "Sound",
@@ -123,7 +126,7 @@ public class OptionsLayer extends Layer {
 
 		this.registerTouchArea(OptionsLayerSound);
 		OptionsLayerSound.setPosition(0f, OptionsLayerBrightness.getY()
-				- OptionsLayerSound.getHeight());
+				- OptionsLayerSound.getHeight() - 20);
 
 		Text OptionsLayerReset = new Text(0, 0,
 				ResourcesManager.getInstance().defaultFont, "Reset Data",
@@ -133,19 +136,14 @@ public class OptionsLayer extends Layer {
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 					final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.isActionUp()) {
-					SharedPreferences preferences = ResourcesManager
-							.getActivity()
-							.getSharedPreferences(
-									GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,
-									0);
-					preferences.edit().clear();
+					showMessageReset();
 				}
 				return true;
 			}
 		};
 		this.registerTouchArea(OptionsLayerReset);
 		OptionsLayerReset.setPosition(0f, OptionsLayerSound.getY()
-				- OptionsLayerReset.getHeight());
+				- OptionsLayerReset.getHeight() - 20);
 
 		this.attachChild(OptionsLayerBrightness);
 		this.attachChild(OptionsLayerSound);
@@ -153,6 +151,47 @@ public class OptionsLayer extends Layer {
 
 		this.setPosition(GameActivity.getWidth() / 2f,
 				GameActivity.getHeight() / 2f + 480f);
+	}
+
+	/**
+	 * Show an ask if you want reset the game if you select "no" continue the
+	 * game, reset the game otherwhise
+	 */
+	public void showMessageReset() {
+		ResourcesManager.getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						ResourcesManager.getActivity())
+						.setTitle("Universe Rescue")
+						.setMessage(
+								Html.fromHtml("Are you sure you want to reset the game?"))
+						.setPositiveButton("Yes",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+										GameActivity
+												.writeIntToSharedPreferences(
+														GameActivity.SHARED_PREFS_LEVEL_MAX_REACHED,
+														0);
+									}
+								})
+						.setNegativeButton("No",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											final DialogInterface dialog,
+											final int id) {
+									}
+								});
+
+				final AlertDialog alert = builder.create();
+				alert.show();
+			}
+		});
 	}
 
 	@Override
@@ -167,5 +206,9 @@ public class OptionsLayer extends Layer {
 
 	@Override
 	public void onUnloadLayer() {
+	}
+
+	@Override
+	public void removeNext() {
 	}
 }

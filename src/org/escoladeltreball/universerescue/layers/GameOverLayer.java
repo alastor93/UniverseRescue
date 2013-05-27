@@ -162,4 +162,8 @@ public class GameOverLayer extends Layer implements OnClickListener {
 		}
 
 	}
+
+	@Override
+	public void removeNext() {
+	}
 }

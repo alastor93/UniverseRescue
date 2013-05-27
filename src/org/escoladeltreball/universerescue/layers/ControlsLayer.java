@@ -114,4 +114,8 @@ public class ControlsLayer extends Layer {
 		public void onUnloadLayer() {
 		}
 
+		@Override
+		public void removeNext() {
+		}
+
 }

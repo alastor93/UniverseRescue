@@ -49,5 +49,6 @@ public abstract class Layer extends HUD{
 	public abstract void onShowLayer();
 	public abstract void onHideLayer();
 	public abstract void onUnloadLayer();
+	public abstract void removeNext();
 
 }

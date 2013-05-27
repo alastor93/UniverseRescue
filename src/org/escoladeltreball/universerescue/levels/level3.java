@@ -41,9 +41,9 @@ public class level3 extends GameScene {
 	@Override
 	public void createScene() {
 		super.createScene();
+		createPlatform();
 		createPlayer();
 		createEnemy();
-		createPlatform();
 		createHealthEnemyBar();
 		// Modify HUD for set Final Boss Text
 		this.camera.getHUD().detachChild(this.enemiesLeftText);
