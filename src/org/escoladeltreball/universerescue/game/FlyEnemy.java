@@ -71,14 +71,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener {
 		random = new Random();
 		this.setScale(2f);
 		this.animate(new long[] { 200, 200, 200 }, 0, 2, true);
-		// body = PhysicsFactory.createBoxBody(physics, this,
-		// BodyType.KinematicBody,
-		// PhysicsFactory.createFixtureDef(0, 0, 0));
-		// body.setUserData("flyenemy");
 		minY = camera.getHeight() / 2f;
-		// physicsWorld.registerPhysicsConnector(new PhysicsConnector(this,
-		// body,
-		// true, false));
 		scene.attachChild(bulletAttack);
 	}
 
@@ -116,24 +109,7 @@ public class FlyEnemy extends Enemy implements IAnimationListener {
 				tempY = Y - 70;
 			}
 		}
-		// MoveXModifier modifier = new MoveXModifier(2, X, tempX, new
-		// IEntityModifierListener() {
-		//
-		// @Override
-		// public void onModifierStarted(IModifier<IEntity> pModifier, IEntity
-		// pItem) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		//
-		// @Override
-		// public void onModifierFinished(IModifier<IEntity> pModifier, IEntity
-		// pItem) {
-		// canAttack = true;
-		// X = tempX;
-		//
-		// }
-		// });
+
 		// Create a new path
 		path = new Path(2).to(X, Y).to(tempX, tempY);
 		// Set a new PathModifier for set action on path event
