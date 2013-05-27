@@ -1,5 +1,6 @@
 package org.escoladeltreball.universerescue.levels;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.andengine.engine.camera.Camera;
@@ -51,6 +52,24 @@ public class level3 extends GameScene {
 				"FINAL BOSS", manager.vbom);
 		this.camera.getHUD().attachChild(this.enemiesLeftText);
 		SceneManager.getInstance().showIntroFinalBLayer(false);
+		bulletToBeRecycled = new LinkedList<Sprite>();
+		registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				Iterator<Sprite> it = bulletToBeRecycled.iterator();
+				while (it.hasNext()) {
+					Sprite attack = (Sprite) it.next();
+					PLAYER_BULLET_POOL.recyclePoolItem(attack);
+					it.remove();
+				}
+			}
+
+			@Override
+			public void reset() {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 	}
 
@@ -89,7 +108,7 @@ public class level3 extends GameScene {
 
 	@Override
 	public void createBulletPool() {
-		playerBulletList = new LinkedList();
+		playerBulletList = new LinkedList<Sprite>();
 		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
 				playerBulletList, this);
 
@@ -174,8 +193,8 @@ public class level3 extends GameScene {
 				}
 				if (areBodiesContacted("bullet", "finalBoss", contact)) {
 					finalBoss.jump();
-					PLAYER_BULLET_POOL.recyclePoolItem(fire);
-					getBody(physics, fire).setActive(false);
+					player.detachAttack(getBody(physics, fire));
+					bulletToBeRecycled.add(fire);
 					finalBoss.takeDamage(player.shoot());
 					healstateEnemy.setWidth(finalBoss.getHP());
 				}
