@@ -1,14 +1,15 @@
 package org.escoladeltreball.universerescue.levels;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.util.GLState;
 import org.escoladeltreball.universerescue.GameActivity;
 import org.escoladeltreball.universerescue.game.BulletPool;
@@ -41,7 +42,23 @@ public class level2 extends GameScene {
 		DebugRenderer debug = new DebugRenderer(physics, vbom);
 		this.attachChild(debug);
 		createPlayer();
-		createStalactite();
+//		createStalactite();
+		bulletToBeRecycled = new LinkedList<Sprite>();
+		registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				Iterator<Sprite> it = bulletToBeRecycled.iterator();
+				while (it.hasNext()) {
+					Sprite attack = (Sprite) it.next();
+					PLAYER_BULLET_POOL.recyclePoolItem(attack);
+					it.remove();
+				}
+			}
+
+			@Override
+			public void reset() {
+			}
+		});
 
 	}
 
@@ -75,25 +92,25 @@ public class level2 extends GameScene {
 
 	@Override
 	public void createPlayer() {
-		this.player = new Player(camera.getWidth() * 0.5f, 10, manager.playerSprite, this.vbom,
-				camera, physics,this);
+		this.player = new Player(camera.getWidth() * 0.5f, 10,
+				manager.playerSprite, this.vbom, camera, physics, this);
 		this.attachChild(player);
 
 	}
 
 	@Override
 	public void createBulletPool() {
-		playerBulletList = new LinkedList();
-		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite, playerBulletList, this);
+		playerBulletList = new LinkedList<Sprite>();
+		PLAYER_BULLET_POOL = new BulletPool(manager.bulletSprite,
+				playerBulletList, this);
 
 	}
-
 
 	@Override
 	public void createEnemy() {
 		Random random = new Random();
-		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 10, manager.enemySprite2, this.vbom,
-				camera, physics);
+		teraEnemy = new TeraEnemy(POSX[random.nextInt(2)], 10,
+				manager.enemySprite2, this.vbom, camera, physics);
 		this.attachChild(teraEnemy);
 
 	}
@@ -120,76 +137,94 @@ public class level2 extends GameScene {
 
 			@Override
 			public void endContact(Contact contact) {
-				
+
 			}
 
 			@Override
 			public void beginContact(Contact contact) {
 				if (areBodiesContacted("bullet", "teraEnemy", contact)) {
 					teraEnemy.setKilled(true);
+					player.detachAttack(getBody(physics, fire));
+					bulletToBeRecycled.add(fire);
 					getBody(physics, teraEnemy).setActive(false);
-					teraEnemy.animate(new long[] {700}, new int[]{7}, false,teraEnemy);
+					teraEnemy.animate(new long[] { 700 }, new int[] { 7 },
+							false, teraEnemy);
 					addEnemiesKilled(1);
 					countEnemies--;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
-					player.setHp(player.getHp() - teraEnemy.getAt());
+					if (!teraEnemy.isFlippedHorizontal()
+							&& player.isFlippedHorizontal()
+							|| teraEnemy.isFlippedHorizontal()
+							&& !player.isFlippedHorizontal()) {
 						teraEnemy.animate(new long[] { 50, 50, 50 }, 4, 6,
-								false,teraEnemy);
-
-					healstate.setWidth(player.getHp());
+								false, teraEnemy);
+					}
+					if (player.getHp() > 0 && !player.isSetShield()) {
+						player.setHp(player.getHp() - teraEnemy.getAt());
+					}else if(player.getHp() - teraEnemy.getAt() < 0 && !player.isSetShield()){
+						player.setHp(player.getHp() - player.getHp());
+					}
 					player.setAttack(true);
 					player.attacked();
-					player.animate(new long[] { 600, 200 },
-							new int[] { 14, 9 }, false, player);
+					if (!player.isSetShield()) {
+						player.animate(new long[] { 600, 200 }, new int[] { 14,
+								9 }, false, player);
+					} else {
+						player.animate(new long[] { 800 }, new int[] { 8 },
+								false, player);
+					}
 				}
 				if (areBodiesContacted("player", "wall", contact)) {
 					player.setJump(false);
 					player.setCurrentTileIndex(9);
 				}
-				if(areBodiesContacted("stalactite", "player", contact)){
+				if (areBodiesContacted("stalactite", "player", contact)) {
 					stalactite.removeStalac();
 					createNewStalactite = false;
 					player.setHp(player.getHp() - stalactite.getAt());
-					healstate.setWidth(player.getHp());
 					player.setAttack(true);
 					player.stop();
 					player.animate(new long[] { 600, 200 },
 							new int[] { 14, 9 }, false, player);
 				}
-				
-				if (areBodiesContacted("stalactite", "teraEnemy", contact)){
+
+				if (areBodiesContacted("stalactite", "teraEnemy", contact)) {
 					stalactite.removeStalac();
 					createNewStalactite = false;
 				}
-				
+
 			}
 		});
 	}
 
 	public void createStalactite() {
-		stalactite = new Stalactite((float) Math.random()
-				* camera.getWidth(), camera.getHeight() - 30,
-				manager.stalactite, this.vbom, camera, physics);
+		stalactite = new Stalactite((float) Math.random() * camera.getWidth(),
+				camera.getHeight() - 30, manager.stalactite, this.vbom, camera,
+				physics);
 		this.attachChild(stalactite);
 	}
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
-		if (countEnemies < 2) {
+		if (countEnemies < 1) {
 			createEnemy();
 			countEnemies++;
 		}
-		if (stalactite.getY() <= 77) {
-			stalactite.removeStalac();
-			this.createStalactite();
-		}else if (!createNewStalactite){
-			this.createStalactite();
-			createNewStalactite = true;
-		}
+//		if (stalactite.getY() <= 77) {
+//			stalactite.removeStalac();
+//			this.createStalactite();
+//		} else if (!createNewStalactite) {
+//			this.createStalactite();
+//			createNewStalactite = true;
+//		}
 		if (enemiesKilled == 30) {
 			SceneManager.getInstance().showWinLayer(false);
 		}
+		if (player.getHp() <= 0) {
+			SceneManager.getInstance().showLoseLayer(false);
+		}
+		healstate.setWidth(player.getHp());
 		teraEnemy.move();
 		super.onManagedUpdate(pSecondsElapsed);
 	}

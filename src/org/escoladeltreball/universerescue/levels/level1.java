@@ -180,18 +180,24 @@ public class level1 extends GameScene {
 					teraEnemy.setKilled(true);
 					player.detachAttack(getBody(physics, fire));
 					bulletToBeRecycled.add(fire);
+					getBody(physics, teraEnemy).setActive(false);
 					teraEnemy.animate(new long[] { 300, 400 },
 							new int[] { 8, 9 }, false, teraEnemy);
 					addEnemiesKilled(1);
 					countEnemies--;
 				}
 				if (areBodiesContacted("player", "teraEnemy", contact)) {
-					if (!teraEnemy.isFlippedHorizontal()) {
+					if (!teraEnemy.isFlippedHorizontal()
+							&& player.isFlippedHorizontal()
+							|| teraEnemy.isFlippedHorizontal()
+							&& !player.isFlippedHorizontal()) {
 						teraEnemy.animate(new long[] { 50, 50, 50, 50 }, 4, 7,
 								false, teraEnemy);
 					}
 					if (player.getHp() > 0 && !player.isSetShield()) {
 						player.setHp(player.getHp() - teraEnemy.getAt());
+					}else if(player.getHp() - teraEnemy.getAt() < 0 && !player.isSetShield()){
+						player.setHp(player.getHp() - player.getHp());
 					}
 					player.setAttack(true);
 					player.attacked();
@@ -302,7 +308,8 @@ public class level1 extends GameScene {
 		Random random = new Random();
 		fly = new FlyEnemy(random.nextInt((int) camera.getBoundsWidth()),
 				(camera.getHeight() / 4f) * 3,
-				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this, manager.flyEnemyBullet);
+				manager.flyEnemySprite.deepCopy(), vbom, camera, physics, this,
+				manager.flyEnemyBullet);
 		this.attachChild(fly);
 	}
 
